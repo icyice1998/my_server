@@ -1,33 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Server Product List</title>
+    <meta charset="UTF-8">
+    <title>Simple Tab Web App</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; }
-        .product { margin-bottom: 10px; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Horizontal menu */
+        .menu {
+            display: flex;
+            background-color: #333;
+        }
+        .menu button {
+            flex: 1;
+            padding: 14px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .menu button:hover {
+            background-color: #444;
+        }
+        .menu button.active {
+            background-color: #555;
+        }
+
+        /* Tab content */
+        .tab {
+            display: none;
+            padding: 20px;
+        }
     </style>
 </head>
 <body>
-    <h1>Product List</h1>
-    <div id="product-list">Loading...</div>
 
+    <!-- Horizontal Menu -->
+    <div class="menu">
+        <button class="tab-btn active" onclick="openTab('home', this)">Home</button>
+        <button class="tab-btn" onclick="openTab('about', this)">About</button>
+        <button class="tab-btn" onclick="openTab('contact', this)">Contact</button>
+    </div>
+
+    <!-- Tab Content -->
+    <div id="home" class="tab" style="display: block;">
+        <h2>Welcome Home</h2>
+        <p>This is the home page content.</p>
+    </div>
+
+    <div id="about" class="tab">
+        <h2>About Us</h2>
+        <p>We are building a simple tab web application with HTML, CSS, and JS.</p>
+    </div>
+
+    <div id="contact" class="tab">
+        <h2>Contact</h2>
+        <p>Email: example@mail.com</p>
+    </div>
+
+    <!-- JavaScript -->
     <script>
-        fetch('data.json')
-            .then(response => response.json())
-            .then(data => {
-                const list = document.getElementById("product-list");
-                list.innerHTML = "";
-                data.forEach(item => {
-                    const div = document.createElement("div");
-                    div.className = "product";
-                    div.innerHTML = `<strong>${item.name}</strong>: ${item.price}`;
-                    list.appendChild(div);
-                });
-            })
-            .catch(err => {
-                document.getElementById("product-list").innerText = "Failed to load data.";
-                console.error("Error loading JSON:", err);
-            });
+        function openTab(tabId, btn) {
+            // Hide all tabs
+            document.querySelectorAll('.tab').forEach(tab => tab.style.display = 'none');
+            // Show selected tab
+            document.getElementById(tabId).style.display = 'block';
+
+            // Remove "active" from all buttons
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            // Set current button as active
+            btn.classList.add('active');
+        }
     </script>
+
 </body>
 </html>
