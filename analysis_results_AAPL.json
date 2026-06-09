@@ -1,0 +1,63 @@
+{
+  "symbol": "AAPL",
+  "timestamp": "2024-06-09T10:30:00",
+  "analysis": {
+    "1d": {
+      "pattern": "Impulse Wave (5-3-5-3-5)",
+      "wave_count": "Wave 3",
+      "confidence": 82.5,
+      "direction": "Bullish",
+      "next_target": "195.50",
+      "support": "175.25",
+      "resistance": "202.75",
+      "waves": [
+        {
+          "name": "Wave 1",
+          "start": 165.0,
+          "end": 180.5
+        },
+        {
+          "name": "Wave 2",
+          "start": 180.5,
+          "end": 172.0
+        },
+        {
+          "name": "Wave 3",
+          "start": 172.0,
+          "end": 195.5
+        }
+      ]
+    },
+    "4h": {
+      "pattern": "Corrective Wave (Zigzag)",
+      "wave_count": "Wave B",
+      "confidence": 75.0,
+      "direction": "Bearish",
+      "next_target": "180.00",
+      "support": "178.50",
+      "resistance": "192.00",
+      "waves": [
+        {
+          "name": "Wave A",
+          "start": 195.5,
+          "end": 185.0
+        },
+        {
+          "name": "Wave B",
+          "start": 185.0,
+          "end": 190.5
+        }
+      ]
+    },
+    "1h": {
+      "pattern": "Triangle Formation",
+      "wave_count": "Wave 4",
+      "confidence": 68.0,
+      "direction": "Bullish",
+      "next_target": "193.75",
+      "support": "188.50",
+      "resistance": "196.25",
+      "waves": []
+    }
+  }
+}
