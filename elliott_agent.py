@@ -48,8 +48,10 @@ class ElliottWaveAnalyzer:
         return True
 
     def _generate_sample_data(self) -> List[float]:
-        """Generate realistic sample price data for demo"""
-        np.random.seed(42)
+        """Generate deterministic sample data per symbol"""
+        # Create deterministic seed from symbol string
+        seed = sum(ord(c) for c in self.symbol) % (2**32)
+        np.random.seed(seed)
         returns = np.random.normal(0.001, 0.02, 100)
         prices = 100 * np.exp(np.cumsum(returns))
         return prices.tolist()

@@ -13,46 +13,58 @@ import numpy as np
 
 
 class MultiTimeframeAnalyzer:
-    def __init__(self, symbol: str):
+    def __init__(self, symbol: str, use_cache: bool = True):
         self.symbol = symbol
         self.timeframes = ['5m', '15m', '1H', '4H', 'D']
         self.analyses = {}
         self.overall_trend = None
-        self.prices_cache = {}
+        self.prices_cache = {} if not use_cache else self._init_cache()
+        self.use_cache = use_cache
 
-    def fetch_market_data(self, days: int = 30) -> List[float]:
-        """Fetch historical price data with caching"""
+    def _init_cache(self):
+        """Initialize deterministic cache per symbol"""
+        cache = {}
+        np.random.seed(hash(self.symbol) % 2**32)
+        return cache
+
+    def fetch_market_data(self, days: int = 30, use_live_data: bool = False) -> List[float]:
+        """Fetch historical price data (uses deterministic simulation by default)"""
         cache_key = f"{self.symbol}_{days}d"
         if cache_key in self.prices_cache:
             return self.prices_cache[cache_key]
 
-        try:
-            if '/' in self.symbol:
-                crypto, fiat = self.symbol.split('/')
-                url = f"https://api.coingecko.com/api/v3/coins/{crypto.lower()}/market_chart"
-                params = {
-                    'vs_currency': fiat.lower(),
-                    'days': str(days),
-                    'interval': 'daily'
-                }
-                response = requests.get(url, params=params, timeout=10)
-                if response.status_code == 200:
-                    data = response.json()
-                    prices = [float(price[1]) for price in data['prices'][-100:]]
-                    if prices:
-                        self.prices_cache[cache_key] = prices
-                        return prices
-        except Exception as e:
-            pass
+        prices = None
 
-        # Fallback to generated data
-        prices = self._generate_sample_data()
+        # Try live API if requested
+        if use_live_data:
+            try:
+                if '/' in self.symbol:
+                    crypto, fiat = self.symbol.split('/')
+                    url = f"https://api.coingecko.com/api/v3/coins/{crypto.lower()}/market_chart"
+                    params = {
+                        'vs_currency': fiat.lower(),
+                        'days': str(days),
+                        'interval': 'daily'
+                    }
+                    response = requests.get(url, params=params, timeout=10)
+                    if response.status_code == 200:
+                        data = response.json()
+                        prices = [float(price[1]) for price in data['prices'][-100:]]
+            except Exception:
+                pass
+
+        # Use deterministic generated data
+        if prices is None:
+            prices = self._generate_sample_data()
+
         self.prices_cache[cache_key] = prices
         return prices
 
     def _generate_sample_data(self) -> List[float]:
-        """Generate realistic sample price data"""
-        np.random.seed(hash(self.symbol) % 2**32)
+        """Generate deterministic sample data per symbol"""
+        # Create deterministic seed from symbol string
+        seed = sum(ord(c) for c in self.symbol) % (2**32)
+        np.random.seed(seed)
         returns = np.random.normal(0.001, 0.02, 100)
         prices = 100 * np.exp(np.cumsum(returns))
         return prices.tolist()
