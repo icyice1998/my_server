@@ -36,6 +36,98 @@
             display: none;
             padding: 20px;
         }
+
+        /* City Agent Styles */
+        .agent-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .input-group button {
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .input-group button:hover {
+            background-color: #45a049;
+        }
+
+        .result-box {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .result-box.success {
+            border-left: 5px solid #4CAF50;
+            display: block;
+        }
+
+        .result-box.error {
+            border-left: 5px solid #f44336;
+            display: block;
+        }
+
+        .result-text {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        .confidence {
+            color: #666;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .error-message {
+            color: #f44336;
+            font-weight: bold;
+        }
+
+        .success-message {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .cities-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .city-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .city-item:last-child {
+            border-bottom: none;
+        }
     </style>
 </head>
 <body>
@@ -43,6 +135,7 @@
     <!-- Horizontal Menu -->
     <div class="menu">
         <button class="tab-btn active" onclick="openTab('home', this)">Home</button>
+        <button class="tab-btn" onclick="openTab('city-agent', this)">City Agent</button>
         <button class="tab-btn" onclick="openTab('about', this)">About</button>
         <button class="tab-btn" onclick="openTab('contact', this)">Contact</button>
     </div>
@@ -51,6 +144,25 @@
     <div id="home" class="tab" style="display: block;">
         <h2>Welcome Home</h2>
         <p>This is the home page content.</p>
+    </div>
+
+    <div id="city-agent" class="tab">
+        <h2>City to Country AI Agent</h2>
+        <p>Enter a city name to find out which country it's in.</p>
+
+        <div class="agent-container">
+            <div class="input-group">
+                <input type="text" id="cityInput" placeholder="Enter city name (e.g., Paris, Tokyo)..." />
+                <button onclick="handleCitySearch()">Search</button>
+            </div>
+
+            <div id="resultBox" class="result-box">
+                <div id="resultContent"></div>
+            </div>
+
+            <h3>Available Cities (Demo Database)</h3>
+            <div id="citiesList" class="cities-list"></div>
+        </div>
     </div>
 
     <div id="about" class="tab">
@@ -64,6 +176,7 @@
     </div>
 
     <!-- JavaScript -->
+    <script src="cityAgent.js"></script>
     <script>
         function openTab(tabId, btn) {
             // Hide all tabs
@@ -75,7 +188,86 @@
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             // Set current button as active
             btn.classList.add('active');
+
+            // Load cities list when City Agent tab is opened
+            if (tabId === 'city-agent') {
+                displayAvailableCities();
+            }
         }
+
+        function handleCitySearch() {
+            const input = document.getElementById('cityInput');
+            const cityName = input.value;
+            const resultBox = document.getElementById('resultBox');
+            const resultContent = document.getElementById('resultContent');
+
+            if (!cityName) {
+                resultBox.className = 'result-box error';
+                resultContent.innerHTML = '<div class="result-text error-message">Please enter a city name.</div>';
+                return;
+            }
+
+            // Process input through the AI agent
+            const result = cityAgent.processInput(cityName);
+
+            if (result.success) {
+                resultBox.className = 'result-box success';
+                let html = `<div class="result-text success-message">✓ Found!</div>`;
+                html += `<div class="result-text"><strong>City:</strong> ${result.city}</div>`;
+                html += `<div class="result-text"><strong>Country:</strong> ${result.country}</div>`;
+                if (result.confidence !== undefined) {
+                    html += `<div class="confidence">Confidence: ${result.confidence}%</div>`;
+                }
+                if (result.message) {
+                    html += `<div class="result-text">${result.message}</div>`;
+                }
+                resultContent.innerHTML = html;
+            } else {
+                resultBox.className = 'result-box error';
+                let html = `<div class="result-text error-message">✗ Not Found</div>`;
+                html += `<div class="result-text">${result.message}</div>`;
+                if (result.suggestion) {
+                    html += `<div class="result-text">${result.suggestion}</div>`;
+                }
+                resultContent.innerHTML = html;
+            }
+
+            // Clear input
+            input.value = '';
+            input.focus();
+        }
+
+        function displayAvailableCities() {
+            const citiesList = document.getElementById('citiesList');
+            const cities = cityAgent.getAllCities();
+
+            if (cities.length === 0) {
+                citiesList.innerHTML = '<div class="city-item">Loading cities...</div>';
+                return;
+            }
+
+            let html = '';
+            cities.forEach(entry => {
+                html += `<div class="city-item">
+                    <span>${entry.city}</span>
+                    <span>${entry.country}</span>
+                </div>`;
+            });
+
+            citiesList.innerHTML = html;
+        }
+
+        // Allow Enter key to search
+        document.addEventListener('DOMContentLoaded', function() {
+            const cityInput = document.getElementById('cityInput');
+            if (cityInput) {
+                cityInput.addEventListener('keypress', function(event) {
+                    if (event.key === 'Enter') {
+                        handleCitySearch();
+                    }
+                });
+            }
+        });
     </script>
 
 </body>
