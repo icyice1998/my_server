@@ -1,0 +1,4 @@
+yfinance==0.2.32
+numpy==1.24.3
+anthropic==0.21.0
+requests==2.31.0
