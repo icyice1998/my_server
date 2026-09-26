@@ -40,3 +40,6 @@ Thumbs.db
 !analysis_results_*.json
 .env
 .env.local
+
+# Trading bot
+futures_bot/bot.log
