@@ -144,3 +144,32 @@ def test_smc_choch_and_fvg():
     gap = df.copy()
     gap.iloc[40:, :4] *= 1.05  # 5% gap up leaves a bullish FVG
     assert any(g["direction"] == "bullish" for g in smc.fair_value_gaps(gap))
+
+
+def test_context_percentiles_and_reasons():
+    from market_analyzer import context
+    c = context.analyze(make_prices(n=1000))
+    assert c["parameters"] and "1m" in c["base"]
+    for p in c["parameters"].values():
+        assert 0 <= p["percentile"] <= 100
+        assert p["reason"].startswith(p["label"])
+        assert p["read"] in {"historically a tailwind", "mild tailwind", "no clear edge",
+                             "mild headwind", "historically a headwind", "too few past cases"}
+
+
+def test_context_ranks_extreme_rsi_high():
+    from market_analyzer import context
+    df = make_prices(drift=0.0, n=900)
+    df.iloc[-15:, :4] = df.iloc[-16, 3] * np.linspace(1.01, 1.25, 15)[:, None]  # 15 straight up days
+    c = context.analyze(df)
+    assert c["parameters"]["rsi14"]["percentile"] > 95
+
+
+def test_fundamental_year_history():
+    years = pd.to_datetime(["2022-12-31", "2023-12-31", "2024-12-31"])
+    income = pd.DataFrame({y: {"Total Revenue": 100.0 + i, "Net Income": 10.0 - 3 * i} for i, y in enumerate(years)})
+    balance = pd.DataFrame({y: {"Stockholders Equity": 50.0, "Total Debt": 10.0} for y in years})
+    fa = fundamental.analyze(income, balance, pd.DataFrame(), {})
+    assert [h["year"] for h in fa["history"]] == ["2022", "2023", "2024"]
+    assert any("Net margin" in r and "worse than" in r for r in fa["reasons"])
+    assert "Revenue rose in 2 of the last 2 years." in fa["reasons"]

@@ -4,6 +4,7 @@ liquidity pools and sweeps, premium / discount zones."""
 import numpy as np
 import pandas as pd
 
+from .context import event_history
 from .technical import atr
 
 
@@ -128,7 +129,8 @@ def liquidity(df: pd.DataFrame, sh, sl, tol_atr: float = 0.15, lookback: int = 1
             merged[-1]["touches"] += 1
         else:
             merged.append(p)
-    return merged, sorted(sweeps, key=lambda s: s["pos"])
+    unique = {(s["pos"], s["side"], round(s["level"], 6)): s for s in sweeps}
+    return merged, sorted(unique.values(), key=lambda s: s["pos"])
 
 
 def premium_discount(df: pd.DataFrame, sh, sl) -> dict:
@@ -189,6 +191,15 @@ def analyze(df: pd.DataFrame, length: int = 5) -> dict:
         score += 15 if o["direction"] == "bullish" else -15
     score = float(np.clip(score, -100, 100))
 
+    history = event_history(df, events)
+    reason = None
+    if last:
+        name = f"{last['direction']} {last['type']}"
+        h = history.get(name, {}).get("1m")
+        if h:
+            reason = (f"After the {h['n']} past {name} events on this chart, the next month's median move was "
+                      f"{h['median_pct']:+.1f}% and price was higher {h['up_pct']:.0f}% of the time.")
+
     fmt_ob = lambda o: {"date": date(o["pos"]), "formed": date(o["formed"]), "direction": o["direction"],
                         "bottom": o["bottom"], "top": o["top"], "status": o["status"]}
     return {
@@ -207,5 +218,7 @@ def analyze(df: pd.DataFrame, length: int = 5) -> dict:
         "sell_side_liquidity": [{"level": p["level"], "touches": p["touches"]} for p in sell_side],
         "recent_sweeps": [{"date": date(s["pos"]), "side": s["side"], "level": s["level"]} for s in sweeps[-3:]],
         "premium_discount": pd_zone,
+        "event_history": history,
+        "reason": reason,
         "bias_score": round(score, 1),
     }

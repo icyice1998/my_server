@@ -68,11 +68,60 @@ def analyze(income: pd.DataFrame, balance: pd.DataFrame, cashflow: pd.DataFrame,
         "eps_ttm": info.get("trailingEps"),
         "book_value_ps": info.get("bookValue"),
     }
+    m["history"] = _history(revenue, net, gross, equity, debt)
+    m["reasons"] = _history_reasons(m["history"])
     m["profit_trend"] = _direction(net)
     m["revenue_trend"] = _direction(revenue)
     m["score"], m["flags"] = _score(m)
     m["fair_value"] = fair_value(m, info)
     return m
+
+
+def _history(revenue, net, gross, equity, debt) -> list:
+    """Per fiscal year figures, oldest first, for comparing the latest year with the past."""
+    rows = []
+    for d in revenue.index:
+        rev = revenue.get(d, np.nan)
+        ni = net.get(d, np.nan)
+        eq = equity.get(d, np.nan)
+        rows.append({
+            "year": d.strftime("%Y"),
+            "revenue": float(rev),
+            "net_income": float(ni),
+            "gross_margin_pct": _div(gross.get(d, np.nan), rev),
+            "net_margin_pct": _div(ni, rev),
+            "roe_pct": _div(ni, eq),
+            "debt_to_equity": float(debt.get(d, np.nan) / eq) if eq else np.nan,
+        })
+    return rows
+
+
+def _history_reasons(hist: list) -> list:
+    if len(hist) < 2:
+        return []
+    labels = {"net_margin_pct": ("Net margin", "%", True), "gross_margin_pct": ("Gross margin", "%", True),
+              "roe_pct": ("ROE", "%", True), "debt_to_equity": ("Debt/Equity", "x", False)}
+    latest, past = hist[-1], hist[:-1]
+    out = []
+    for key, (label, unit, higher_better) in labels.items():
+        prev = [r[key] for r in past if r[key] is not None and not np.isnan(r[key])]
+        cur = latest[key]
+        if not prev or cur is None or np.isnan(cur):
+            continue
+        avg = float(np.mean(prev))
+        diff = cur - avg
+        if abs(diff) < (0.05 * abs(avg) if avg else 0.01):
+            verdict = "in line with"
+        else:
+            better = (diff > 0) == higher_better
+            verdict = "better than" if better else "worse than"
+        u = "%" if unit == "%" else "x"
+        out.append(f"{label} {cur:.2f}{u} in {latest['year']} is {verdict} the {len(prev)}-year average "
+                   f"{avg:.2f}{u} ({past[0]['year']}-{past[-1]['year']}).")
+    rev = [r["revenue"] for r in hist]
+    ups = sum(b > a for a, b in zip(rev, rev[1:]))
+    out.append(f"Revenue rose in {ups} of the last {len(rev) - 1} years.")
+    return out
 
 
 def _direction(s: pd.Series) -> str:

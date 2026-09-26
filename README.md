@@ -24,9 +24,26 @@ SEC_API_KEY=... python -m market_analyzer K-USA --market TH --sec               
 python -m pytest -q tests
 ```
 
-Reports are saved to `reports/<SYMBOL>.json` and listed in `reports/index.json`; open **`market.html`**
-(GitHub Pages: `/my_server/market.html`, deep link `?symbol=PTT.BK`) to browse them.
-The **Market Analysis** workflow runs any symbols on demand and a TH/US watchlist every weekday after the SET close.
+Every parameter also gets a **reason compared with its own past**: its percentile rank over the last ~5 years
+and what price did over the next 1 and 3 months on past days with a similar reading ("tailwind", "headwind"
+or "no clear edge" vs the all-days base rate). Elliott counts are re-run weekly on past data to report their
+own hit rate, SMC structure events report what followed past BOS/CHoCH on the same chart, and accounts are
+compared year by year.
+
+### Run it from the web (GitHub Pages + Actions)
+
+The site home page (`index.html`, i.e. https://icyice1998.github.io/my_server/) lists all reports, and
+**Run a new analysis on GitHub** starts the *Market Analysis* workflow, waits for it and opens the new report.
+
+1. Settings → Pages → Source: *Deploy from a branch*, branch `main`, folder `/ (root)`.
+2. Create a fine-grained token (GitHub → Settings → Developer settings → Fine-grained tokens):
+   repository access *Only select repositories* → `my_server`; permissions *Actions: Read and write*.
+   Paste it into the page once; it is kept only in that browser's local storage.
+   Without a token the button opens the workflow page, where *Run workflow* does the same thing.
+3. Optional: add the `SEC_API_KEY` repository secret for Thai mutual funds.
+
+The workflow commits `reports/*.json`, Pages republishes (about 1 minute), and the page picks up the new file.
+The earlier AI Elliott-wave page is kept as `elliott_legacy.html`.
 
 Data: Yahoo Finance via `yfinance`. Thai mutual funds are not on Yahoo; use the SEC Thailand open API
 (free key from api-portal.sec.or.th) or a local NAV CSV (`Date,Close`) plus a fact-sheet JSON.

@@ -2,12 +2,12 @@
 
 import json
 import math
-from datetime import datetime
+from datetime import datetime, timezone
 
 import numpy as np
 import pandas as pd
 
-from . import elliott, forecast, fund, fundamental, smc, technical
+from . import context, elliott, forecast, fund, fundamental, smc, technical
 from .data import Instrument
 
 DISCLAIMER = ("Statistical and rule-based analysis for education only. "
@@ -27,10 +27,11 @@ def run(inst: Instrument) -> dict:
         "name": inst.info.get("longName") or inst.factsheet.get("name") or inst.symbol,
         "currency": inst.info.get("currency") or inst.factsheet.get("currency"),
         "as_of": df.index[-1].strftime("%Y-%m-%d"),
-        "generated": datetime.now().isoformat(timespec="seconds"),
+        "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "technical": tech,
-        "elliott": elliott.analyze(df),
+        "elliott": {**elliott.analyze(df), "backtest": elliott.backtest(df)},
         "smc": smc.analyze(df),
+        "context": context.analyze(df),
         "forecast": mc,
         "backtest": wf,
     }
@@ -108,7 +109,8 @@ def update_index(out_dir: str, result: dict, filename: str):
     index = [e for e in index if e.get("file") != filename]
     index.append({"file": filename, "symbol": result["symbol"], "name": result["name"],
                   "market": result["market"], "asset_type": result["asset_type"],
-                  "as_of": result["as_of"], "signal": result["outlook"]["signal"],
+                  "as_of": result["as_of"], "generated": result["generated"],
+                  "signal": result["outlook"]["signal"],
                   "score": result["outlook"]["score"]})
     index.sort(key=lambda e: (e["market"], e["asset_type"], e["symbol"]))
     with open(path, "w", encoding="utf-8") as f:
@@ -154,7 +156,7 @@ def to_text(r: dict) -> str:
         out.append(f"  * {p}")
     out.append("")
 
-    out += _elliott_text(r["elliott"]) + _smc_text(r["smc"])
+    out += _context_text(r["context"]) + _elliott_text(r["elliott"]) + _smc_text(r["smc"])
 
     if "fundamental" in r:
         fa = r["fundamental"]
@@ -174,6 +176,13 @@ def to_text(r: dict) -> str:
         if r.get("valuation_gap_pct") is not None:
             out.append(f"  valuation anchor vs price: {r['valuation_gap_pct']:+.1f}%")
         out += [f"  {x}" for x in fa["flags"]]
+        if fa.get("history"):
+            out.append("  Year by year:")
+            out.append(_table([[h["year"], _f(h["revenue"], "{:,.0f}"), _f(h["net_income"], "{:,.0f}"),
+                                _f(h["net_margin_pct"], "{:.1f}%"), _f(h["roe_pct"], "{:.1f}%"),
+                                _f(h["debt_to_equity"])] for h in fa["history"]],
+                              ["year", "revenue", "net income", "net margin", "ROE", "D/E"]))
+            out += [f"  * {x}" for x in fa["reasons"]]
         out.append("")
 
     if "fund" in r:
@@ -212,6 +221,12 @@ def _elliott_text(e: dict) -> list:
     out.append("  Targets: " + ", ".join(f"{k} {v:,.2f}{' (reached)' if k in p['targets_reached'] else ''}"
                                          for k, v in p["targets"].items()))
     out.append(f"  Invalidation: {p['invalidation']:,.2f}")
+    bt = e.get("backtest", {})
+    if bt.get("samples"):
+        wave = bt["by_wave"].get(p["current_wave"])
+        out.append(f"  History: re-counted weekly on past data, the main count's direction was right "
+                   f"{bt['direction_hit_rate_pct']:.0f}% of the time over the next month (n={bt['samples']})"
+                   + (f"; when in {p['current_wave']}: {wave['hit_rate_pct']:.0f}% (n={wave['n']})" if wave else "") + ".")
     for a in e["alternates"]:
         out.append(f"  Alternate ({a['degree']} degree): {a['pattern']}, in {a['current_wave']} "
                    f"[fit {a['confidence_pct']:.0f}%], invalidation {a['invalidation']:,.2f}")
@@ -223,6 +238,8 @@ def _smc_text(m: dict) -> list:
     if m["last_event"]:
         e = m["last_event"]
         out.append(f"  Last event: {e['direction']} {e['type']} at {e['level']:,.2f} on {e['date']}")
+        if m.get("reason"):
+            out.append(f"  History: {m['reason']}")
     pdz = m["premium_discount"]
     if pdz:
         out.append(f"  Dealing range {pdz['range_low']:,.2f} - {pdz['range_high']:,.2f}, "
@@ -239,4 +256,21 @@ def _smc_text(m: dict) -> list:
     rows += [["Sweep", f"{s['level']:,.2f}", s["side"], s["date"]] for s in m["recent_sweeps"]]
     if rows:
         out.append(_table(rows, ["zone", "price", "status", "date"]))
+    return out + [""]
+
+
+def _context_text(c: dict) -> list:
+    b = c["base"].get("1m", {})
+    out = [f"HISTORICAL CONTEXT  each parameter vs its own last {c['lookback_years']:g} years "
+           f"(all days: next 1m median {_f(b.get('median_pct'), '{:+.1f}%')}, up {_f(b.get('up_pct'), '{:.0f}%')})"]
+    rows = []
+    for p in c["parameters"].values():
+        f1, f3 = p["forward"].get("1m", {}), p["forward"].get("3m", {})
+        rows.append([p["label"], _f(p["value"]), f"{p['percentile']:.0f}", f"{_f(p['p10'])} .. {_f(p['p90'])}",
+                     str(f1.get("n", "-")), _f(f1.get("median_pct"), "{:+.1f}%"), _f(f1.get("up_pct"), "{:.0f}%"),
+                     _f(f3.get("median_pct"), "{:+.1f}%"), p["read"]])
+    out.append(_table(rows, ["parameter", "now", "pctile", "usual (p10..p90)", "n", "1m med", "1m up",
+                             "3m med", "read"]))
+    out.append("  Analog days = past days whose reading was within +/-10 percentile points of today's; "
+               "they overlap in time, so treat n as an upper bound.")
     return out + [""]

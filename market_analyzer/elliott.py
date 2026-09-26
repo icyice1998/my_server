@@ -230,3 +230,29 @@ def analyze(df: pd.DataFrame, max_alternates: int = 2) -> dict:
     direction *= 1 if primary["trend"] == "up" else -1
     return {"primary": primary, "alternates": alternates,
             "bias_score": round(direction * primary["confidence_pct"], 1)}
+
+
+def backtest(df: pd.DataFrame, horizon: int = 21, step: int = 5, min_bars: int = 250,
+             max_samples: int = 200) -> dict:
+    """Re-run the count on past data (only bars known at the time) and check whether the
+    developing wave's direction matched the next `horizon` bars."""
+    close = df["Close"].values
+    ends = list(range(min_bars, len(df) - horizon, step))[-max_samples:]
+    hits, n, by_wave = 0, 0, {}
+    for t in ends:
+        res = analyze(df.iloc[:t + 1])
+        p = res["primary"]
+        if not p or res["bias_score"] == 0:
+            continue
+        up = res["bias_score"] > 0
+        right = (close[t + horizon] > close[t]) == up
+        hits += right
+        n += 1
+        w = by_wave.setdefault(p["current_wave"], [0, 0])
+        w[0] += right
+        w[1] += 1
+    if not n:
+        return {"samples": 0}
+    return {"samples": n, "horizon_days": horizon,
+            "direction_hit_rate_pct": round(hits / n * 100, 1),
+            "by_wave": {k: {"n": v[1], "hit_rate_pct": round(v[0] / v[1] * 100, 1)} for k, v in sorted(by_wave.items())}}
