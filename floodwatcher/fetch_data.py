@@ -253,9 +253,10 @@ def fetch_forecast():
 
 def fetch_river():
     sid = "open-meteo-glofas"
-    # Chao Phraya at Bangkok (Memorial Bridge) and upstream at Nonthaburi
+    # Chao Phraya at Bangkok (Memorial Bridge) and upstream at Pathum Thani.
+    # GloFAS cells are ~5 km; these coordinates resolve to main-channel cells.
     pts = [("chao-phraya-bkk", "เจ้าพระยา สะพานพุทธ", 13.739, 100.497),
-           ("chao-phraya-nbi", "เจ้าพระยา นนทบุรี", 13.860, 100.495)]
+           ("chao-phraya-ptt", "เจ้าพระยา ปทุมธานี", 14.020, 100.530)]
     url = ("https://flood-api.open-meteo.com/v1/flood?latitude=" + ",".join(str(p[2]) for p in pts)
            + "&longitude=" + ",".join(str(p[3]) for p in pts)
            + "&daily=river_discharge,river_discharge_max&past_days=3&forecast_days=7")
