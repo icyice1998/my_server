@@ -19,7 +19,8 @@ def fetch_stock_data(symbol: str, period: int = 250) -> list:
         start_date = end_date - timedelta(days=period)
 
         data = yf.download(symbol, start=start_date, end=end_date, progress=False)
-        prices = data['Adj Close'].values.tolist()
+        col = 'Adj Close' if 'Adj Close' in data.columns.get_level_values(0) else 'Close'
+        prices = data[col].squeeze().dropna().values.tolist()
 
         return prices
     except Exception as e:

@@ -1,0 +1,72 @@
+[
+  {
+    "file": "CPALL_BK.json",
+    "symbol": "CPALL.BK",
+    "name": "CP ALL Public Company Limited",
+    "market": "TH",
+    "asset_type": "stock",
+    "as_of": "2026-09-25",
+    "signal": "Neutral",
+    "score": -5.7
+  },
+  {
+    "file": "KBANK_BK.json",
+    "symbol": "KBANK.BK",
+    "name": "Kasikornbank Public Company Limited",
+    "market": "TH",
+    "asset_type": "stock",
+    "as_of": "2026-09-25",
+    "signal": "Bullish",
+    "score": 63.3
+  },
+  {
+    "file": "PTT_BK.json",
+    "symbol": "PTT.BK",
+    "name": "PTT Public Company Limited",
+    "market": "TH",
+    "asset_type": "stock",
+    "as_of": "2026-09-25",
+    "signal": "Bullish",
+    "score": 37.0
+  },
+  {
+    "file": "VFIAX.json",
+    "symbol": "VFIAX",
+    "name": "Vanguard 500 Index Admiral",
+    "market": "US",
+    "asset_type": "fund",
+    "as_of": "2026-09-25",
+    "signal": "Bullish",
+    "score": 51.8
+  },
+  {
+    "file": "VOO.json",
+    "symbol": "VOO",
+    "name": "Vanguard S&P 500 ETF",
+    "market": "US",
+    "asset_type": "fund",
+    "as_of": "2026-09-25",
+    "signal": "Bullish",
+    "score": 51.7
+  },
+  {
+    "file": "AAPL.json",
+    "symbol": "AAPL",
+    "name": "Apple Inc.",
+    "market": "US",
+    "asset_type": "stock",
+    "as_of": "2026-09-25",
+    "signal": "Bullish",
+    "score": 30.4
+  },
+  {
+    "file": "NVDA.json",
+    "symbol": "NVDA",
+    "name": "NVIDIA Corporation",
+    "market": "US",
+    "asset_type": "stock",
+    "as_of": "2026-09-25",
+    "signal": "Bullish",
+    "score": 60.8
+  }
+]

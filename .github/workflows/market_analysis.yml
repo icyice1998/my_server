@@ -1,0 +1,64 @@
+name: Market Analysis
+
+on:
+  workflow_dispatch:
+    inputs:
+      symbols:
+        description: 'Symbols, space-separated (e.g. PTT KBANK or AAPL VOO)'
+        required: true
+        default: 'PTT KBANK CPALL'
+      market:
+        description: 'Market'
+        type: choice
+        options: [TH, US]
+        default: TH
+      asset_type:
+        description: 'Asset type'
+        type: choice
+        options: [auto, stock, fund]
+        default: auto
+  schedule:
+    # Weekdays 11:15 UTC (18:15 Bangkok), after SET close
+    - cron: '15 11 * * 1-5'
+
+permissions:
+  contents: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Tests
+        run: python -m pytest -q tests
+
+      - name: Run analysis (manual)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          SYMBOLS: ${{ inputs.symbols }}
+          MARKET: ${{ inputs.market }}
+          ASSET_TYPE: ${{ inputs.asset_type }}
+        run: python -m market_analyzer $SYMBOLS --market "$MARKET" --type "$ASSET_TYPE"
+
+      - name: Run analysis (scheduled watchlist)
+        if: github.event_name == 'schedule'
+        run: |
+          python -m market_analyzer PTT KBANK CPALL ADVANC AOT --market TH --quiet || true
+          python -m market_analyzer AAPL MSFT NVDA VOO QQQ --market US --quiet || true
+
+      - name: Commit reports
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898733+github-actions[bot]@users.noreply.github.com"
+          git add reports/
+          git diff --cached --quiet || git commit -m "Update market analysis reports"
+          git push

@@ -1,3 +1,36 @@
+# 📊 Market Analyzer: Thai stocks, US stocks, funds
+
+`market_analyzer/` analyzes a stock or fund from three angles and combines them into one outlook:
+
+| Angle | Stocks | Funds |
+|---|---|---|
+| Price pattern | SMA 20/50/200, RSI, MACD, ADX, regression slope, support/resistance, swing structure, double top/bottom, golden/death cross, 55-bar breakout | same, on price or NAV |
+| Accounts / fact sheet | Income statement, balance sheet, cash flow → growth CAGR, margins, ROE/ROA, D/E, current ratio, cash conversion, P/E, P/BV, fair-value anchors | Expense ratio vs category, turnover, top-10 concentration, sector tilt, Sharpe/Sortino, drawdown |
+| Prediction | Bootstrap Monte Carlo of daily returns (drift shrunk 50%) → p5/p25/median/p75/p95 and P(up) at 1m/3m/6m, plus a walk-forward hit-rate check | same |
+
+Outlook score (−100…+100) = weighted trend 0.4, Monte-Carlo P(up) 0.2, fundamentals or fact sheet 0.3, valuation 0.1.
+The weights are in `forecast.composite_outlook`.
+
+```bash
+pip install -r requirements.txt
+python -m market_analyzer PTT KBANK --market TH          # SET stocks (.BK added automatically)
+python -m market_analyzer AAPL NVDA                      # US stocks
+python -m market_analyzer VOO VFIAX --type fund          # US ETF / mutual fund
+python -m market_analyzer MYFUND --market TH --nav nav.csv --factsheet sheet.json   # any fund, local data
+SEC_API_KEY=... python -m market_analyzer K-USA --market TH --sec                  # Thai mutual fund via SEC API
+python -m pytest -q tests
+```
+
+Reports are saved to `reports/<SYMBOL>.json` and listed in `reports/index.json`; open **`market.html`**
+(GitHub Pages: `/my_server/market.html`, deep link `?symbol=PTT.BK`) to browse them.
+The **Market Analysis** workflow runs any symbols on demand and a TH/US watchlist every weekday after the SET close.
+
+Data: Yahoo Finance via `yfinance`. Thai mutual funds are not on Yahoo; use the SEC Thailand open API
+(free key from api-portal.sec.or.th) or a local NAV CSV (`Date,Close`) plus a fact-sheet JSON.
+Statistical and rule-based analysis for education only; not investment advice.
+
+---
+
 # 🌊 Elliott Wave Analysis AI
 
 A web-based application that uses AI to analyze stock price data and identify Elliott wave patterns across multiple timeframes.
