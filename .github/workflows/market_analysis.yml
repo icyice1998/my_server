@@ -17,6 +17,10 @@ on:
         type: choice
         options: [auto, stock, fund]
         default: auto
+      thai_fund_sec:
+        description: 'Thai mutual funds via SEC API (needs SEC_API_KEY secret)'
+        type: boolean
+        default: false
   schedule:
     # Weekdays 11:15 UTC (18:15 Bangkok), after SET close
     - cron: '15 11 * * 1-5'
@@ -47,7 +51,9 @@ jobs:
           SYMBOLS: ${{ inputs.symbols }}
           MARKET: ${{ inputs.market }}
           ASSET_TYPE: ${{ inputs.asset_type }}
-        run: python -m market_analyzer $SYMBOLS --market "$MARKET" --type "$ASSET_TYPE"
+          SEC_API_KEY: ${{ secrets.SEC_API_KEY }}
+          SEC_FLAG: ${{ inputs.thai_fund_sec && '--sec' || '' }}
+        run: python -m market_analyzer $SYMBOLS --market "$MARKET" --type "$ASSET_TYPE" $SEC_FLAG
 
       - name: Run analysis (scheduled watchlist)
         if: github.event_name == 'schedule'
