@@ -90,4 +90,57 @@ def test_full_report_stock():
     inst = Instrument("TEST", "US", "stock", make_prices(), info={"currency": "USD"})
     r = report.run(inst)
     json.dumps(r, allow_nan=False)
-    assert "fundamental" in r and len(r["chart"]["close"]) == 260
+    assert "fundamental" in r and len(r["chart"]["close"]) == 500
+
+
+def path_frame(points, bars_per_leg=12, noise=0.0, seed=0):
+    """OHLC frame that walks linearly through the given turning points."""
+    rng = np.random.default_rng(seed)
+    close = np.concatenate([np.linspace(a, b, bars_per_leg, endpoint=False) for a, b in zip(points, points[1:])]
+                           + [[points[-1]]])
+    close = close * (1 + rng.normal(0, noise, len(close)))
+    idx = pd.bdate_range("2024-01-01", periods=len(close))
+    return pd.DataFrame({"Open": close, "High": close * 1.002, "Low": close * 0.998,
+                         "Close": close, "Volume": 0.0}, index=idx)
+
+
+def test_elliott_zigzag_alternates():
+    from market_analyzer import elliott
+    df = path_frame([100, 120, 110, 140, 125, 150])
+    piv = elliott.zigzag(df, 5)
+    kinds = [k for _, _, k in piv]
+    assert all(a != b for a, b in zip(kinds, kinds[1:]))
+    assert [round(p) for _, p, _ in piv][-5:] == [120, 110, 140, 125, 150]
+
+
+def test_elliott_rules():
+    from market_analyzer import elliott
+    assert elliott._impulse([100, 120, 108, 140, 128, 150], 1) is not None
+    assert elliott._impulse([100, 120, 98, 140], 1) is None           # W2 below W1 start
+    assert elliott._impulse([100, 120, 110, 140, 118, 150], 1) is None  # W4 overlaps W1
+    assert elliott._impulse([100, 130, 115, 135, 128, 170], 1) is None  # W3 shortest
+    assert elliott._impulse([150, 130, 142, 110, 122, 100], -1) is not None  # down impulse
+
+
+def test_elliott_detects_wave5_and_abc():
+    from market_analyzer import elliott
+    p = elliott.analyze(path_frame([100, 120, 110, 145, 132, 152]))["primary"]
+    assert (p["current_wave"], p["trend"]) == ("W5", "up")
+    assert [x["label"] for x in p["pivots"]] == ["0", "1", "2", "3", "4", "5"]
+    assert p["invalidation"] == pytest.approx(132, rel=0.01)
+
+    e = elliott.analyze(path_frame([100, 120, 110, 145, 132, 152, 140, 146, 130]))
+    assert e["primary"]["current_wave"] == "C" and e["bias_score"] < 0
+    json.dumps(e, allow_nan=False)
+
+
+def test_smc_choch_and_fvg():
+    from market_analyzer import smc
+    df = path_frame([130, 110, 120, 100, 108, 125, 118, 140], bars_per_leg=10)
+    m = smc.analyze(df, length=3)
+    types = [(e["type"], e["direction"]) for e in m["events"]]
+    assert ("CHoCH", "bullish") in types
+    assert m["trend"] == "bullish" and m["bias_score"] > 0
+    gap = df.copy()
+    gap.iloc[40:, :4] *= 1.05  # 5% gap up leaves a bullish FVG
+    assert any(g["direction"] == "bullish" for g in smc.fair_value_gaps(gap))

@@ -54,8 +54,8 @@ def walk_forward_accuracy(close: pd.Series, horizon: int = 21, lookback: int = 1
 
 
 def composite_outlook(tech: dict, mc: dict, fundamental_score=None, fund_score=None,
-                      valuation_gap_pct=None) -> dict:
-    """Blend the three views into one signal. Weights are transparent and editable."""
+                      valuation_gap_pct=None, elliott_score=None, smc_score=None) -> dict:
+    """Blend the views into one signal. Weights are transparent and editable."""
     parts = {"trend": (tech["trend_score"], 0.4)}
     parts["momentum_prob"] = ((mc["3m"]["prob_up_pct"] - 50) * 2, 0.2)
     if fundamental_score is not None and not np.isnan(fundamental_score):
@@ -64,6 +64,10 @@ def composite_outlook(tech: dict, mc: dict, fundamental_score=None, fund_score=N
         parts["factsheet"] = ((fund_score - 50) * 2, 0.3)
     if valuation_gap_pct is not None and not np.isnan(valuation_gap_pct):
         parts["valuation"] = (float(np.clip(valuation_gap_pct * 2, -100, 100)), 0.1)
+    if elliott_score is not None:
+        parts["elliott"] = (float(elliott_score), 0.1)
+    if smc_score is not None:
+        parts["smc"] = (float(smc_score), 0.15)
 
     total_w = sum(w for _, w in parts.values())
     score = sum(v * w for v, w in parts.values()) / total_w

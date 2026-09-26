@@ -6,9 +6,12 @@
 |---|---|---|
 | Price pattern | SMA 20/50/200, RSI, MACD, ADX, regression slope, support/resistance, swing structure, double top/bottom, golden/death cross, 55-bar breakout | same, on price or NAV |
 | Accounts / fact sheet | Income statement, balance sheet, cash flow → growth CAGR, margins, ROE/ROA, D/E, current ratio, cash conversion, P/E, P/BV, fair-value anchors | Expense ratio vs category, turnover, top-10 concentration, sector tilt, Sharpe/Sortino, drawdown |
+| Elliott Wave | ZigZag swings at 3 degrees (3, 5, 8 x ATR); counts checked against the 3 hard rules (W2 < 100% of W1, W3 not shortest, W4 no overlap with W1) and scored on Fibonacci ratios; current wave, targets, invalidation, alternates | same |
+| Smart Money Concepts | Swing structure, BOS / CHoCH, order blocks (fresh / mitigated / broken), fair value gaps, equal highs/lows liquidity, sweeps, premium / discount and OTE zones | same |
 | Prediction | Bootstrap Monte Carlo of daily returns (drift shrunk 50%) → p5/p25/median/p75/p95 and P(up) at 1m/3m/6m, plus a walk-forward hit-rate check | same |
 
-Outlook score (−100…+100) = weighted trend 0.4, Monte-Carlo P(up) 0.2, fundamentals or fact sheet 0.3, valuation 0.1.
+Outlook score (−100…+100) = weighted trend 0.4, Monte-Carlo P(up) 0.2, fundamentals or fact sheet 0.3,
+SMC bias 0.15, Elliott bias 0.1, valuation 0.1 (weights re-normalised over the parts available).
 The weights are in `forecast.composite_outlook`.
 
 ```bash

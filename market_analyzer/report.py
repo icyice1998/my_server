@@ -5,8 +5,9 @@ import math
 from datetime import datetime
 
 import numpy as np
+import pandas as pd
 
-from . import forecast, fund, fundamental, technical
+from . import elliott, forecast, fund, fundamental, smc, technical
 from .data import Instrument
 
 DISCLAIMER = ("Statistical and rule-based analysis for education only. "
@@ -28,6 +29,8 @@ def run(inst: Instrument) -> dict:
         "as_of": df.index[-1].strftime("%Y-%m-%d"),
         "generated": datetime.now().isoformat(timespec="seconds"),
         "technical": tech,
+        "elliott": elliott.analyze(df),
+        "smc": smc.analyze(df),
         "forecast": mc,
         "backtest": wf,
     }
@@ -50,13 +53,18 @@ def run(inst: Instrument) -> dict:
         result["fund"] = fa
         fund_score = fa["score"]
 
-    result["outlook"] = forecast.composite_outlook(tech, mc, fscore, fund_score, gap)
-    result["chart"] = _chart_series(df)
+    result["outlook"] = forecast.composite_outlook(tech, mc, fscore, fund_score, gap,
+                                                   result["elliott"]["bias_score"], result["smc"]["bias_score"])
+    n = 500
+    primary = result["elliott"]["primary"]
+    if primary:  # always include the whole wave count
+        n = max(n, len(df) - df.index.searchsorted(pd.Timestamp(primary["pivots"][0]["date"])) + 10)
+    result["chart"] = _chart_series(df, n)
     result["disclaimer"] = DISCLAIMER
     return _clean(result)
 
 
-def _chart_series(df, n: int = 260) -> dict:
+def _chart_series(df, n: int = 500) -> dict:
     close = df["Close"]
     tail = df.tail(n)
     return {
@@ -146,6 +154,8 @@ def to_text(r: dict) -> str:
         out.append(f"  * {p}")
     out.append("")
 
+    out += _elliott_text(r["elliott"]) + _smc_text(r["smc"])
+
     if "fundamental" in r:
         fa = r["fundamental"]
         out.append(f"ACCOUNTS / FUNDAMENTALS  score {_f(fa['score'], '{:.0f}')}/100  ({fa['fiscal_years']} fiscal years)")
@@ -188,3 +198,45 @@ def to_text(r: dict) -> str:
     out.append("")
     out.append(r["disclaimer"])
     return "\n".join(out)
+
+
+def _elliott_text(e: dict) -> list:
+    out = [f"ELLIOTT WAVE  bias {e['bias_score']:+.1f}"]
+    p = e["primary"]
+    if not p:
+        return out + ["  " + e["note"], ""]
+    out.append(f"  Main count ({p['degree']} degree): {p['pattern']}, now in {p['current_wave']} "
+               f"-> {p['expectation']}  [fit {p['confidence_pct']:.0f}%]")
+    out.append("  Waves: " + "  ".join(f"{x['label']}={x['price']:,.2f} ({x['date']})" for x in p["pivots"]))
+    out.append("  Fibonacci: " + "; ".join(p["fib_notes"]))
+    out.append("  Targets: " + ", ".join(f"{k} {v:,.2f}{' (reached)' if k in p['targets_reached'] else ''}"
+                                         for k, v in p["targets"].items()))
+    out.append(f"  Invalidation: {p['invalidation']:,.2f}")
+    for a in e["alternates"]:
+        out.append(f"  Alternate ({a['degree']} degree): {a['pattern']}, in {a['current_wave']} "
+                   f"[fit {a['confidence_pct']:.0f}%], invalidation {a['invalidation']:,.2f}")
+    return out + [""]
+
+
+def _smc_text(m: dict) -> list:
+    out = [f"SMART MONEY CONCEPTS  structure {m['trend']}  bias {m['bias_score']:+.1f}"]
+    if m["last_event"]:
+        e = m["last_event"]
+        out.append(f"  Last event: {e['direction']} {e['type']} at {e['level']:,.2f} on {e['date']}")
+    pdz = m["premium_discount"]
+    if pdz:
+        out.append(f"  Dealing range {pdz['range_low']:,.2f} - {pdz['range_high']:,.2f}, "
+                   f"price at {pdz['position_pct']:.0f}% ({pdz['zone']}), equilibrium {pdz['equilibrium']:,.2f}")
+        out.append(f"  OTE long {pdz['ote_long'][0]:,.2f}-{pdz['ote_long'][1]:,.2f} | "
+                   f"OTE short {pdz['ote_short'][0]:,.2f}-{pdz['ote_short'][1]:,.2f}")
+    rows = []
+    for key, label in (("supply_zones", "Supply OB"), ("demand_zones", "Demand OB")):
+        rows += [[label, f"{z['bottom']:,.2f} - {z['top']:,.2f}", z["status"], z["date"]] for z in m[key]]
+    rows += [[f"FVG {g['direction']}", f"{g['bottom']:,.2f} - {g['top']:,.2f}", g["status"], g["date"]]
+             for g in m["fair_value_gaps"]]
+    rows += [["Buy-side liquidity", f"{p['level']:,.2f}", f"{p['touches']} equal highs", ""] for p in m["buy_side_liquidity"]]
+    rows += [["Sell-side liquidity", f"{p['level']:,.2f}", f"{p['touches']} equal lows", ""] for p in m["sell_side_liquidity"]]
+    rows += [["Sweep", f"{s['level']:,.2f}", s["side"], s["date"]] for s in m["recent_sweeps"]]
+    if rows:
+        out.append(_table(rows, ["zone", "price", "status", "date"]))
+    return out + [""]
