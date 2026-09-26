@@ -43,7 +43,6 @@ The site home page (`index.html`, i.e. https://icyice1998.github.io/my_server/) 
 3. Optional: add the `SEC_API_KEY` repository secret for Thai mutual funds.
 
 The workflow commits `reports/*.json`, Pages republishes (about 1 minute), and the page picks up the new file.
-The earlier AI Elliott-wave page is kept as `elliott_legacy.html`.
 
 Data: Yahoo Finance via `yfinance`. Thai mutual funds are not on Yahoo; use the SEC Thailand open API
 (free key from api-portal.sec.or.th) or a local NAV CSV (`Date,Close`) plus a fact-sheet JSON.
