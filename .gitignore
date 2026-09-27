@@ -36,7 +36,5 @@ env/
 .DS_Store
 Thumbs.db
 
-# Data files (keep results)
-!analysis_results_*.json
 .env
 .env.local
