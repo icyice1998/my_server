@@ -1,5 +1,17 @@
 [
   {
+    "file": "BDMS_BK.json",
+    "symbol": "BDMS.BK",
+    "name": "Bangkok Dusit Medical Services Public Company Limited",
+    "market": "TH",
+    "asset_type": "stock",
+    "as_of": "2026-09-25",
+    "generated": "2026-09-27T04:37:46+00:00",
+    "query": "Bangkok Dusit",
+    "signal": "Bullish",
+    "score": 41.0
+  },
+  {
     "file": "CPALL_BK.json",
     "symbol": "CPALL.BK",
     "name": "CP ALL Public Company Limited",
@@ -64,6 +76,18 @@
     "generated": "2026-09-26T16:49:03+00:00",
     "signal": "Bullish",
     "score": 30.0
+  },
+  {
+    "file": "ABNB.json",
+    "symbol": "ABNB",
+    "name": "Airbnb, Inc.",
+    "market": "US",
+    "asset_type": "stock",
+    "as_of": "2026-09-25",
+    "generated": "2026-09-27T04:37:44+00:00",
+    "query": "Airbnb",
+    "signal": "Neutral",
+    "score": 2.9
   },
   {
     "file": "NVDA.json",
