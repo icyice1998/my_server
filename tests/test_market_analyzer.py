@@ -173,3 +173,47 @@ def test_fundamental_year_history():
     assert [h["year"] for h in fa["history"]] == ["2022", "2023", "2024"]
     assert any("Net margin" in r and "worse than" in r for r in fa["reasons"])
     assert "Revenue rose in 2 of the last 2 years." in fa["reasons"]
+
+
+FAKE_QUOTES = {
+    "PTT": [{"symbol": "PTTRX", "quoteType": "MUTUALFUND", "exchange": "NAS"},
+            {"symbol": "PTT.BK", "quoteType": "EQUITY", "exchange": "SET", "longname": "PTT Public Company Limited"},
+            {"symbol": "PTT-R.BK", "quoteType": "EQUITY", "exchange": "SET"}],
+    "CP All": [{"symbol": "CPALL.BK", "quoteType": "EQUITY", "exchange": "SET", "longname": "CP ALL"},
+               {"symbol": "CVPUF", "quoteType": "EQUITY", "exchange": "PNK"}],
+    "apple": [{"symbol": "SAAPL=F", "quoteType": "FUTURE", "exchange": "CME"},
+              {"symbol": "AAPL", "quoteType": "EQUITY", "exchange": "NMS", "longname": "Apple Inc."}],
+    "nothing": [{"symbol": "X.DE", "quoteType": "EQUITY", "exchange": "GER"}],
+}
+
+
+def test_resolve_names_and_tickers():
+    from market_analyzer.resolve import resolve
+    search = FAKE_QUOTES.get
+    assert resolve("PTT", search=search)["symbol"] == "PTT.BK"          # exact ticker beats Yahoo's first hit
+    assert resolve("CP All", search=search)["market"] == "TH"
+    assert resolve("apple", search=search)["symbol"] == "AAPL"          # futures skipped
+    assert "PTT-R.BK" not in resolve("PTT", search=search)["alternatives"]  # NVDR skipped
+    with pytest.raises(ValueError):
+        resolve("nothing", search=search)                                # foreign listings only
+
+
+def test_split_query():
+    from market_analyzer.resolve import split_query
+    assert split_query("CP All") == ["CP All"]
+    assert split_query("PTT KBANK") == ["PTT", "KBANK"]
+    assert split_query("CP All, apple") == ["CP All", "apple"]
+
+
+def test_screener_row_offline():
+    from market_analyzer import screener
+    df = make_prices(n=600)
+    info = {"quoteType": "EQUITY", "longName": "Test Co", "trailingPE": 12, "priceToBook": 1.1,
+            "returnOnEquity": 0.18, "profitMargins": 0.12, "debtToEquity": 40, "dividendYield": 3.5,
+            "targetMeanPrice": float(df["Close"].iloc[-1]) * 1.2}
+    r = screener.row("TEST.BK", df, info)
+    json.dumps(report._clean(r), allow_nan=False)
+    assert r["market"] == "TH" and r["asset_type"] == "stock"
+    assert r["roe_pct"] == pytest.approx(18) and r["debt_to_equity"] == pytest.approx(0.4)
+    assert r["analyst_upside_pct"] == pytest.approx(20, rel=1e-6)
+    assert r["signal"] in {"Bullish", "Neutral", "Bearish"} and -100 <= r["score"] <= 100

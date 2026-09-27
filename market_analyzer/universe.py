@@ -1,0 +1,35 @@
+"""Screener universe: liquid SET large caps, US large caps and popular ETFs (all verified on Yahoo)."""
+
+SET = """
+    ADVANC AOT AWC BBL BDMS BEM BGRIM BH BJC BTS CBG CCET CENTEL COM7 CPALL CPF CPN CRC DELTA EA
+    EGCO GLOBAL GPSC GULF HMPRO IVL KBANK KCE KTB KTC LH MINT MTC OR OSP PTT PTTEP PTTGC RATCH
+    SAWAD SCB SCC SCGP TIDLOR TISCO TOP TRUE TTB WHA AMATA AP BA BAM BCH BCP BLA BTG CHG CK CKP
+    DOHOME ERW GUNKUL HANA ICHI IRPC JMART JMT KKP M MEGA PLANB PR9 QH SIRI SPALI SPRC STA STGT
+    TCAP THANI TLI TOA TU VGI WHAUP BCPG SJWD AAV
+""".split()
+
+US = """
+    AAPL MSFT NVDA AMZN GOOGL META TSLA AVGO BRK-B JPM V MA LLY UNH XOM JNJ PG HD COST ABBV MRK KO
+    PEP WMT BAC ORCL CRM ADBE AMD NFLX INTC CSCO QCOM TXN IBM DIS NKE MCD PFE TMO ABT CVX PLTR UBER
+    MU TSM ASML NVO BABA
+""".split()
+
+ETF = """
+    SPY VOO IVV VTI QQQ DIA IWM SCHD VYM VIG VGT XLK XLF XLE XLV XLY XLP XLI XLU SMH SOXX ARKK EEM
+    VWO VEA EFA VNQ GLD SLV TLT IEF BND AGG HYG THD INDA EWJ FXI MCHI
+""".split()
+
+UNIVERSES = {
+    "TH": [s + ".BK" for s in SET],
+    "US": US,
+    "ETF": ETF,
+}
+
+
+def symbols(names="TH,US,ETF") -> list:
+    out = []
+    for n in names.upper().replace(" ", "").split(","):
+        if n == "ALL":
+            return symbols("TH,US,ETF")
+        out += UNIVERSES.get(n, [])
+    return list(dict.fromkeys(out))

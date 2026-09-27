@@ -14,10 +14,28 @@ Outlook score (−100…+100) = weighted trend 0.4, Monte-Carlo P(up) 0.2, funda
 SMC bias 0.15, Elliott bias 0.1, valuation 0.1 (weights re-normalised over the parts available).
 The weights are in `forecast.composite_outlook`.
 
+### Web dashboard
+
+The site (https://icyice1998.github.io/my_server/) has three views:
+
+- **Overview**: KPI tiles (bullish / neutral / bearish counts, average 3-month return, oversold count), market breadth
+  for SET / US / ETFs, top bullish and bearish assets, screener shortcuts and the list of full reports.
+- **Screener**: 177 assets (SET large caps, US large caps, popular ETFs) with presets (momentum leaders, oversold,
+  value + dividend, quality at a fair price, Elliott wave 2 → 3 up, SMC bullish CHoCH, SMC bullish + discount,
+  near 52-week high, analyst upside ≥ 20%), text / market / outlook filters and sortable columns.
+- **Asset**: KPI tiles, the chart with Elliott waves, SMC zones and the projection cone, and every analysis card.
+
+Type a **name or ticker** in the search box ("PTT", "CP All", "Kasikorn", "Apple", "S&P 500 ETF"). An existing
+report or screener row opens at once; anything else starts a GitHub Actions run. With a token saved in settings
+the page starts the run itself; without one it opens a pre-filled GitHub issue (`analyze: <name>`), and submitting
+it starts the run. Only issues opened by the repository owner are accepted.
+
 ```bash
 pip install -r requirements.txt
 python -m market_analyzer PTT KBANK --market TH          # SET stocks (.BK added automatically)
 python -m market_analyzer AAPL NVDA                      # US stocks
+python -m market_analyzer --query "CP All, Apple" --market AUTO   # names are resolved via Yahoo search
+python -m market_analyzer --screen TH,US,ETF             # screener -> reports/screener.json
 python -m market_analyzer VOO VFIAX --type fund          # US ETF / mutual fund
 python -m market_analyzer MYFUND --market TH --nav nav.csv --factsheet sheet.json   # any fund, local data
 SEC_API_KEY=... python -m market_analyzer K-USA --market TH --sec                  # Thai mutual fund via SEC API
@@ -59,10 +77,15 @@ The workflow commits `reports/*.json`, Pages republishes (about 1 minute), and t
 │   ├── fundamental.py            # Financial statements, year-by-year history
 │   ├── fund.py                   # Fund fact sheet and NAV statistics
 │   ├── forecast.py               # Monte Carlo projection, composite outlook
-│   └── report.py                 # JSON and plain-text reports
+│   ├── report.py                 # JSON and plain-text reports
+│   ├── resolve.py                # Name / ticker -> Yahoo symbol and market
+│   ├── screener.py               # One row of key metrics per asset
+│   └── universe.py               # Screener universe (SET, US, ETF)
 ├── reports/                      # Generated reports + index.json (read by the web app)
 ├── tests/                        # Offline unit tests (pytest)
-└── .github/workflows/market_analysis.yml
+└── .github/workflows/
+    ├── market_analysis.yml       # Analyze on demand (dispatch or "analyze:" issue) + weekday watchlist
+    └── screener.yml              # Weekday screener refresh (dispatch or "screen:" issue)
 ```
 
 Data: Yahoo Finance via `yfinance`. Thai mutual funds are not on Yahoo; use the SEC Thailand open API

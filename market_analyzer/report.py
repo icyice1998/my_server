@@ -110,6 +110,7 @@ def update_index(out_dir: str, result: dict, filename: str):
     index.append({"file": filename, "symbol": result["symbol"], "name": result["name"],
                   "market": result["market"], "asset_type": result["asset_type"],
                   "as_of": result["as_of"], "generated": result["generated"],
+                  "query": result.get("query", result["symbol"]),
                   "signal": result["outlook"]["signal"],
                   "score": result["outlook"]["score"]})
     index.sort(key=lambda e: (e["market"], e["asset_type"], e["symbol"]))
