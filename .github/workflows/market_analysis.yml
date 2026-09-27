@@ -4,14 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       symbols:
-        description: 'Symbols, space-separated (e.g. PTT KBANK or AAPL VOO)'
+        description: 'Names or tickers, comma-separated (e.g. "CP All, Apple, PTT")'
         required: true
-        default: 'PTT KBANK CPALL'
+        default: 'PTT, KBANK, CPALL'
       market:
-        description: 'Market'
+        description: 'Market (AUTO = decide from the search result)'
         type: choice
-        options: [TH, US]
-        default: TH
+        options: [AUTO, TH, US]
+        default: AUTO
       asset_type:
         description: 'Asset type'
         type: choice
@@ -21,12 +21,16 @@ on:
         description: 'Thai mutual funds via SEC API (needs SEC_API_KEY secret)'
         type: boolean
         default: false
+  issues:
+    # Keyless trigger from the web page: an issue titled "analyze: CP All, Apple" by the repo owner
+    types: [opened]
   schedule:
     # Weekdays 11:15 UTC (18:15 Bangkok), after SET close
     - cron: '15 11 * * 1-5'
 
 permissions:
   contents: write
+  issues: write
 
 concurrency:
   group: market-analysis
@@ -34,6 +38,9 @@ concurrency:
 
 jobs:
   analyze:
+    if: >-
+      github.event_name != 'issues' ||
+      (startsWith(github.event.issue.title, 'analyze:') && github.event.issue.user.login == github.repository_owner)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -52,12 +59,23 @@ jobs:
       - name: Run analysis (manual)
         if: github.event_name == 'workflow_dispatch'
         env:
-          SYMBOLS: ${{ inputs.symbols }}
+          QUERY: ${{ inputs.symbols }}
           MARKET: ${{ inputs.market }}
           ASSET_TYPE: ${{ inputs.asset_type }}
           SEC_API_KEY: ${{ secrets.SEC_API_KEY }}
-          SEC_FLAG: ${{ inputs.thai_fund_sec && '--sec' || '' }}
-        run: python -m market_analyzer $SYMBOLS --market "$MARKET" --type "$ASSET_TYPE" $SEC_FLAG
+          SEC_ON: ${{ inputs.thai_fund_sec }}
+        run: |
+          if [ "$SEC_ON" = "true" ]; then
+            python -m market_analyzer $QUERY --market TH --type fund --sec
+          else
+            python -m market_analyzer --query "$QUERY" --market "$MARKET" --type "$ASSET_TYPE"
+          fi
+
+      - name: Run analysis (issue)
+        if: github.event_name == 'issues'
+        env:
+          TITLE: ${{ github.event.issue.title }}
+        run: python -m market_analyzer --query "${TITLE#analyze:}" --market AUTO 2>&1 | tee run.log
 
       - name: Run analysis (scheduled watchlist)
         if: github.event_name == 'schedule'
@@ -74,3 +92,19 @@ jobs:
           git commit -m "Update market analysis reports"
           for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push && exit 0; sleep 5; done
           exit 1
+
+      - name: Reply on the issue
+        if: always() && github.event_name == 'issues'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMBER: ${{ github.event.issue.number }}
+          SITE: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+          OUTCOME: ${{ job.status }}
+        run: |
+          {
+            if [ "$OUTCOME" = "success" ]; then echo "Analysis finished. The site updates in about a minute:"; else echo "The run failed: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"; fi
+            grep -o '\] -> [^ ]*' run.log 2>/dev/null | sed 's/\] -> //' | while read -r s; do echo "- [$s](${SITE}?symbol=$s)"; done
+            grep 'error:' run.log 2>/dev/null | sed 's/^/- /'
+          } > reply.md
+          gh issue comment "$NUMBER" --repo "$GITHUB_REPOSITORY" --body-file reply.md
+          gh issue close "$NUMBER" --repo "$GITHUB_REPOSITORY"
