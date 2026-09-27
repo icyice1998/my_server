@@ -21,16 +21,12 @@ on:
         description: 'Thai mutual funds via SEC API (needs SEC_API_KEY secret)'
         type: boolean
         default: false
-  issues:
-    # Keyless trigger from the web page: an issue titled "market analyze: CP All, Apple" by the repo owner
-    types: [opened]
   schedule:
     # Weekdays 11:15 UTC (18:15 Bangkok), after SET close
     - cron: '15 11 * * 1-5'
 
 permissions:
   contents: write
-  issues: write
 
 concurrency:
   group: market-analyzer
@@ -38,9 +34,6 @@ concurrency:
 
 jobs:
   analyze:
-    if: >-
-      github.event_name != 'issues' ||
-      (startsWith(github.event.issue.title, 'market analyze:') && github.event.issue.user.login == github.repository_owner)
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -75,12 +68,6 @@ jobs:
             python -m market_analyzer --query "$QUERY" --market "$MARKET" --type "$ASSET_TYPE"
           fi
 
-      - name: Run analysis (issue)
-        if: github.event_name == 'issues'
-        env:
-          TITLE: ${{ github.event.issue.title }}
-        run: python -m market_analyzer --query "${TITLE#market analyze:}" --market AUTO 2>&1 | tee run.log
-
       - name: Run analysis (scheduled watchlist)
         if: github.event_name == 'schedule'
         run: |
@@ -96,19 +83,3 @@ jobs:
           git commit -m "Update market analysis reports"
           for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push && exit 0; sleep 5; done
           exit 1
-
-      - name: Reply on the issue
-        if: always() && github.event_name == 'issues'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          NUMBER: ${{ github.event.issue.number }}
-          SITE: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/market/
-          OUTCOME: ${{ job.status }}
-        run: |
-          {
-            if [ "$OUTCOME" = "success" ]; then echo "Analysis finished. The site updates in about a minute:"; else echo "The run failed: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"; fi
-            grep -o '\] -> [^ ]*' run.log 2>/dev/null | sed 's/\] -> //' | while read -r s; do echo "- [$s](${SITE}?symbol=$s)"; done
-            grep 'error:' run.log 2>/dev/null | sed 's/^/- /'
-          } > reply.md
-          gh issue comment "$NUMBER" --repo "$GITHUB_REPOSITORY" --body-file reply.md
-          gh issue close "$NUMBER" --repo "$GITHUB_REPOSITORY"

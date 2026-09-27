@@ -1,0 +1,3847 @@
+{
+"A": {
+"n": "Agilent Technologies, Inc.",
+"sec": "Healthcare",
+"k": "stock"
+},
+"AAPL": {
+"n": "Apple Inc.",
+"sec": "Technology",
+"k": "stock"
+},
+"AAV.BK": {
+"n": "Asia Aviation Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"ABBV": {
+"n": "AbbVie Inc.",
+"sec": "Healthcare",
+"k": "stock"
+},
+"ABNB": {
+"n": "Airbnb, Inc.",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"ABT": {
+"n": "Abbott Laboratories",
+"sec": "Healthcare",
+"k": "stock"
+},
+"ACGL": {
+"n": "Arch Capital Group Ltd.",
+"sec": "Financial Services",
+"k": "stock"
+},
+"ACN": {
+"n": "Accenture plc",
+"sec": "Technology",
+"k": "stock"
+},
+"ACWI": {
+"n": "iShares MSCI ACWI ETF",
+"sec": null,
+"k": "fund"
+},
+"ADBE": {
+"n": "Adobe Inc.",
+"sec": "Technology",
+"k": "stock"
+},
+"ADI": {
+"n": "Analog Devices, Inc.",
+"sec": "Technology",
+"k": "stock"
+},
+"ADM": {
+"n": "Archer-Daniels-Midland Company",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"ADP": {
+"n": "Automatic Data Processing, Inc.",
+"sec": "Technology",
+"k": "stock"
+},
+"ADSK": {
+"n": "Autodesk, Inc.",
+"sec": "Technology",
+"k": "stock"
+},
+"ADVANC.BK": {
+"n": "Advanced Info Service Public Company Limited",
+"sec": "Communication Services",
+"k": "stock"
+},
+"AEE": {
+"n": "Ameren Corporation",
+"sec": "Utilities",
+"k": "stock"
+},
+"AEONTS.BK": {
+"n": "AEON Thana Sinsap (Thailand) Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"AEP": {
+"n": "American Electric Power Company, Inc.",
+"sec": "Utilities",
+"k": "stock"
+},
+"AES": {
+"n": "The AES Corporation",
+"sec": "Utilities",
+"k": "stock"
+},
+"AFL": {
+"n": "Aflac Incorporated",
+"sec": "Financial Services",
+"k": "stock"
+},
+"AGG": {
+"n": "iShares Core U.S. Aggregate Bond ETF",
+"sec": null,
+"k": "fund"
+},
+"AH.BK": {
+"n": "AAPICO Hitech Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"AIG": {
+"n": "American International Group, Inc.",
+"sec": "Financial Services",
+"k": "stock"
+},
+"AIZ": {
+"n": "Assurant, Inc.",
+"sec": "Financial Services",
+"k": "stock"
+},
+"AJG": {
+"n": "Arthur J. Gallagher & Co.",
+"sec": "Financial Services",
+"k": "stock"
+},
+"AKAM": {
+"n": "Akamai Technologies, Inc.",
+"sec": "Technology",
+"k": "stock"
+},
+"ALB": {
+"n": "Albemarle Corporation",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"ALGN": {
+"n": "Align Technology, Inc.",
+"sec": "Healthcare",
+"k": "stock"
+},
+"ALL": {
+"n": "The Allstate Corporation",
+"sec": "Financial Services",
+"k": "stock"
+},
+"ALLE": {
+"n": "Allegion plc",
+"sec": "Industrials",
+"k": "stock"
+},
+"AMAT": {
+"n": "Applied Materials, Inc.",
+"sec": "Technology",
+"k": "stock"
+},
+"AMATA.BK": {
+"n": "Amata Corporation Public Company Limited",
+"sec": "Real Estate",
+"k": "stock"
+},
+"AMATAV.BK": {
+"n": "Amata VN Public Company Limited",
+"sec": "Real Estate",
+"k": "stock"
+},
+"AMCR": {
+"n": "Amcor plc",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"AMD": {
+"n": "Advanced Micro Devices, Inc.",
+"sec": "Technology",
+"k": "stock"
+},
+"AME": {
+"n": "AMETEK, Inc.",
+"sec": "Industrials",
+"k": "stock"
+},
+"AMGN": {
+"n": "Amgen Inc.",
+"sec": "Healthcare",
+"k": "stock"
+},
+"AMP": {
+"n": "Ameriprise Financial, Inc.",
+"sec": "Financial Services",
+"k": "stock"
+},
+"AMT": {
+"n": "American Tower Corporation",
+"sec": "Real Estate",
+"k": "stock"
+},
+"AMZN": {
+"n": "Amazon.com, Inc.",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"ANET": {
+"n": "Arista Networks, Inc.",
+"sec": "Technology",
+"k": "stock"
+},
+"AON": {
+"n": "Aon plc",
+"sec": "Financial Services",
+"k": "stock"
+},
+"AOS": {
+"n": "A. O. Smith Corporation",
+"sec": "Industrials",
+"k": "stock"
+},
+"AOT.BK": {
+"n": "Airports of Thailand Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"AP.BK": {
+"n": "AP (Thailand) Public Company Limited",
+"sec": "Real Estate",
+"k": "stock"
+},
+"APA": {
+"n": "APA Corporation",
+"sec": "Energy",
+"k": "stock"
+},
+"APD": {
+"n": "Air Products and Chemicals, Inc.",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"APH": {
+"n": "Amphenol Corporation",
+"sec": "Technology",
+"k": "stock"
+},
+"APO": {
+"n": "Apollo Global Management, Inc.",
+"sec": "Financial Services",
+"k": "stock"
+},
+"APP": {
+"n": "AppLovin Corporation",
+"sec": "Communication Services",
+"k": "stock"
+},
+"APTV": {
+"n": "Aptiv PLC",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"ARE": {
+"n": "Alexandria Real Estate Equities, Inc.",
+"sec": "Real Estate",
+"k": "stock"
+},
+"ARES": {
+"n": "Ares Management Corporation",
+"sec": "Financial Services",
+"k": "stock"
+},
+"ARKK": {
+"n": "ARK Innovation ETF",
+"sec": null,
+"k": "fund"
+},
+"ASIAN.BK": {
+"n": "Asian Sea Corporation Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"ASK.BK": {
+"n": "Asia Sermkij Leasing Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"ASML": {
+"n": "ASML Holding N.V.",
+"sec": null,
+"k": "stock"
+},
+"ASP.BK": {
+"n": "Asia Plus Group Holdings Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"ATO": {
+"n": "Atmos Energy Corporation",
+"sec": "Utilities",
+"k": "stock"
+},
+"AVGO": {
+"n": "Broadcom Inc.",
+"sec": "Technology",
+"k": "stock"
+},
+"AVY": {
+"n": "Avery Dennison Corporation",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"AWC.BK": {
+"n": "Asset World Corp Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"AWK": {
+"n": "American Water Works Company, Inc.",
+"sec": "Utilities",
+"k": "stock"
+},
+"AXON": {
+"n": "Axon Enterprise, Inc.",
+"sec": "Industrials",
+"k": "stock"
+},
+"AXP": {
+"n": "American Express Company",
+"sec": "Financial Services",
+"k": "stock"
+},
+"AZO": {
+"n": "AutoZone, Inc.",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"BA": {
+"n": "The Boeing Company",
+"sec": "Industrials",
+"k": "stock"
+},
+"BA.BK": {
+"n": "Bangkok Airways Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"BABA": {
+"n": "Alibaba Group Holding Limited",
+"sec": null,
+"k": "stock"
+},
+"BAC": {
+"n": "Bank of America Corporation",
+"sec": "Financial Services",
+"k": "stock"
+},
+"BAFS.BK": {
+"n": "Bangkok Aviation Fuel Services Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"BALL": {
+"n": "Ball Corporation",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"BAM.BK": {
+"n": "Bangkok Commercial Asset Management Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"BAX": {
+"n": "Baxter International Inc.",
+"sec": "Healthcare",
+"k": "stock"
+},
+"BBL.BK": {
+"n": "Bangkok Bank Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"BBY": {
+"n": "Best Buy Co., Inc.",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"BCH.BK": {
+"n": "Bangkok Chain Hospital Public Company Limited",
+"sec": "Healthcare",
+"k": "stock"
+},
+"BCP.BK": {
+"n": "Bangchak Corporation Public Company Limited",
+"sec": "Energy",
+"k": "stock"
+},
+"BCPG.BK": {
+"n": "BCPG Public Company Limited",
+"sec": "Utilities",
+"k": "stock"
+},
+"BDMS.BK": {
+"n": "Bangkok Dusit Medical Services Public Company Limited",
+"sec": "Healthcare",
+"k": "stock"
+},
+"BDX": {
+"n": "Becton, Dickinson and Company",
+"sec": "Healthcare",
+"k": "stock"
+},
+"BE": {
+"n": "Bloom Energy Corporation",
+"sec": "Industrials",
+"k": "stock"
+},
+"BEAUTY.BK": {
+"n": "Beauty Community Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"BEM.BK": {
+"n": "Bangkok Expressway and Metro Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"BEN": {
+"n": "Franklin Templeton Inc.",
+"sec": null,
+"k": "stock"
+},
+"BF-B": {
+"n": "Brown-Forman Corporation",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"BG": {
+"n": "Bunge Global SA",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"BGC.BK": {
+"n": "BG Container Glass Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"BGRIM.BK": {
+"n": "B.Grimm Power Public Company Limited",
+"sec": "Utilities",
+"k": "stock"
+},
+"BH.BK": {
+"n": "Bumrungrad Hospital Public Company Limited",
+"sec": "Healthcare",
+"k": "stock"
+},
+"BIIB": {
+"n": "Biogen Inc.",
+"sec": "Healthcare",
+"k": "stock"
+},
+"BIL": {
+"n": "State Street SPDR Bloomberg 1-3 Month T-Bill ETF",
+"sec": null,
+"k": "fund"
+},
+"BJC.BK": {
+"n": "Berli Jucker Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"BJCHI.BK": {
+"n": "BJC Heavy Industries Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"BKNG": {
+"n": "Booking Holdings Inc.",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"BKR": {
+"n": "Baker Hughes Company",
+"sec": "Energy",
+"k": "stock"
+},
+"BLA.BK": {
+"n": "Bangkok Life Assurance Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"BLAND.BK": {
+"n": "Bangkok Land Public Company Limited",
+"sec": "Real Estate",
+"k": "stock"
+},
+"BLK": {
+"n": "BlackRock, Inc.",
+"sec": "Financial Services",
+"k": "stock"
+},
+"BMY": {
+"n": "Bristol-Myers Squibb Company",
+"sec": "Healthcare",
+"k": "stock"
+},
+"BND": {
+"n": "Vanguard Total Bond Market Index Fund ETF Shares",
+"sec": null,
+"k": "fund"
+},
+"BNY": {
+"n": "The Bank of New York Mellon Corporation",
+"sec": "Financial Services",
+"k": "stock"
+},
+"BR": {
+"n": "Broadridge Financial Solutions, Inc.",
+"sec": "Technology",
+"k": "stock"
+},
+"BRI.BK": {
+"n": "Britania Public Company Limited",
+"sec": "Real Estate",
+"k": "stock"
+},
+"BRK-B": {
+"n": "Berkshire Hathaway Inc.",
+"sec": "Financial Services",
+"k": "stock"
+},
+"BRO": {
+"n": "Brown & Brown, Inc.",
+"sec": "Financial Services",
+"k": "stock"
+},
+"BSX": {
+"n": "Boston Scientific Corporation",
+"sec": "Healthcare",
+"k": "stock"
+},
+"BTG.BK": {
+"n": "Betagro Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"BTS.BK": {
+"n": "BTS Group Holdings Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"BX": {
+"n": "Blackstone Inc.",
+"sec": "Financial Services",
+"k": "stock"
+},
+"BXP": {
+"n": "BXP, Inc.",
+"sec": "Real Estate",
+"k": "stock"
+},
+"C": {
+"n": "Citigroup Inc.",
+"sec": "Financial Services",
+"k": "stock"
+},
+"CAH": {
+"n": "Cardinal Health, Inc.",
+"sec": "Healthcare",
+"k": "stock"
+},
+"CARR": {
+"n": "Carrier Global Corporation",
+"sec": "Industrials",
+"k": "stock"
+},
+"CASY": {
+"n": "Casey's General Stores, Inc.",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"CAT": {
+"n": "Caterpillar Inc.",
+"sec": "Industrials",
+"k": "stock"
+},
+"CB": {
+"n": "Chubb Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"CBG.BK": {
+"n": "Carabao Group Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"CBOE": {
+"n": "Cboe Global Markets, Inc.",
+"sec": "Financial Services",
+"k": "stock"
+},
+"CBRE": {
+"n": "CBRE Group, Inc.",
+"sec": "Real Estate",
+"k": "stock"
+},
+"CCET.BK": {
+"n": "Cal-Comp Electronics (Thailand) Public Company Limited",
+"sec": "Technology",
+"k": "stock"
+},
+"CCI": {
+"n": "Crown Castle Inc.",
+"sec": "Real Estate",
+"k": "stock"
+},
+"CCL": {
+"n": "Carnival Corporation Ltd.",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"CDNS": {
+"n": "Cadence Design Systems, Inc.",
+"sec": "Technology",
+"k": "stock"
+},
+"CDW": {
+"n": "CDW Corporation",
+"sec": "Technology",
+"k": "stock"
+},
+"CEG": {
+"n": "Constellation Energy Corporation",
+"sec": "Utilities",
+"k": "stock"
+},
+"CENTEL.BK": {
+"n": "Central Plaza Hotel Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"CF": {
+"n": "CF Industries Holdings, Inc.",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"CFG": {
+"n": "Citizens Financial Group, Inc.",
+"sec": "Financial Services",
+"k": "stock"
+},
+"CHAYO.BK": {
+"n": "Chayo Group Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"CHD": {
+"n": "Church & Dwight Co., Inc.",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"CHG.BK": {
+"n": "Chularat Hospital Public Company Limited",
+"sec": "Healthcare",
+"k": "stock"
+},
+"CHRW": {
+"n": "C.H. Robinson Worldwide, Inc.",
+"sec": "Industrials",
+"k": "stock"
+},
+"CHTR": {
+"n": "Charter Communications, Inc.",
+"sec": "Communication Services",
+"k": "stock"
+},
+"CI": {
+"n": "The Cigna Group",
+"sec": "Healthcare",
+"k": "stock"
+},
+"CIEN": {
+"n": "Ciena Corporation",
+"sec": "Technology",
+"k": "stock"
+},
+"CIMBT.BK": {
+"n": "CIMB Thai Bank PLC",
+"sec": null,
+"k": "stock"
+},
+"CINF": {
+"n": "Cincinnati Financial Corporation",
+"sec": "Financial Services",
+"k": "stock"
+},
+"CK.BK": {
+"n": "CH. Karnchang Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"CKP.BK": {
+"n": "CK Power Public Company Limited",
+"sec": "Utilities",
+"k": "stock"
+},
+"CL": {
+"n": "Colgate-Palmolive Company",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"CLX": {
+"n": "The Clorox Company",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"CMCSA": {
+"n": "Comcast Corporation",
+"sec": "Communication Services",
+"k": "stock"
+},
+"CME": {
+"n": "CME Group Inc.",
+"sec": "Financial Services",
+"k": "stock"
+},
+"CMG": {
+"n": "Chipotle Mexican Grill, Inc.",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"CMI": {
+"n": "Cummins Inc.",
+"sec": "Industrials",
+"k": "stock"
+},
+"CMS": {
+"n": "CMS Energy Corporation",
+"sec": "Utilities",
+"k": "stock"
+},
+"CNC": {
+"n": "Centene Corporation",
+"sec": "Healthcare",
+"k": "stock"
+},
+"CNP": {
+"n": "CenterPoint Energy, Inc.",
+"sec": "Utilities",
+"k": "stock"
+},
+"COF": {
+"n": "Capital One Financial Corporation",
+"sec": "Financial Services",
+"k": "stock"
+},
+"COHR": {
+"n": "Coherent Corp.",
+"sec": "Technology",
+"k": "stock"
+},
+"COIN": {
+"n": "Coinbase Global, Inc.",
+"sec": "Financial Services",
+"k": "stock"
+},
+"COM7.BK": {
+"n": "Com7 Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"COO": {
+"n": "The Cooper Companies, Inc.",
+"sec": "Healthcare",
+"k": "stock"
+},
+"COP": {
+"n": "ConocoPhillips",
+"sec": "Energy",
+"k": "stock"
+},
+"COR": {
+"n": "Cencora, Inc.",
+"sec": "Healthcare",
+"k": "stock"
+},
+"COST": {
+"n": "Costco Wholesale Corporation",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"COWZ": {
+"n": "Pacer US Cash Cows 100 ETF",
+"sec": null,
+"k": "fund"
+},
+"CPALL.BK": {
+"n": "CP ALL Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"CPAXT.BK": {
+"n": "CP Axtra Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"CPAY": {
+"n": "Corpay, Inc.",
+"sec": "Technology",
+"k": "stock"
+},
+"CPF.BK": {
+"n": "Charoen Pokphand Foods Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"CPL.BK": {
+"n": "CPL Group Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"CPN.BK": {
+"n": "Central Pattana Public Company Limited",
+"sec": "Real Estate",
+"k": "stock"
+},
+"CPRT": {
+"n": "Copart, Inc.",
+"sec": "Industrials",
+"k": "stock"
+},
+"CPT": {
+"n": "Camden Property Trust",
+"sec": "Real Estate",
+"k": "stock"
+},
+"CPW.BK": {
+"n": "Copperwired Public Company Limited",
+"sec": "Technology",
+"k": "stock"
+},
+"CRC.BK": {
+"n": "Central Retail Corporation Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"CRH": {
+"n": "CRH plc",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"CRL": {
+"n": "Charles River Laboratories International, Inc.",
+"sec": "Healthcare",
+"k": "stock"
+},
+"CRM": {
+"n": "Salesforce, Inc.",
+"sec": null,
+"k": "stock"
+},
+"CRWD": {
+"n": "CrowdStrike Holdings, Inc.",
+"sec": "Technology",
+"k": "stock"
+},
+"CSCO": {
+"n": "Cisco Systems, Inc.",
+"sec": "Technology",
+"k": "stock"
+},
+"CSGP": {
+"n": "CoStar Group, Inc.",
+"sec": "Real Estate",
+"k": "stock"
+},
+"CSX": {
+"n": "CSX Corporation",
+"sec": "Industrials",
+"k": "stock"
+},
+"CTAS": {
+"n": "Cintas Corporation",
+"sec": "Industrials",
+"k": "stock"
+},
+"CTSH": {
+"n": "Cognizant Technology Solutions Corporation",
+"sec": "Technology",
+"k": "stock"
+},
+"CTVA": {
+"n": "Corteva, Inc.",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"CVNA": {
+"n": "Carvana Co.",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"CVS": {
+"n": "CVS Health Corporation",
+"sec": "Healthcare",
+"k": "stock"
+},
+"CVX": {
+"n": "Chevron Corporation",
+"sec": "Energy",
+"k": "stock"
+},
+"D": {
+"n": "Dominion Energy, Inc.",
+"sec": "Utilities",
+"k": "stock"
+},
+"DAL": {
+"n": "Delta Air Lines, Inc.",
+"sec": "Industrials",
+"k": "stock"
+},
+"DASH": {
+"n": "DoorDash, Inc.",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"DCC.BK": {
+"n": "Dynasty Ceramic Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"DD": {
+"n": "DuPont de Nemours, Inc.",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"DDOG": {
+"n": "Datadog, Inc.",
+"sec": "Technology",
+"k": "stock"
+},
+"DE": {
+"n": "Deere & Company",
+"sec": "Industrials",
+"k": "stock"
+},
+"DECK": {
+"n": "Deckers Outdoor Corporation",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"DELL": {
+"n": "Dell Technologies Inc.",
+"sec": "Technology",
+"k": "stock"
+},
+"DELTA.BK": {
+"n": "Delta Electronics (Thailand) Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"DG": {
+"n": "Dollar General Corporation",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"DGX": {
+"n": "Quest Diagnostics Incorporated",
+"sec": null,
+"k": "stock"
+},
+"DHI": {
+"n": "D.R. Horton, Inc.",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"DHR": {
+"n": "Danaher Corporation",
+"sec": "Healthcare",
+"k": "stock"
+},
+"DIA": {
+"n": "State Street SPDR Dow Jones Industrial Average ETF Trust",
+"sec": null,
+"k": "fund"
+},
+"DIS": {
+"n": "The Walt Disney Company",
+"sec": null,
+"k": "stock"
+},
+"DITTO.BK": {
+"n": "Ditto (Thailand) Public Company Limited",
+"sec": "Technology",
+"k": "stock"
+},
+"DLR": {
+"n": "Digital Realty Trust, Inc.",
+"sec": "Real Estate",
+"k": "stock"
+},
+"DLTR": {
+"n": "Dollar Tree, Inc.",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"DOC": {
+"n": "Healthpeak Properties, Inc.",
+"sec": null,
+"k": "stock"
+},
+"DOHOME.BK": {
+"n": "Dohome Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"DOV": {
+"n": "Dover Corporation",
+"sec": "Industrials",
+"k": "stock"
+},
+"DOW": {
+"n": "Dow Inc.",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"DPZ": {
+"n": "Domino's Pizza, Inc.",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"DRI": {
+"n": "Darden Restaurants, Inc.",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"DTE": {
+"n": "DTE Energy Company",
+"sec": "Utilities",
+"k": "stock"
+},
+"DUK": {
+"n": "Duke Energy Corporation",
+"sec": "Utilities",
+"k": "stock"
+},
+"DVA": {
+"n": "DaVita Inc.",
+"sec": "Healthcare",
+"k": "stock"
+},
+"DVN": {
+"n": "Devon Energy Corporation",
+"sec": "Energy",
+"k": "stock"
+},
+"DXCM": {
+"n": "DexCom, Inc.",
+"sec": "Healthcare",
+"k": "stock"
+},
+"EA.BK": {
+"n": "Energy Absolute Public Company Limited",
+"sec": "Utilities",
+"k": "stock"
+},
+"EASTW.BK": {
+"n": "Eastern Water Resources Development and Management Public Company Limited",
+"sec": "Utilities",
+"k": "stock"
+},
+"EBAY": {
+"n": "eBay Inc.",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"ECHO": {
+"n": "EchoStar Corporation",
+"sec": "Communication Services",
+"k": "stock"
+},
+"ECL": {
+"n": "Ecolab Inc.",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"ED": {
+"n": "Consolidated Edison, Inc.",
+"sec": "Utilities",
+"k": "stock"
+},
+"EEM": {
+"n": "iShares MSCI Emerging Markets ETF",
+"sec": null,
+"k": "fund"
+},
+"EFA": {
+"n": "iShares MSCI EAFE ETF",
+"sec": null,
+"k": "fund"
+},
+"EFX": {
+"n": "Equifax Inc.",
+"sec": "Industrials",
+"k": "stock"
+},
+"EG": {
+"n": "Everest Group, Ltd.",
+"sec": "Financial Services",
+"k": "stock"
+},
+"EGCO.BK": {
+"n": "Electricity Generating Public Company Limited",
+"sec": "Utilities",
+"k": "stock"
+},
+"EIDO": {
+"n": "iShares MSCI Indonesia ETF",
+"sec": null,
+"k": "fund"
+},
+"EIX": {
+"n": "Edison International",
+"sec": "Utilities",
+"k": "stock"
+},
+"EL": {
+"n": "The Estée Lauder Companies Inc.",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"ELV": {
+"n": "Elevance Health, Inc.",
+"sec": "Healthcare",
+"k": "stock"
+},
+"EME": {
+"n": "EMCOR Group, Inc.",
+"sec": "Industrials",
+"k": "stock"
+},
+"EMR": {
+"n": "Emerson Electric Co.",
+"sec": "Industrials",
+"k": "stock"
+},
+"EOG": {
+"n": "EOG Resources, Inc.",
+"sec": "Energy",
+"k": "stock"
+},
+"EPG.BK": {
+"n": "Eastern Polymer Group Public Company Limited",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"EPHE": {
+"n": "iShares MSCI Philippines ETF",
+"sec": null,
+"k": "fund"
+},
+"EQIX": {
+"n": "Equinix, Inc.",
+"sec": "Real Estate",
+"k": "stock"
+},
+"EQT": {
+"n": "EQT Corporation",
+"sec": "Energy",
+"k": "stock"
+},
+"ERIE": {
+"n": "Erie Indemnity Company",
+"sec": "Financial Services",
+"k": "stock"
+},
+"ERW.BK": {
+"n": "The Erawan Group Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"ES": {
+"n": "Eversource Energy",
+"sec": "Utilities",
+"k": "stock"
+},
+"ESS": {
+"n": "Essex Property Trust, Inc.",
+"sec": "Real Estate",
+"k": "stock"
+},
+"ETN": {
+"n": "Eaton Corporation plc",
+"sec": "Industrials",
+"k": "stock"
+},
+"ETR": {
+"n": "Entergy Corporation",
+"sec": "Utilities",
+"k": "stock"
+},
+"EVRG": {
+"n": "Evergy, Inc.",
+"sec": "Utilities",
+"k": "stock"
+},
+"EW": {
+"n": "Edwards Lifesciences Corporation",
+"sec": "Healthcare",
+"k": "stock"
+},
+"EWH": {
+"n": "iShares MSCI Hong Kong ETF",
+"sec": null,
+"k": "fund"
+},
+"EWJ": {
+"n": "iShares MSCI Japan ETF",
+"sec": null,
+"k": "fund"
+},
+"EWT": {
+"n": "iShares MSCI Taiwan ETF",
+"sec": null,
+"k": "fund"
+},
+"EWY": {
+"n": "iShares MSCI South Korea ETF",
+"sec": null,
+"k": "fund"
+},
+"EWZ": {
+"n": "iShares MSCI Brazil ETF",
+"sec": null,
+"k": "fund"
+},
+"EXC": {
+"n": "Exelon Corporation",
+"sec": "Utilities",
+"k": "stock"
+},
+"EXE": {
+"n": "Expand Energy Corporation",
+"sec": "Energy",
+"k": "stock"
+},
+"EXPD": {
+"n": "Expeditors International of Washington, Inc.",
+"sec": "Industrials",
+"k": "stock"
+},
+"EXPE": {
+"n": "Expedia Group, Inc.",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"EXR": {
+"n": "Extra Space Storage Inc.",
+"sec": "Real Estate",
+"k": "stock"
+},
+"F": {
+"n": "Ford Motor Company",
+"sec": null,
+"k": "stock"
+},
+"FANG": {
+"n": "Diamondback Energy, Inc.",
+"sec": "Energy",
+"k": "stock"
+},
+"FAST": {
+"n": "Fastenal Company",
+"sec": "Industrials",
+"k": "stock"
+},
+"FCX": {
+"n": "Freeport-McMoRan Inc.",
+"sec": null,
+"k": "stock"
+},
+"FDS": {
+"n": "FactSet Research Systems Inc.",
+"sec": "Financial Services",
+"k": "stock"
+},
+"FDX": {
+"n": "FedEx Corporation",
+"sec": "Industrials",
+"k": "stock"
+},
+"FDXF": {
+"n": "FedEx Freight Holding Company, Inc.",
+"sec": null,
+"k": "stock"
+},
+"FE": {
+"n": "FirstEnergy Corp.",
+"sec": null,
+"k": "stock"
+},
+"FERG": {
+"n": "Ferguson Enterprises Inc.",
+"sec": "Industrials",
+"k": "stock"
+},
+"FFIV": {
+"n": "F5, Inc.",
+"sec": "Technology",
+"k": "stock"
+},
+"FICO": {
+"n": "Fair Isaac Corporation",
+"sec": "Technology",
+"k": "stock"
+},
+"FIS": {
+"n": "Fidelity National Information Services, Inc.",
+"sec": "Technology",
+"k": "stock"
+},
+"FISV": {
+"n": "Fiserv, Inc.",
+"sec": null,
+"k": "stock"
+},
+"FITB": {
+"n": "Fifth Third Bancorp",
+"sec": "Financial Services",
+"k": "stock"
+},
+"FIX": {
+"n": "Comfort Systems USA, Inc.",
+"sec": "Industrials",
+"k": "stock"
+},
+"FLEX": {
+"n": "Flex Ltd.",
+"sec": null,
+"k": "stock"
+},
+"FORTH.BK": {
+"n": "Forth Corporation Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"FOX": {
+"n": "Fox Corporation",
+"sec": null,
+"k": "stock"
+},
+"FOXA": {
+"n": "Fox Corporation",
+"sec": null,
+"k": "stock"
+},
+"FRT": {
+"n": "Federal Realty Investment Trust",
+"sec": "Real Estate",
+"k": "stock"
+},
+"FSLR": {
+"n": "First Solar, Inc.",
+"sec": null,
+"k": "stock"
+},
+"FTNT": {
+"n": "Fortinet, Inc.",
+"sec": null,
+"k": "stock"
+},
+"FTV": {
+"n": "Fortive Corporation",
+"sec": null,
+"k": "stock"
+},
+"FXI": {
+"n": "iShares China Large-Cap ETF",
+"sec": null,
+"k": "fund"
+},
+"GD": {
+"n": "General Dynamics Corporation",
+"sec": null,
+"k": "stock"
+},
+"GDDY": {
+"n": "GoDaddy Inc.",
+"sec": null,
+"k": "stock"
+},
+"GDX": {
+"n": "VanEck Gold Miners ETF",
+"sec": null,
+"k": "fund"
+},
+"GE": {
+"n": "GE Aerospace",
+"sec": null,
+"k": "stock"
+},
+"GEHC": {
+"n": "GE HealthCare Technologies Inc.",
+"sec": null,
+"k": "stock"
+},
+"GEN": {
+"n": "Gen Digital Inc.",
+"sec": null,
+"k": "stock"
+},
+"GEV": {
+"n": "GE Vernova Inc.",
+"sec": null,
+"k": "stock"
+},
+"GFPT.BK": {
+"n": "GFPT Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"GGC.BK": {
+"n": "Global Green Chemicals Public Company Limited",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"GILD": {
+"n": "Gilead Sciences, Inc.",
+"sec": null,
+"k": "stock"
+},
+"GIS": {
+"n": "General Mills, Inc.",
+"sec": null,
+"k": "stock"
+},
+"GL": {
+"n": "Globe Life Inc.",
+"sec": null,
+"k": "stock"
+},
+"GLD": {
+"n": "SPDR Gold Shares",
+"sec": null,
+"k": "fund"
+},
+"GLOBAL.BK": {
+"n": "Siam Global House Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"GLW": {
+"n": "Corning Incorporated",
+"sec": "Technology",
+"k": "stock"
+},
+"GM": {
+"n": "General Motors Company",
+"sec": null,
+"k": "stock"
+},
+"GNRC": {
+"n": "Generac Holdings Inc.",
+"sec": null,
+"k": "stock"
+},
+"GOOG": {
+"n": "Alphabet Inc.",
+"sec": "Communication Services",
+"k": "stock"
+},
+"GOOGL": {
+"n": "Alphabet Inc.",
+"sec": "Communication Services",
+"k": "stock"
+},
+"GPC": {
+"n": "Genuine Parts Company",
+"sec": null,
+"k": "stock"
+},
+"GPN": {
+"n": "Global Payments Inc.",
+"sec": null,
+"k": "stock"
+},
+"GPSC.BK": {
+"n": "Global Power Synergy Public Company Limited",
+"sec": "Utilities",
+"k": "stock"
+},
+"GRMN": {
+"n": "Garmin Ltd.",
+"sec": null,
+"k": "stock"
+},
+"GS": {
+"n": "The Goldman Sachs Group, Inc.",
+"sec": null,
+"k": "stock"
+},
+"GULF.BK": {
+"n": "Gulf Development Public Company Limited",
+"sec": "Utilities",
+"k": "stock"
+},
+"GUNKUL.BK": {
+"n": "Gunkul Engineering Public Company Limited",
+"sec": "Utilities",
+"k": "stock"
+},
+"GWW": {
+"n": "W.W. Grainger, Inc.",
+"sec": null,
+"k": "stock"
+},
+"HAL": {
+"n": "Halliburton Company",
+"sec": null,
+"k": "stock"
+},
+"HANA.BK": {
+"n": "Hana Microelectronics Public Company Limited",
+"sec": "Technology",
+"k": "stock"
+},
+"HAS": {
+"n": "Hasbro, Inc.",
+"sec": null,
+"k": "stock"
+},
+"HBAN": {
+"n": "Huntington Bancshares Incorporated",
+"sec": null,
+"k": "stock"
+},
+"HCA": {
+"n": "HCA Healthcare, Inc.",
+"sec": null,
+"k": "stock"
+},
+"HD": {
+"n": "The Home Depot, Inc.",
+"sec": null,
+"k": "stock"
+},
+"HIG": {
+"n": "The Hartford Insurance Group, Inc.",
+"sec": null,
+"k": "stock"
+},
+"HII": {
+"n": "Huntington Ingalls Industries, Inc.",
+"sec": null,
+"k": "stock"
+},
+"HLT": {
+"n": "Hilton Worldwide Holdings Inc.",
+"sec": null,
+"k": "stock"
+},
+"HMPRO.BK": {
+"n": "Home Product Center Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"HON": {
+"n": "Honeywell International Inc.",
+"sec": null,
+"k": "stock"
+},
+"HONA": {
+"n": "Honeywell Aerospace Inc.",
+"sec": null,
+"k": "stock"
+},
+"HOOD": {
+"n": "Robinhood Markets, Inc.",
+"sec": null,
+"k": "stock"
+},
+"HPE": {
+"n": "Hewlett Packard Enterprise Company",
+"sec": null,
+"k": "stock"
+},
+"HPQ": {
+"n": "HP Inc.",
+"sec": null,
+"k": "stock"
+},
+"HRL": {
+"n": "Hormel Foods Corporation",
+"sec": null,
+"k": "stock"
+},
+"HSIC": {
+"n": "Henry Schein, Inc.",
+"sec": null,
+"k": "stock"
+},
+"HST": {
+"n": "Host Hotels & Resorts, Inc.",
+"sec": null,
+"k": "stock"
+},
+"HSY": {
+"n": "The Hershey Company",
+"sec": null,
+"k": "stock"
+},
+"HUBB": {
+"n": "Hubbell Incorporated",
+"sec": null,
+"k": "stock"
+},
+"HUM": {
+"n": "Humana Inc.",
+"sec": null,
+"k": "stock"
+},
+"HUMAN.BK": {
+"n": "Humanica Public Company Limited",
+"sec": "Technology",
+"k": "stock"
+},
+"HWM": {
+"n": "Howmet Aerospace Inc.",
+"sec": null,
+"k": "stock"
+},
+"HYG": {
+"n": "iShares iBoxx $ High Yield Corporate Bond ETF",
+"sec": null,
+"k": "fund"
+},
+"IBIT": {
+"n": "iShares Bitcoin Trust ETF",
+"sec": null,
+"k": "fund"
+},
+"IBKR": {
+"n": "Interactive Brokers Group, Inc.",
+"sec": null,
+"k": "stock"
+},
+"IBM": {
+"n": "International Business Machines Corporation",
+"sec": null,
+"k": "stock"
+},
+"ICE": {
+"n": "Intercontinental Exchange, Inc.",
+"sec": null,
+"k": "stock"
+},
+"ICHI.BK": {
+"n": "Ichitan Group Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"IDXX": {
+"n": "IDEXX Laboratories, Inc.",
+"sec": null,
+"k": "stock"
+},
+"IEF": {
+"n": "iShares 7-10 Year Treasury Bond ETF",
+"sec": null,
+"k": "fund"
+},
+"IEMG": {
+"n": "iShares Core MSCI Emerging Markets ETF",
+"sec": null,
+"k": "fund"
+},
+"IEX": {
+"n": "IDEX Corporation",
+"sec": null,
+"k": "stock"
+},
+"IFF": {
+"n": "International Flavors & Fragrances Inc.",
+"sec": null,
+"k": "stock"
+},
+"III.BK": {
+"n": "Triple i Logistics Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"ILINK.BK": {
+"n": "Interlink Communication Public Company Limited",
+"sec": "Technology",
+"k": "stock"
+},
+"ILMN": {
+"n": "Illumina, Inc.",
+"sec": null,
+"k": "stock"
+},
+"INCY": {
+"n": "Incyte Corporation",
+"sec": null,
+"k": "stock"
+},
+"INDA": {
+"n": "iShares MSCI India ETF",
+"sec": null,
+"k": "fund"
+},
+"INET.BK": {
+"n": "Internet Thailand Public Company Limited",
+"sec": "Technology",
+"k": "stock"
+},
+"INTC": {
+"n": "Intel Corporation",
+"sec": null,
+"k": "stock"
+},
+"INTU": {
+"n": "Intuit Inc.",
+"sec": null,
+"k": "stock"
+},
+"INVH": {
+"n": "Invitation Homes Inc.",
+"sec": null,
+"k": "stock"
+},
+"IP": {
+"n": "International Paper Company",
+"sec": null,
+"k": "stock"
+},
+"IQV": {
+"n": "IQVIA Holdings Inc.",
+"sec": null,
+"k": "stock"
+},
+"IR": {
+"n": "Ingersoll Rand Inc.",
+"sec": null,
+"k": "stock"
+},
+"IRM": {
+"n": "Iron Mountain Incorporated",
+"sec": null,
+"k": "stock"
+},
+"IRPC.BK": {
+"n": "IRPC Public Company Limited",
+"sec": "Energy",
+"k": "stock"
+},
+"ISRG": {
+"n": "Intuitive Surgical, Inc.",
+"sec": null,
+"k": "stock"
+},
+"IT": {
+"n": "Gartner, Inc.",
+"sec": null,
+"k": "stock"
+},
+"ITC.BK": {
+"n": "i-Tail Corporation Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"ITW": {
+"n": "Illinois Tool Works Inc.",
+"sec": null,
+"k": "stock"
+},
+"IVL.BK": {
+"n": "Indorama Ventures Public Company Limited",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"IVV": {
+"n": "iShares Core S&P 500 ETF",
+"sec": null,
+"k": "fund"
+},
+"IVZ": {
+"n": "Invesco Ltd.",
+"sec": null,
+"k": "stock"
+},
+"IWM": {
+"n": "iShares Russell 2000 ETF",
+"sec": null,
+"k": "fund"
+},
+"J": {
+"n": "Jacobs Solutions Inc.",
+"sec": null,
+"k": "stock"
+},
+"JAS.BK": {
+"n": "Jasmine International Public Company Limited",
+"sec": "Communication Services",
+"k": "stock"
+},
+"JBHT": {
+"n": "J.B. Hunt Transport Services, Inc.",
+"sec": null,
+"k": "stock"
+},
+"JBL": {
+"n": "Jabil Inc.",
+"sec": null,
+"k": "stock"
+},
+"JCI": {
+"n": "Johnson Controls International plc",
+"sec": null,
+"k": "stock"
+},
+"JEPI": {
+"n": "JPMorgan Equity Premium Income ETF",
+"sec": null,
+"k": "fund"
+},
+"JEPQ": {
+"n": "JPMorgan Nasdaq Equity Premium Income ETF",
+"sec": null,
+"k": "fund"
+},
+"JKHY": {
+"n": "Jack Henry & Associates, Inc.",
+"sec": null,
+"k": "stock"
+},
+"JMART.BK": {
+"n": "Jaymart Group Holdings Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"JMT.BK": {
+"n": "JMT Network Services Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"JNJ": {
+"n": "Johnson & Johnson",
+"sec": null,
+"k": "stock"
+},
+"JPM": {
+"n": "JPMorgan Chase & Co.",
+"sec": null,
+"k": "stock"
+},
+"KBANK.BK": {
+"n": "Kasikornbank Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"KCAR.BK": {
+"n": "Krungthai Car Rent and Lease Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"KCE.BK": {
+"n": "KCE Electronics Public Company Limited",
+"sec": "Technology",
+"k": "stock"
+},
+"KDP": {
+"n": "Keurig Dr Pepper Inc.",
+"sec": null,
+"k": "stock"
+},
+"KEY": {
+"n": "KeyCorp",
+"sec": null,
+"k": "stock"
+},
+"KEYS": {
+"n": "Keysight Technologies, Inc.",
+"sec": null,
+"k": "stock"
+},
+"KGI.BK": {
+"n": "KGI Securities (Thailand) Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"KHC": {
+"n": "The Kraft Heinz Company",
+"sec": null,
+"k": "stock"
+},
+"KIM": {
+"n": "Kimco Realty Corporation",
+"sec": null,
+"k": "stock"
+},
+"KKP.BK": {
+"n": "Kiatnakin Phatra Bank Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"KKR": {
+"n": "KKR & Co. Inc.",
+"sec": null,
+"k": "stock"
+},
+"KLAC": {
+"n": "KLA Corporation",
+"sec": null,
+"k": "stock"
+},
+"KMB": {
+"n": "Kimberly-Clark Corporation",
+"sec": null,
+"k": "stock"
+},
+"KMI": {
+"n": "Kinder Morgan, Inc.",
+"sec": null,
+"k": "stock"
+},
+"KO": {
+"n": "The Coca-Cola Company",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"KR": {
+"n": "The Kroger Co.",
+"sec": null,
+"k": "stock"
+},
+"KSL.BK": {
+"n": "Khon Kaen Sugar Industry Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"KTB.BK": {
+"n": "Krung Thai Bank Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"KTC.BK": {
+"n": "Krungthai Card Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"KTIS.BK": {
+"n": "Kaset Thai International Sugar Corporation Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"KVUE": {
+"n": "Kenvue Inc.",
+"sec": null,
+"k": "stock"
+},
+"KWEB": {
+"n": "KraneShares CSI China Internet ETF",
+"sec": null,
+"k": "fund"
+},
+"L": {
+"n": "Loews Corporation",
+"sec": null,
+"k": "stock"
+},
+"LALIN.BK": {
+"n": "Lalin Property Public Company Limited",
+"sec": "Real Estate",
+"k": "stock"
+},
+"LDOS": {
+"n": "Leidos Holdings, Inc.",
+"sec": null,
+"k": "stock"
+},
+"LEN": {
+"n": "Lennar Corporation",
+"sec": null,
+"k": "stock"
+},
+"LH": {
+"n": "Labcorp Holdings Inc.",
+"sec": null,
+"k": "stock"
+},
+"LH.BK": {
+"n": "Land and Houses Public Company Limited",
+"sec": "Real Estate",
+"k": "stock"
+},
+"LHX": {
+"n": "L3Harris Technologies, Inc.",
+"sec": null,
+"k": "stock"
+},
+"LII": {
+"n": "Lennox International Inc.",
+"sec": null,
+"k": "stock"
+},
+"LIN": {
+"n": "Linde plc",
+"sec": null,
+"k": "stock"
+},
+"LITE": {
+"n": "Lumentum Holdings Inc.",
+"sec": null,
+"k": "stock"
+},
+"LLY": {
+"n": "Eli Lilly and Company",
+"sec": null,
+"k": "stock"
+},
+"LMT": {
+"n": "Lockheed Martin Corporation",
+"sec": null,
+"k": "stock"
+},
+"LNT": {
+"n": "Alliant Energy Corporation",
+"sec": "Utilities",
+"k": "stock"
+},
+"LOW": {
+"n": "Lowe's Companies, Inc.",
+"sec": null,
+"k": "stock"
+},
+"LPN.BK": {
+"n": "L.P.N. Development Public Company Limited",
+"sec": "Real Estate",
+"k": "stock"
+},
+"LQD": {
+"n": "iShares iBoxx $ Investment Grade Corporate Bond ETF",
+"sec": null,
+"k": "fund"
+},
+"LRCX": {
+"n": "Lam Research Corporation",
+"sec": null,
+"k": "stock"
+},
+"LULU": {
+"n": "lululemon athletica inc.",
+"sec": null,
+"k": "stock"
+},
+"LUV": {
+"n": "Southwest Airlines Co.",
+"sec": null,
+"k": "stock"
+},
+"LVS": {
+"n": "Las Vegas Sands Corp.",
+"sec": null,
+"k": "stock"
+},
+"LYB": {
+"n": "LyondellBasell Industries N.V.",
+"sec": null,
+"k": "stock"
+},
+"LYV": {
+"n": "Live Nation Entertainment, Inc.",
+"sec": null,
+"k": "stock"
+},
+"M.BK": {
+"n": "MK Restaurant Group Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"MA": {
+"n": "Mastercard Incorporated",
+"sec": null,
+"k": "stock"
+},
+"MAA": {
+"n": "Mid-America Apartment Communities, Inc.",
+"sec": null,
+"k": "stock"
+},
+"MAJOR.BK": {
+"n": "Major Cineplex Group Public Company Limited",
+"sec": "Communication Services",
+"k": "stock"
+},
+"MALEE.BK": {
+"n": "Malee Group Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"MAR": {
+"n": "Marriott International, Inc.",
+"sec": null,
+"k": "stock"
+},
+"MAS": {
+"n": "Masco Corporation",
+"sec": null,
+"k": "stock"
+},
+"MBK.BK": {
+"n": "MBK Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"MC.BK": {
+"n": "MC Group Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"MCD": {
+"n": "McDonald's Corporation",
+"sec": null,
+"k": "stock"
+},
+"MCHI": {
+"n": "iShares MSCI China ETF",
+"sec": null,
+"k": "fund"
+},
+"MCHP": {
+"n": "Microchip Technology Incorporated",
+"sec": null,
+"k": "stock"
+},
+"MCK": {
+"n": "McKesson Corporation",
+"sec": null,
+"k": "stock"
+},
+"MCO": {
+"n": "Moody's Corporation",
+"sec": null,
+"k": "stock"
+},
+"MCS.BK": {
+"n": "M.C.S. Steel Public Company Limited",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"MDLZ": {
+"n": "Mondelez International, Inc.",
+"sec": null,
+"k": "stock"
+},
+"MDT": {
+"n": "Medtronic plc",
+"sec": null,
+"k": "stock"
+},
+"MEGA.BK": {
+"n": "Mega Lifesciences Public Company Limited",
+"sec": "Healthcare",
+"k": "stock"
+},
+"MET": {
+"n": "MetLife, Inc.",
+"sec": null,
+"k": "stock"
+},
+"META": {
+"n": "Meta Platforms, Inc.",
+"sec": null,
+"k": "stock"
+},
+"MGM": {
+"n": "MGM Resorts International",
+"sec": null,
+"k": "stock"
+},
+"MINT.BK": {
+"n": "Minor International Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"MKC": {
+"n": "McCormick & Company, Incorporated",
+"sec": null,
+"k": "stock"
+},
+"MLM": {
+"n": "Martin Marietta Materials, Inc.",
+"sec": null,
+"k": "stock"
+},
+"MMM": {
+"n": "3M Company",
+"sec": "Industrials",
+"k": "stock"
+},
+"MNST": {
+"n": "Monster Beverage Corporation",
+"sec": null,
+"k": "stock"
+},
+"MO": {
+"n": "Altria Group, Inc.",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"MOS": {
+"n": "The Mosaic Company",
+"sec": null,
+"k": "stock"
+},
+"MOSHI.BK": {
+"n": "Moshi Moshi Retail Corporation Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"MPC": {
+"n": "Marathon Petroleum Corporation",
+"sec": null,
+"k": "stock"
+},
+"MPWR": {
+"n": "Monolithic Power Systems, Inc.",
+"sec": null,
+"k": "stock"
+},
+"MRK": {
+"n": "Merck & Co., Inc.",
+"sec": null,
+"k": "stock"
+},
+"MRNA": {
+"n": "Moderna, Inc.",
+"sec": null,
+"k": "stock"
+},
+"MRSH": {
+"n": "Marsh & McLennan Companies, Inc.",
+"sec": null,
+"k": "stock"
+},
+"MRVL": {
+"n": "Marvell Technology, Inc.",
+"sec": null,
+"k": "stock"
+},
+"MS": {
+"n": "Morgan Stanley",
+"sec": null,
+"k": "stock"
+},
+"MSCI": {
+"n": "MSCI Inc.",
+"sec": null,
+"k": "stock"
+},
+"MSFT": {
+"n": "Microsoft Corporation",
+"sec": null,
+"k": "stock"
+},
+"MSI": {
+"n": "Motorola Solutions, Inc.",
+"sec": null,
+"k": "stock"
+},
+"MTB": {
+"n": "M&T Bank Corporation",
+"sec": null,
+"k": "stock"
+},
+"MTC.BK": {
+"n": "Muangthai Capital Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"MTD": {
+"n": "Mettler-Toledo International Inc.",
+"sec": null,
+"k": "stock"
+},
+"MTUM": {
+"n": "iShares MSCI USA Momentum Factor ETF",
+"sec": null,
+"k": "fund"
+},
+"MU": {
+"n": "Micron Technology, Inc.",
+"sec": null,
+"k": "stock"
+},
+"NCAP.BK": {
+"n": "Next Capital Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"NCLH": {
+"n": "Norwegian Cruise Line Holdings Ltd.",
+"sec": null,
+"k": "stock"
+},
+"NDAQ": {
+"n": "Nasdaq, Inc.",
+"sec": null,
+"k": "stock"
+},
+"NDSN": {
+"n": "Nordson Corporation",
+"sec": null,
+"k": "stock"
+},
+"NEE": {
+"n": "NextEra Energy, Inc.",
+"sec": null,
+"k": "stock"
+},
+"NEM": {
+"n": "Newmont Corporation",
+"sec": null,
+"k": "stock"
+},
+"NER.BK": {
+"n": "North East Rubber Public Company Limited",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"NFLX": {
+"n": "Netflix, Inc.",
+"sec": null,
+"k": "stock"
+},
+"NI": {
+"n": "NiSource Inc.",
+"sec": null,
+"k": "stock"
+},
+"NKE": {
+"n": "NIKE, Inc.",
+"sec": null,
+"k": "stock"
+},
+"NOBLE.BK": {
+"n": "Noble Development Public Company Limited",
+"sec": "Real Estate",
+"k": "stock"
+},
+"NOC": {
+"n": "Northrop Grumman Corporation",
+"sec": null,
+"k": "stock"
+},
+"NOW": {
+"n": "ServiceNow, Inc.",
+"sec": null,
+"k": "stock"
+},
+"NRG": {
+"n": "NRG Energy, Inc.",
+"sec": null,
+"k": "stock"
+},
+"NSC": {
+"n": "Norfolk Southern Corporation",
+"sec": null,
+"k": "stock"
+},
+"NSL.BK": {
+"n": "NSL Foods Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"NTAP": {
+"n": "NetApp, Inc.",
+"sec": null,
+"k": "stock"
+},
+"NTRS": {
+"n": "Northern Trust Corporation",
+"sec": null,
+"k": "stock"
+},
+"NUE": {
+"n": "Nucor Corporation",
+"sec": null,
+"k": "stock"
+},
+"NVDA": {
+"n": "NVIDIA Corporation",
+"sec": null,
+"k": "stock"
+},
+"NVO": {
+"n": "Novo Nordisk A/S",
+"sec": null,
+"k": "stock"
+},
+"NVR": {
+"n": "NVR, Inc.",
+"sec": null,
+"k": "stock"
+},
+"NWS": {
+"n": "News Corporation",
+"sec": null,
+"k": "stock"
+},
+"NWSA": {
+"n": "News Corporation",
+"sec": null,
+"k": "stock"
+},
+"NXPI": {
+"n": "NXP Semiconductors N.V.",
+"sec": null,
+"k": "stock"
+},
+"NYT.BK": {
+"n": "Namyong Terminal Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"O": {
+"n": "Realty Income Corporation",
+"sec": null,
+"k": "stock"
+},
+"ODFL": {
+"n": "Old Dominion Freight Line, Inc.",
+"sec": null,
+"k": "stock"
+},
+"OKE": {
+"n": "ONEOK, Inc.",
+"sec": null,
+"k": "stock"
+},
+"OMC": {
+"n": "Omnicom Group Inc.",
+"sec": null,
+"k": "stock"
+},
+"ON": {
+"n": "ON Semiconductor Corporation",
+"sec": null,
+"k": "stock"
+},
+"OR.BK": {
+"n": "PTT Oil and Retail Business Public Company Limited",
+"sec": "Energy",
+"k": "stock"
+},
+"ORCL": {
+"n": "Oracle Corporation",
+"sec": null,
+"k": "stock"
+},
+"ORI.BK": {
+"n": "Origin Property Public Company Limited",
+"sec": "Real Estate",
+"k": "stock"
+},
+"ORLY": {
+"n": "O'Reilly Automotive, Inc.",
+"sec": null,
+"k": "stock"
+},
+"OSP.BK": {
+"n": "Osotspa Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"OTIS": {
+"n": "Otis Worldwide Corporation",
+"sec": null,
+"k": "stock"
+},
+"OXY": {
+"n": "Occidental Petroleum Corporation",
+"sec": null,
+"k": "stock"
+},
+"P": {
+"n": "Everpure, Inc.",
+"sec": "Technology",
+"k": "stock"
+},
+"PANW": {
+"n": "Palo Alto Networks, Inc.",
+"sec": null,
+"k": "stock"
+},
+"PAYX": {
+"n": "Paychex, Inc.",
+"sec": null,
+"k": "stock"
+},
+"PCAR": {
+"n": "PACCAR Inc",
+"sec": null,
+"k": "stock"
+},
+"PCG": {
+"n": "PG&E Corporation",
+"sec": null,
+"k": "stock"
+},
+"PEG": {
+"n": "Public Service Enterprise Group Incorporated",
+"sec": null,
+"k": "stock"
+},
+"PEP": {
+"n": "PepsiCo, Inc.",
+"sec": null,
+"k": "stock"
+},
+"PFE": {
+"n": "Pfizer Inc.",
+"sec": null,
+"k": "stock"
+},
+"PFG": {
+"n": "Principal Financial Group, Inc.",
+"sec": null,
+"k": "stock"
+},
+"PG": {
+"n": "The Procter & Gamble Company",
+"sec": null,
+"k": "stock"
+},
+"PGR": {
+"n": "The Progressive Corporation",
+"sec": null,
+"k": "stock"
+},
+"PH": {
+"n": "Parker-Hannifin Corporation",
+"sec": null,
+"k": "stock"
+},
+"PHM": {
+"n": "PulteGroup, Inc.",
+"sec": null,
+"k": "stock"
+},
+"PKG": {
+"n": "Packaging Corporation of America",
+"sec": null,
+"k": "stock"
+},
+"PLANB.BK": {
+"n": "Plan B Media Public Company Limited",
+"sec": "Communication Services",
+"k": "stock"
+},
+"PLD": {
+"n": "Prologis, Inc.",
+"sec": null,
+"k": "stock"
+},
+"PLTR": {
+"n": "Palantir Technologies Inc.",
+"sec": null,
+"k": "stock"
+},
+"PM": {
+"n": "Philip Morris International Inc.",
+"sec": null,
+"k": "stock"
+},
+"PNC": {
+"n": "The PNC Financial Services Group, Inc.",
+"sec": null,
+"k": "stock"
+},
+"PNR": {
+"n": "Pentair plc",
+"sec": null,
+"k": "stock"
+},
+"PNW": {
+"n": "Pinnacle West Capital Corporation",
+"sec": null,
+"k": "stock"
+},
+"PODD": {
+"n": "Insulet Corporation",
+"sec": null,
+"k": "stock"
+},
+"PPG": {
+"n": "PPG Industries, Inc.",
+"sec": null,
+"k": "stock"
+},
+"PPL": {
+"n": "PPL Corporation",
+"sec": null,
+"k": "stock"
+},
+"PR9.BK": {
+"n": "Praram 9 Hospital Public Company Limited",
+"sec": "Healthcare",
+"k": "stock"
+},
+"PREB.BK": {
+"n": "Pre-Built Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"PRM.BK": {
+"n": "Prima Marine Public Company Limited",
+"sec": "Energy",
+"k": "stock"
+},
+"PRU": {
+"n": "Prudential Financial, Inc.",
+"sec": null,
+"k": "stock"
+},
+"PSA": {
+"n": "Public Storage",
+"sec": null,
+"k": "stock"
+},
+"PSKY": {
+"n": "Paramount Skydance Corporation",
+"sec": null,
+"k": "stock"
+},
+"PSL.BK": {
+"n": "Precious Shipping Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"PSX": {
+"n": "Phillips 66",
+"sec": null,
+"k": "stock"
+},
+"PTC": {
+"n": "PTC Inc.",
+"sec": null,
+"k": "stock"
+},
+"PTG.BK": {
+"n": "PTG Energy Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"PTT.BK": {
+"n": "PTT Public Company Limited",
+"sec": "Energy",
+"k": "stock"
+},
+"PTTEP.BK": {
+"n": "PTT Exploration and Production Public Company Limited",
+"sec": "Energy",
+"k": "stock"
+},
+"PTTGC.BK": {
+"n": "PTT Global Chemical Public Company Limited",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"PWR": {
+"n": "Quanta Services, Inc.",
+"sec": null,
+"k": "stock"
+},
+"PYLON.BK": {
+"n": "Pylon Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"PYPL": {
+"n": "PayPal Holdings, Inc.",
+"sec": null,
+"k": "stock"
+},
+"Q": {
+"n": "Qnity Electronics, Inc.",
+"sec": null,
+"k": "stock"
+},
+"QCOM": {
+"n": "QUALCOMM Incorporated",
+"sec": null,
+"k": "stock"
+},
+"QH.BK": {
+"n": "Quality Houses Public Company Limited",
+"sec": "Real Estate",
+"k": "stock"
+},
+"QQQ": {
+"n": "Invesco QQQ Trust",
+"sec": null,
+"k": "fund"
+},
+"QUAL": {
+"n": "iShares MSCI USA Quality Factor ETF",
+"sec": null,
+"k": "fund"
+},
+"RATCH.BK": {
+"n": "Ratch Group Public Company Limited",
+"sec": "Utilities",
+"k": "stock"
+},
+"RBF.BK": {
+"n": "R&B Food Supply Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"RCL": {
+"n": "Royal Caribbean Cruises Ltd.",
+"sec": null,
+"k": "stock"
+},
+"RCL.BK": {
+"n": "Regional Container Lines Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"RDDT": {
+"n": "Reddit, Inc.",
+"sec": null,
+"k": "stock"
+},
+"REG": {
+"n": "Regency Centers Corporation",
+"sec": null,
+"k": "stock"
+},
+"REGN": {
+"n": "Regeneron Pharmaceuticals, Inc.",
+"sec": null,
+"k": "stock"
+},
+"RF": {
+"n": "Regions Financial Corporation",
+"sec": null,
+"k": "stock"
+},
+"RJF": {
+"n": "Raymond James Financial, Inc.",
+"sec": null,
+"k": "stock"
+},
+"RL": {
+"n": "Ralph Lauren Corporation",
+"sec": null,
+"k": "stock"
+},
+"RMD": {
+"n": "ResMed Inc.",
+"sec": null,
+"k": "stock"
+},
+"ROK": {
+"n": "Rockwell Automation, Inc.",
+"sec": null,
+"k": "stock"
+},
+"ROL": {
+"n": "Rollins, Inc.",
+"sec": null,
+"k": "stock"
+},
+"ROP": {
+"n": "Roper Technologies, Inc.",
+"sec": null,
+"k": "stock"
+},
+"ROST": {
+"n": "Ross Stores, Inc.",
+"sec": null,
+"k": "stock"
+},
+"RS.BK": {
+"n": "RS Public Company Limited",
+"sec": "Communication Services",
+"k": "stock"
+},
+"RSG": {
+"n": "Republic Services, Inc.",
+"sec": null,
+"k": "stock"
+},
+"RSP": {
+"n": "Invesco S&P 500 Equal Weight ETF",
+"sec": null,
+"k": "fund"
+},
+"RTX": {
+"n": "RTX Corporation",
+"sec": null,
+"k": "stock"
+},
+"RVTY": {
+"n": "Revvity, Inc.",
+"sec": null,
+"k": "stock"
+},
+"S.BK": {
+"n": "Singha Estate Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"SABINA.BK": {
+"n": "Sabina Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"SAMART.BK": {
+"n": "Samart Corporation Public Company Limited",
+"sec": "Technology",
+"k": "stock"
+},
+"SAPPE.BK": {
+"n": "Sappe Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"SAT.BK": {
+"n": "Somboon Advance Technology Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"SAWAD.BK": {
+"n": "Srisawad Corporation Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"SBAC": {
+"n": "SBA Communications Corporation",
+"sec": null,
+"k": "stock"
+},
+"SBUX": {
+"n": "Starbucks Corporation",
+"sec": null,
+"k": "stock"
+},
+"SCB.BK": {
+"n": "SCB X Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"SCC.BK": {
+"n": "The Siam Cement Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"SCCC.BK": {
+"n": "Siam City Cement Public Company Limited",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"SCGP.BK": {
+"n": "SCG Packaging Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"SCHD": {
+"n": "Schwab U.S. Dividend Equity ETF",
+"sec": null,
+"k": "fund"
+},
+"SCHW": {
+"n": "The Charles Schwab Corporation",
+"sec": "Financial Services",
+"k": "stock"
+},
+"SENA.BK": {
+"n": "Sena Development Public Company Limited",
+"sec": "Real Estate",
+"k": "stock"
+},
+"SGP.BK": {
+"n": "Siamgas and Petrochemicals Public Company Limited",
+"sec": "Energy",
+"k": "stock"
+},
+"SHW": {
+"n": "The Sherwin-Williams Company",
+"sec": null,
+"k": "stock"
+},
+"SHY": {
+"n": "iShares 1-3 Year Treasury Bond ETF",
+"sec": null,
+"k": "fund"
+},
+"SINGER.BK": {
+"n": "Singer Thailand Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"SIRI.BK": {
+"n": "Sansiri Public Company Limited",
+"sec": "Real Estate",
+"k": "stock"
+},
+"SIS.BK": {
+"n": "SiS Distribution (Thailand) Public Company Limited",
+"sec": "Technology",
+"k": "stock"
+},
+"SJM": {
+"n": "The J. M. Smucker Company",
+"sec": null,
+"k": "stock"
+},
+"SJWD.BK": {
+"n": "SCGJWD Logistics Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"SLB": {
+"n": "SLB N.V.",
+"sec": null,
+"k": "stock"
+},
+"SLV": {
+"n": "iShares Silver Trust",
+"sec": null,
+"k": "fund"
+},
+"SMCI": {
+"n": "Super Micro Computer, Inc.",
+"sec": null,
+"k": "stock"
+},
+"SMH": {
+"n": "VanEck Semiconductor ETF",
+"sec": null,
+"k": "fund"
+},
+"SMPC.BK": {
+"n": "Sahamitr Pressure Container Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"SNA": {
+"n": "Snap-on Incorporated",
+"sec": null,
+"k": "stock"
+},
+"SNC.BK": {
+"n": "SNC Former Public Company Limited",
+"sec": "Technology",
+"k": "stock"
+},
+"SNDK": {
+"n": "Sandisk Corporation",
+"sec": null,
+"k": "stock"
+},
+"SNNP.BK": {
+"n": "Srinanaporn Marketing Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"SNPS": {
+"n": "Synopsys, Inc.",
+"sec": null,
+"k": "stock"
+},
+"SO": {
+"n": "The Southern Company",
+"sec": null,
+"k": "stock"
+},
+"SOLV": {
+"n": "Solventum Corporation",
+"sec": null,
+"k": "stock"
+},
+"SOXX": {
+"n": "iShares Semiconductor ETF",
+"sec": null,
+"k": "fund"
+},
+"SPA.BK": {
+"n": "Siam Wellness Group Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"SPALI.BK": {
+"n": "Supalai Public Company Limited",
+"sec": "Real Estate",
+"k": "stock"
+},
+"SPCG.BK": {
+"n": "SPCG Public Company Limited",
+"sec": "Utilities",
+"k": "stock"
+},
+"SPG": {
+"n": "Simon Property Group, Inc.",
+"sec": null,
+"k": "stock"
+},
+"SPGI": {
+"n": "S&P Global Inc.",
+"sec": null,
+"k": "stock"
+},
+"SPRC.BK": {
+"n": "Star Petroleum Refining Public Company Limited",
+"sec": "Energy",
+"k": "stock"
+},
+"SPY": {
+"n": "State Street SPDR S&P 500 ETF Trust",
+"sec": null,
+"k": "fund"
+},
+"SRE": {
+"n": "Sempra",
+"sec": null,
+"k": "stock"
+},
+"SSP.BK": {
+"n": "Sermsang Power Corporation Public Company Limited",
+"sec": "Utilities",
+"k": "stock"
+},
+"STA.BK": {
+"n": "Sri Trang Agro-Industry Public Company Limited",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"STE": {
+"n": "STERIS plc",
+"sec": null,
+"k": "stock"
+},
+"STECON.BK": {
+"n": "Stecon Group Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"STGT.BK": {
+"n": "Sri Trang Gloves (Thailand) Public Company Limited",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"STLD": {
+"n": "Steel Dynamics, Inc.",
+"sec": null,
+"k": "stock"
+},
+"STPI.BK": {
+"n": "STP&I Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"STT": {
+"n": "State Street Corporation",
+"sec": null,
+"k": "stock"
+},
+"STX": {
+"n": "Seagate Technology Holdings plc",
+"sec": null,
+"k": "stock"
+},
+"STZ": {
+"n": "Constellation Brands, Inc.",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"SUPER.BK": {
+"n": "Super Energy Corporation Public Company Limited",
+"sec": "Utilities",
+"k": "stock"
+},
+"SW": {
+"n": "Smurfit Westrock Plc",
+"sec": null,
+"k": "stock"
+},
+"SWK": {
+"n": "Stanley Black & Decker, Inc.",
+"sec": null,
+"k": "stock"
+},
+"SWKS": {
+"n": "Skyworks Solutions, Inc.",
+"sec": null,
+"k": "stock"
+},
+"SYF": {
+"n": "Synchrony Financial",
+"sec": null,
+"k": "stock"
+},
+"SYK": {
+"n": "Stryker Corporation",
+"sec": null,
+"k": "stock"
+},
+"SYNEX.BK": {
+"n": "Synnex (Thailand) Public Company Limited",
+"sec": "Technology",
+"k": "stock"
+},
+"SYY": {
+"n": "Sysco Corporation",
+"sec": null,
+"k": "stock"
+},
+"T": {
+"n": "AT&T Inc.",
+"sec": "Communication Services",
+"k": "stock"
+},
+"TASCO.BK": {
+"n": "Tipco Asphalt Public Company Limited",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"TCAP.BK": {
+"n": "Thanachart Capital Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"TDG": {
+"n": "TransDigm Group Incorporated",
+"sec": null,
+"k": "stock"
+},
+"TDY": {
+"n": "Teledyne Technologies Incorporated",
+"sec": null,
+"k": "stock"
+},
+"TECH": {
+"n": "Bio-Techne Corporation",
+"sec": "Healthcare",
+"k": "stock"
+},
+"TEL": {
+"n": "TE Connectivity plc",
+"sec": null,
+"k": "stock"
+},
+"TER": {
+"n": "Teradyne, Inc.",
+"sec": null,
+"k": "stock"
+},
+"TFC": {
+"n": "Truist Financial Corporation",
+"sec": null,
+"k": "stock"
+},
+"TFG.BK": {
+"n": "Thaifoods Group Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"TFMAMA.BK": {
+"n": "Thai President Foods Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"TGH.BK": {
+"n": "Thai Group Holdings Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"TGT": {
+"n": "Target Corporation",
+"sec": null,
+"k": "stock"
+},
+"THAI.BK": {
+"n": "Thai Airways International Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"THANI.BK": {
+"n": "Ratchthani Leasing Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"THCOM.BK": {
+"n": "Thaicom Public Company Limited",
+"sec": "Communication Services",
+"k": "stock"
+},
+"THD": {
+"n": "iShares MSCI Thailand ETF",
+"sec": null,
+"k": "fund"
+},
+"THG.BK": {
+"n": "Thonburi Healthcare Group Public Company Limited",
+"sec": "Healthcare",
+"k": "stock"
+},
+"TIDLOR.BK": {
+"n": "Tidlor Holdings Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"TIP": {
+"n": "iShares TIPS Bond ETF",
+"sec": null,
+"k": "fund"
+},
+"TIPH.BK": {
+"n": "Dhipaya Group Holdings Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"TISCO.BK": {
+"n": "TISCO Financial Group Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"TJX": {
+"n": "The TJX Companies, Inc.",
+"sec": null,
+"k": "stock"
+},
+"TKN.BK": {
+"n": "Taokaenoi Food & Marketing Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"TKO": {
+"n": "TKO Group Holdings, Inc.",
+"sec": null,
+"k": "stock"
+},
+"TKS.BK": {
+"n": "T.K.S. Technologies Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"TLI.BK": {
+"n": "Thai Life Insurance Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"TLT": {
+"n": "iShares 20+ Year Treasury Bond ETF",
+"sec": null,
+"k": "fund"
+},
+"TMO": {
+"n": "Thermo Fisher Scientific Inc.",
+"sec": null,
+"k": "stock"
+},
+"TMT.BK": {
+"n": "TMT Steel Public Company Limited",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"TMUS": {
+"n": "T-Mobile US, Inc.",
+"sec": null,
+"k": "stock"
+},
+"TNP.BK": {
+"n": "Thanapiriya Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"TOA.BK": {
+"n": "TOA Paint (Thailand) Public Company Limited",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"TOP.BK": {
+"n": "Thai Oil Public Company Limited",
+"sec": "Energy",
+"k": "stock"
+},
+"TPAC.BK": {
+"n": "Thai Plaspac Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"TPIPL.BK": {
+"n": "TPI Polene Public Company Limited",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"TPIPP.BK": {
+"n": "TPI Polene Power Public Company Limited",
+"sec": "Utilities",
+"k": "stock"
+},
+"TPL": {
+"n": "Texas Pacific Land Corporation",
+"sec": null,
+"k": "stock"
+},
+"TPR": {
+"n": "Tapestry, Inc.",
+"sec": null,
+"k": "stock"
+},
+"TQM.BK": {
+"n": "TQM Alpha Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"TRGP": {
+"n": "Targa Resources Corp.",
+"sec": null,
+"k": "stock"
+},
+"TRMB": {
+"n": "Trimble Inc.",
+"sec": null,
+"k": "stock"
+},
+"TROW": {
+"n": "T. Rowe Price Group, Inc.",
+"sec": null,
+"k": "stock"
+},
+"TRUE.BK": {
+"n": "True Corporation Public Company Limited",
+"sec": "Communication Services",
+"k": "stock"
+},
+"TRV": {
+"n": "The Travelers Companies, Inc.",
+"sec": null,
+"k": "stock"
+},
+"TSCO": {
+"n": "Tractor Supply Company",
+"sec": null,
+"k": "stock"
+},
+"TSLA": {
+"n": "Tesla, Inc.",
+"sec": null,
+"k": "stock"
+},
+"TSM": {
+"n": "Taiwan Semiconductor Manufacturing Company Limited",
+"sec": null,
+"k": "stock"
+},
+"TSN": {
+"n": "Tyson Foods, Inc.",
+"sec": null,
+"k": "stock"
+},
+"TSTE.BK": {
+"n": "TSTE Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"TT": {
+"n": "Trane Technologies plc",
+"sec": null,
+"k": "stock"
+},
+"TTA.BK": {
+"n": "Thoresen Thai Agencies Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"TTB.BK": {
+"n": "TMBThanachart Bank Public Company Limited",
+"sec": "Financial Services",
+"k": "stock"
+},
+"TTCL.BK": {
+"n": "TTCL Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"TTWO": {
+"n": "Take-Two Interactive Software, Inc.",
+"sec": null,
+"k": "stock"
+},
+"TU.BK": {
+"n": "Thai Union Group Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"TVO.BK": {
+"n": "Thai Vegetable Oil Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"TXN": {
+"n": "Texas Instruments Incorporated",
+"sec": null,
+"k": "stock"
+},
+"TXT": {
+"n": "Textron Inc.",
+"sec": null,
+"k": "stock"
+},
+"TYL": {
+"n": "Tyler Technologies, Inc.",
+"sec": null,
+"k": "stock"
+},
+"UAC.BK": {
+"n": "UAC Global Public Company Limited",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"UAL": {
+"n": "United Airlines Holdings, Inc.",
+"sec": null,
+"k": "stock"
+},
+"UBER": {
+"n": "Uber Technologies, Inc.",
+"sec": null,
+"k": "stock"
+},
+"UDR": {
+"n": "UDR, Inc.",
+"sec": null,
+"k": "stock"
+},
+"UHS": {
+"n": "Universal Health Services, Inc.",
+"sec": null,
+"k": "stock"
+},
+"ULTA": {
+"n": "Ulta Beauty, Inc.",
+"sec": null,
+"k": "stock"
+},
+"UNH": {
+"n": "UnitedHealth Group Incorporated",
+"sec": null,
+"k": "stock"
+},
+"UNIQ.BK": {
+"n": "Unique Engineering and Construction Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"UNP": {
+"n": "Union Pacific Corporation",
+"sec": null,
+"k": "stock"
+},
+"UPF.BK": {
+"n": "Union Pioneer Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"UPS": {
+"n": "United Parcel Service, Inc.",
+"sec": null,
+"k": "stock"
+},
+"URI": {
+"n": "United Rentals, Inc.",
+"sec": null,
+"k": "stock"
+},
+"USB": {
+"n": "U.S. Bancorp",
+"sec": null,
+"k": "stock"
+},
+"USMV": {
+"n": "iShares MSCI USA Min Vol Factor ETF",
+"sec": null,
+"k": "fund"
+},
+"USO": {
+"n": "United States Oil Fund, LP",
+"sec": null,
+"k": "fund"
+},
+"UV.BK": {
+"n": "Univentures Public Company Limited",
+"sec": "Utilities",
+"k": "stock"
+},
+"V": {
+"n": "Visa Inc.",
+"sec": null,
+"k": "stock"
+},
+"VEA": {
+"n": "Vanguard FTSE Developed Markets Index Fund ETF Shares",
+"sec": null,
+"k": "fund"
+},
+"VEEV": {
+"n": "Veeva Systems Inc.",
+"sec": null,
+"k": "stock"
+},
+"VGI.BK": {
+"n": "VGI Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"VGT": {
+"n": "Vanguard Information Technology Index Fund ETF Shares",
+"sec": null,
+"k": "fund"
+},
+"VICI": {
+"n": "VICI Properties Inc.",
+"sec": null,
+"k": "stock"
+},
+"VIG": {
+"n": "Vanguard Dividend Appreciation Index Fund ETF Shares",
+"sec": null,
+"k": "fund"
+},
+"VLO": {
+"n": "Valero Energy Corporation",
+"sec": null,
+"k": "stock"
+},
+"VLTO": {
+"n": "Veralto Corporation",
+"sec": null,
+"k": "stock"
+},
+"VMC": {
+"n": "Vulcan Materials Company",
+"sec": null,
+"k": "stock"
+},
+"VMRK": {
+"n": "AvalonBay Communities, Inc.",
+"sec": null,
+"k": "stock"
+},
+"VNG.BK": {
+"n": "Vanachai Group Public Company Limited",
+"sec": "Basic Materials",
+"k": "stock"
+},
+"VNM": {
+"n": "VanEck Vietnam ETF",
+"sec": null,
+"k": "fund"
+},
+"VNQ": {
+"n": "Vanguard Real Estate Index Fund ETF Shares",
+"sec": null,
+"k": "fund"
+},
+"VOO": {
+"n": "Vanguard S&P 500 ETF",
+"sec": null,
+"k": "fund"
+},
+"VRSK": {
+"n": "Verisk Analytics, Inc.",
+"sec": null,
+"k": "stock"
+},
+"VRSN": {
+"n": "VeriSign, Inc.",
+"sec": null,
+"k": "stock"
+},
+"VRT": {
+"n": "Vertiv Holdings Co",
+"sec": null,
+"k": "stock"
+},
+"VRTX": {
+"n": "Vertex Pharmaceuticals Incorporated",
+"sec": null,
+"k": "stock"
+},
+"VST": {
+"n": "Vistra Corp.",
+"sec": null,
+"k": "stock"
+},
+"VT": {
+"n": "Vanguard Total World Stock Index Fund ETF Shares",
+"sec": null,
+"k": "fund"
+},
+"VTI": {
+"n": "Vanguard Morningstar Total Stock Market ETF",
+"sec": null,
+"k": "fund"
+},
+"VTR": {
+"n": "Ventas, Inc.",
+"sec": null,
+"k": "stock"
+},
+"VTRS": {
+"n": "Viatris Inc.",
+"sec": null,
+"k": "stock"
+},
+"VWO": {
+"n": "Vanguard FTSE Emerging Markets Index Fund ETF Shares",
+"sec": null,
+"k": "fund"
+},
+"VXUS": {
+"n": "Vanguard Total International Stock Index Fund ETF Shares",
+"sec": null,
+"k": "fund"
+},
+"VYM": {
+"n": "Vanguard High Dividend Yield Index Fund ETF Shares",
+"sec": null,
+"k": "fund"
+},
+"VZ": {
+"n": "Verizon Communications Inc.",
+"sec": null,
+"k": "stock"
+},
+"WAB": {
+"n": "Westinghouse Air Brake Technologies Corporation",
+"sec": null,
+"k": "stock"
+},
+"WAT": {
+"n": "Waters Corporation",
+"sec": null,
+"k": "stock"
+},
+"WBD": {
+"n": "Warner Bros. Discovery, Inc.",
+"sec": null,
+"k": "stock"
+},
+"WDAY": {
+"n": "Workday, Inc.",
+"sec": null,
+"k": "stock"
+},
+"WDC": {
+"n": "Western Digital Corporation",
+"sec": null,
+"k": "stock"
+},
+"WEC": {
+"n": "WEC Energy Group, Inc.",
+"sec": null,
+"k": "stock"
+},
+"WELL": {
+"n": "Welltower Inc.",
+"sec": null,
+"k": "stock"
+},
+"WFC": {
+"n": "Wells Fargo & Company",
+"sec": null,
+"k": "stock"
+},
+"WHA.BK": {
+"n": "WHA Corporation Public Company Limited",
+"sec": "Real Estate",
+"k": "stock"
+},
+"WHAUP.BK": {
+"n": "WHA Utilities and Power Public Company Limited",
+"sec": "Utilities",
+"k": "stock"
+},
+"WICE.BK": {
+"n": "Wice Logistics Public Company Limited",
+"sec": "Industrials",
+"k": "stock"
+},
+"WM": {
+"n": "Waste Management, Inc.",
+"sec": null,
+"k": "stock"
+},
+"WMB": {
+"n": "The Williams Companies, Inc.",
+"sec": null,
+"k": "stock"
+},
+"WMT": {
+"n": "Walmart Inc.",
+"sec": null,
+"k": "stock"
+},
+"WORK.BK": {
+"n": "Workpoint Entertainment Public Company Limited",
+"sec": "Communication Services",
+"k": "stock"
+},
+"WRB": {
+"n": "W. R. Berkley Corporation",
+"sec": null,
+"k": "stock"
+},
+"WSM": {
+"n": "Williams-Sonoma, Inc.",
+"sec": null,
+"k": "stock"
+},
+"WST": {
+"n": "West Pharmaceutical Services, Inc.",
+"sec": null,
+"k": "stock"
+},
+"WTW": {
+"n": "Willis Towers Watson Public Limited Company",
+"sec": null,
+"k": "stock"
+},
+"WY": {
+"n": "Weyerhaeuser Company",
+"sec": null,
+"k": "stock"
+},
+"WYNN": {
+"n": "Wynn Resorts, Limited",
+"sec": null,
+"k": "stock"
+},
+"XEL": {
+"n": "Xcel Energy Inc.",
+"sec": null,
+"k": "stock"
+},
+"XLB": {
+"n": "State Street Materials Select Sector SPDR ETF",
+"sec": null,
+"k": "fund"
+},
+"XLC": {
+"n": "State Street Communication Services Select Sector SPDR ETF",
+"sec": null,
+"k": "fund"
+},
+"XLE": {
+"n": "State Street Energy Select Sector SPDR ETF",
+"sec": null,
+"k": "fund"
+},
+"XLF": {
+"n": "State Street Financial Select Sector SPDR ETF",
+"sec": null,
+"k": "fund"
+},
+"XLI": {
+"n": "State Street Industrial Select Sector SPDR ETF",
+"sec": null,
+"k": "fund"
+},
+"XLK": {
+"n": "State Street Technology Select Sector SPDR ETF",
+"sec": null,
+"k": "fund"
+},
+"XLP": {
+"n": "State Street Consumer Staples Select Sector SPDR ETF",
+"sec": null,
+"k": "fund"
+},
+"XLRE": {
+"n": "State Street Real Estate Select Sector SPDR ETF",
+"sec": null,
+"k": "fund"
+},
+"XLU": {
+"n": "State Street Utilities Select Sector SPDR ETF",
+"sec": null,
+"k": "fund"
+},
+"XLV": {
+"n": "State Street Health Care Select Sector SPDR ETF",
+"sec": null,
+"k": "fund"
+},
+"XLY": {
+"n": "State Street Consumer Discretionary Select Sector SPDR ETF",
+"sec": null,
+"k": "fund"
+},
+"XO.BK": {
+"n": "Exotic Food Public Company Limited",
+"sec": "Consumer Defensive",
+"k": "stock"
+},
+"XOM": {
+"n": "ExxonMobil Holdings Corporation",
+"sec": "Energy",
+"k": "stock"
+},
+"XYL": {
+"n": "Xylem Inc.",
+"sec": null,
+"k": "stock"
+},
+"XYZ": {
+"n": "Block, Inc.",
+"sec": "Technology",
+"k": "stock"
+},
+"YUM": {
+"n": "Yum! Brands, Inc.",
+"sec": null,
+"k": "stock"
+},
+"ZBH": {
+"n": "Zimmer Biomet Holdings, Inc.",
+"sec": null,
+"k": "stock"
+},
+"ZBRA": {
+"n": "Zebra Technologies Corporation",
+"sec": null,
+"k": "stock"
+},
+"ZEN.BK": {
+"n": "ZEN Corporation Group Public Company Limited",
+"sec": "Consumer Cyclical",
+"k": "stock"
+},
+"ZTS": {
+"n": "Zoetis Inc.",
+"sec": null,
+"k": "stock"
+}
+}

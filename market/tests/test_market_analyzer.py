@@ -217,3 +217,69 @@ def test_screener_row_offline():
     assert r["roe_pct"] == pytest.approx(18) and r["debt_to_equity"] == pytest.approx(0.4)
     assert r["analyst_upside_pct"] == pytest.approx(20, rel=1e-6)
     assert r["signal"] in {"Bullish", "Neutral", "Bearish"} and -100 <= r["score"] <= 100
+
+
+@pytest.mark.skipif(__import__("shutil").which("node") is None, reason="node not installed")
+def test_browser_engine_matches_python():
+    """engine.js must give the same answers as the Python modules on the same published data."""
+    import subprocess
+    from pathlib import Path
+    from market_analyzer import context, elliott, export, model, smc, technical
+    root = Path(__file__).resolve().parents[1]
+    df = make_prices(drift=0.0006, vol=0.015, n=700, seed=7)
+    df["Open"] = df["Close"].shift().fillna(df["Close"])
+    df["High"] = df[["Open", "Close"]].max(axis=1) * 1.004
+    df["Low"] = df[["Open", "Close"]].min(axis=1) * 0.996
+    j = export.encode("TEST.BK", df)
+    df = export.decode(j)
+    rng = np.random.default_rng(0)
+    m = {"features": model.FEATURES, "labels": model.LABELS, "clip": model.CLIP, "horizon_days": 21,
+         "mean": [0.0] * len(model.FEATURES), "std": [0.1] * len(model.FEATURES),
+         "logistic": list(rng.normal(0, 0.1, len(model.FEATURES) + 1)), "ridge": list(rng.normal(0, 0.01, len(model.FEATURES) + 1))}
+    t, e, s, c = technical.analyze(df), elliott.analyze(df), smc.analyze(df), context.analyze(df)
+    py = {"trend_score": t["trend_score"], "rsi": t["rsi14"], "adx": t["adx14"], "patterns": t["patterns"],
+          "support": t["support"], "ew": (e["primary"] or {}).get("current_wave"), "ew_bias": e["bias_score"],
+          "smc": s["trend"], "smc_bias": s["bias_score"], "zones": len(s["demand_zones"]) + len(s["supply_zones"]),
+          "ctx": {k: round(v["percentile"], 6) for k, v in c["parameters"].items()},
+          "beat": model.predict(m, df, "TH")["beat_prob_pct"]}
+    script = f"""
+      const E = require({json.dumps(str(root / 'engine.js'))});
+      const b = E.decode({json.dumps(j)}), m = {json.dumps(m)};
+      const t = E.technical(b), e = E.elliott(b), s = E.smc(b), c = E.context(b);
+      const ctx = {{}}; for (const [k, v] of Object.entries(c.parameters)) ctx[k] = Math.round(v.percentile * 1e6) / 1e6;
+      console.log(JSON.stringify({{trend_score: t.trend_score, rsi: t.rsi14, adx: t.adx14, patterns: t.patterns,
+        support: t.support, ew: e.primary && e.primary.current_wave, ew_bias: e.bias_score, smc: s.trend,
+        smc_bias: s.bias_score, zones: s.demand_zones.length + s.supply_zones.length, ctx,
+        beat: E.predict(m, b, "TH").beat_prob_pct}}));"""
+    js = json.loads(subprocess.run(["node", "-e", script], capture_output=True, text=True, check=True).stdout)
+    for k, v in py.items():
+        if isinstance(v, float):
+            assert js[k] == pytest.approx(v, rel=1e-9, abs=1e-9), k
+        elif isinstance(v, list) and v and isinstance(v[0], float):
+            assert js[k] == pytest.approx(v, rel=1e-9), k
+        else:
+            assert js[k] == v, k
+
+
+def test_model_training_offline():
+    from market_analyzer import model
+    prices = {}
+    for i in range(12):
+        df = make_prices(n=900, seed=i, drift=0.0003 * (i % 3))
+        df.index = pd.bdate_range("2021-01-04", periods=900)
+        prices[f"S{i}.BK" if i % 2 else f"S{i}"] = df
+    m = model.train(prices, test_days=180)
+    assert len(m["logistic"]) == len(model.FEATURES) + 1 and np.isfinite(m["logistic"]).all()
+    v = m["validation"]
+    assert 0 <= v["auc"] <= 1 and v["samples"] > 0 and len(v["calibration"]) >= 5
+    p = model.predict(m, prices["S1.BK"], "TH")
+    assert 0 < p["beat_prob_pct"] < 100 and len(p["drivers"]) == 6
+
+
+def test_export_roundtrip():
+    from market_analyzer import export
+    df = make_prices(n=700)
+    j = export.encode("X.BK", df)
+    back = export.decode(j)
+    assert len(back) == export.BARS and (back.index == df.index[-export.BARS:]).all()
+    assert back["Close"].iloc[-1] == pytest.approx(df["Close"].iloc[-1], rel=1e-5)

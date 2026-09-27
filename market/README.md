@@ -14,21 +14,32 @@ Outlook score (−100…+100) = weighted trend 0.4, Monte-Carlo P(up) 0.2, funda
 SMC bias 0.15, Elliott bias 0.1, valuation 0.1 (weights re-normalised over the parts available).
 The weights are in `forecast.composite_outlook`.
 
-### Web dashboard
+### Web dashboard: everything runs in your browser
 
-The site (https://icyice1998.github.io/my_server/market/) has three views:
+The site (https://icyice1998.github.io/my_server/market/) needs no server, token or GitHub round trip.
+Type a **name or ticker** ("PTT", "thai oil", "Kasikorn", "Apple", "S&P 500") and the page finds it in the
+769-asset universe (SET stocks, the S&P 500, popular ETFs), loads that asset's published daily prices and
+runs the whole analysis locally in `engine.js`: trend and patterns, Elliott Wave, Smart Money Concepts,
+the history comparison of every parameter, the Monte Carlo projection and the prediction model.
+`engine.js` is a line-by-line port of the Python modules; a test checks both give identical results.
 
-- **Overview**: KPI tiles (bullish / neutral / bearish counts, average 3-month return, oversold count), market breadth
-  for SET / US / ETFs, top bullish and bearish assets, screener shortcuts and the list of full reports.
-- **Screener**: 177 assets (SET large caps, US large caps, popular ETFs) with presets (momentum leaders, oversold,
-  value + dividend, quality at a fair price, Elliott wave 2 → 3 up, SMC bullish CHoCH, SMC bullish + discount,
-  near 52-week high, analyst upside ≥ 20%), text / market / outlook filters and sortable columns.
-- **Asset**: KPI tiles, the chart with Elliott waves, SMC zones and the projection cone, and every analysis card.
+- **Overview**: KPI tiles, market breadth, top bullish / bearish, the model's top picks and its out-of-sample check.
+- **Screener**: every asset with presets (model top picks, momentum, oversold, value + dividend, quality,
+  Elliott wave 2 → 3 up, SMC CHoCH / discount, near 52-week high, analyst upside), filters and sortable columns.
+- **Asset**: KPI tiles, chart with Elliott waves / SMC zones / projection cone, prediction model with its drivers,
+  and every analysis card.
 
-Type a **name or ticker** in the search box ("PTT", "CP All", "Kasikorn", "Apple", "S&P 500 ETF"). An existing
-report or screener row opens at once; anything else starts a GitHub Actions run. With a token saved in settings
-the page starts the run itself; without one it opens a pre-filled GitHub issue, and submitting
-it starts the run (`market analyze: <name>`). Only issues opened by the repository owner are accepted.
+### Prediction model (`market_analyzer/model.py`)
+
+Own logistic regression (Newton / IRLS) and ridge regression on 18 price-only features (returns 1 week to 1 year,
+RSI, distance from SMA 20/50/200, volatility, drawdown, range position, MACD, ATR, volume, market). Target:
+**will the asset beat the median of its own market (SET or US) over the next 21 trading days**, and by how much.
+Absolute direction was tested first and had no out-of-sample skill (AUC 0.50), because most of a month's move is
+the whole market's; relative performance is predictable to a small degree.
+
+Walk-forward check on the last year, never seen in training: AUC 0.522, well calibrated, and the top-ranked tenth
+beat its market by about +2.6% a month vs -0.1% for the bottom tenth. The numbers are republished with every
+retrain in `model/model.json` and shown on the dashboard. It ranks assets; it cannot time the market.
 
 All commands run from this folder (`cd market`).
 
@@ -37,7 +48,8 @@ pip install -r requirements.txt
 python -m market_analyzer PTT KBANK --market TH          # SET stocks (.BK added automatically)
 python -m market_analyzer AAPL NVDA                      # US stocks
 python -m market_analyzer --query "CP All, Apple" --market AUTO   # names are resolved via Yahoo search
-python -m market_analyzer --screen TH,US,ETF             # screener -> reports/screener.json
+python -m market_analyzer --screen ALL --export-data data # screener + browser price files
+python -m market_analyzer --train model/model.json       # retrain the prediction model
 python -m market_analyzer VOO VFIAX --type fund          # US ETF / mutual fund
 python -m market_analyzer MYFUND --market TH --nav nav.csv --factsheet sheet.json   # any fund, local data
 SEC_API_KEY=... python -m market_analyzer K-USA --market TH --sec                  # Thai mutual fund via SEC API
@@ -50,25 +62,24 @@ or "no clear edge" vs the all-days base rate). Elliott counts are re-run weekly 
 own hit rate, SMC structure events report what followed past BOS/CHoCH on the same chart, and accounts are
 compared year by year.
 
-### Run it from the web (GitHub Pages + Actions)
+### How the site stays current (GitHub Actions, no user action)
 
-The dashboard (`market/index.html`, i.e. https://icyice1998.github.io/my_server/market/) lists all reports, and
-**Run a new analysis on GitHub** starts the *Market Analysis* workflow, waits for it and opens the new report.
+| Workflow | When | What it writes |
+|---|---|---|
+| `market_screener.yml` | weekdays 18:40 Bangkok | `reports/screener.json` (with model scores) and `data/prices/*.json` for the browser |
+| `market_model.yml` | Sundays | retrained `model/model.json` with fresh validation numbers |
+| `market_analysis.yml` | weekdays + manual | optional full Python reports (4-year accounts shown on the asset page when present) |
 
-1. Settings → Pages → Source: *Deploy from a branch*, branch `main`, folder `/ (root)`.
-2. Create a fine-grained token (GitHub → Settings → Developer settings → Fine-grained tokens):
-   repository access *Only select repositories* → `my_server`; permissions *Actions: Read and write*.
-   Paste it into the page once; it is kept only in that browser's local storage.
-   Without a token the button opens a pre-filled `market analyze: <name>` issue; submitting it does the same thing.
-3. Optional: add the `SEC_API_KEY` repository secret for Thai mutual funds.
-
-The workflow commits `market/reports/*.json`, Pages republishes (about 1 minute), and the page picks up the new file.
+GitHub Pages must deploy from branch `main`, folder `/ (root)`. Optional secret `SEC_API_KEY` for Thai mutual funds (CLI).
 
 ## Project structure
 
 ```
 market/
 ├── index.html                    # Web dashboard (published at /my_server/market/)
+├── engine.js                     # Browser port of the analysis + model scoring
+├── data/prices/                  # Daily prices per asset (~630 bars), refreshed on weekdays
+├── model/model.json              # Model coefficients + validation
 ├── requirements.txt
 ├── market_analyzer/
 │   ├── __main__.py               # CLI
@@ -81,16 +92,20 @@ market/
 │   ├── fund.py                   # Fund fact sheet and NAV statistics
 │   ├── forecast.py               # Monte Carlo projection, composite outlook
 │   ├── report.py                 # JSON and plain-text reports
-│   ├── resolve.py                # Name / ticker -> Yahoo symbol and market
+│   ├── resolve.py                # Name / ticker -> Yahoo symbol and market (CLI)
 │   ├── screener.py               # One row of key metrics per asset
-│   └── universe.py               # Screener universe (SET, US, ETF)
+│   ├── model.py                  # Own prediction model: features, training, validation
+│   ├── export.py                 # Compact daily price files for the browser
+│   ├── names.json                # Asset names and types for search
+│   └── universe.py               # 769 assets: SET, S&P 500, ETFs
 ├── reports/                      # Generated reports + index.json (read by the web app)
 ├── tests/                        # Offline unit tests (pytest)
 └── README.md
 
 .github/workflows/                # at the repository root
-├── market_analysis.yml           # Analyze on demand (dispatch or "market analyze:" issue) + weekday watchlist
-└── market_screener.yml           # Weekday screener refresh (dispatch or "market screen:" issue)
+├── market_screener.yml           # Weekday screener + browser price data
+├── market_model.yml              # Weekly model retraining
+└── market_analysis.yml           # Optional full Python reports
 ```
 
 Data: Yahoo Finance via `yfinance`. Thai mutual funds are not on Yahoo; use the SEC Thailand open API
