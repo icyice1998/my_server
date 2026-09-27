@@ -1,4 +1,4 @@
-name: Screener
+name: Market Screener
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ on:
         description: 'Universes to screen (comma-separated): TH, US, ETF or ALL'
         default: 'TH,US,ETF'
   issues:
-    # Keyless trigger from the web page: an issue titled "screen: TH,US,ETF" by the repo owner
+    # Keyless trigger from the web page: an issue titled "market screen: TH,US,ETF" by the repo owner
     types: [opened]
   schedule:
     # Weekdays 11:40 UTC (18:40 Bangkok), after the SET close and the watchlist run
@@ -18,15 +18,18 @@ permissions:
   issues: write
 
 concurrency:
-  group: market-analysis
+  group: market-analyzer
   cancel-in-progress: false
 
 jobs:
   screen:
     if: >-
       github.event_name != 'issues' ||
-      (startsWith(github.event.issue.title, 'screen:') && github.event.issue.user.login == github.repository_owner)
+      (startsWith(github.event.issue.title, 'market screen:') && github.event.issue.user.login == github.repository_owner)
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: market
     steps:
       - uses: actions/checkout@v4
 
@@ -34,6 +37,7 @@ jobs:
         with:
           python-version: '3.11'
           cache: pip
+          cache-dependency-path: market/requirements.txt
 
       - name: Install dependencies
         run: pip install -r requirements.txt
@@ -44,7 +48,7 @@ jobs:
           TITLE: ${{ github.event.issue.title }}
         run: |
           U="${INPUT:-TH,US,ETF}"
-          if [ "$GITHUB_EVENT_NAME" = "issues" ]; then U="${TITLE#screen:}"; U="${U// /}"; U="${U:-TH,US,ETF}"; fi
+          if [ "$GITHUB_EVENT_NAME" = "issues" ]; then U="${TITLE#market screen:}"; U="${U// /}"; U="${U:-TH,US,ETF}"; fi
           python -m market_analyzer --screen "$U"
 
       - name: Commit screener results
@@ -62,7 +66,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           NUMBER: ${{ github.event.issue.number }}
-          SITE: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/#screener
+          SITE: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/market/#screener
           OUTCOME: ${{ job.status }}
         run: |
           if [ "$OUTCOME" = "success" ]; then MSG="Screener updated. The site refreshes in about a minute: $SITE"; else MSG="The screener run failed: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"; fi
