@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Market Analyzer</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="engine.js"></script>
 <style>
   :root {
     color-scheme: light;
@@ -167,9 +168,6 @@
     <datalist id="q-list"></datalist>
     <button class="btn primary" type="submit">Analyze</button>
   </form>
-  <button class="icon-btn" id="open-settings" title="GitHub settings" aria-label="GitHub settings">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>
-  </button>
 </div></header>
 
 <main>
@@ -184,12 +182,8 @@
       <div class="card span-4"><h2>Top bullish <a href="#screener" data-preset="all">Screener →</a></h2><div id="ov-top"></div></div>
       <div class="card span-4"><h2>Top bearish</h2><div id="ov-bottom"></div></div>
       <div class="card span-12"><h2>Screener shortcuts</h2><div class="chips scrollx" id="ov-presets"></div></div>
-      <div class="card span-12"><h2>Full reports <span class="muted" id="ov-rep-n"></span></h2>
-        <div class="scroll"><table id="list"><thead><tr>
-          <th>Asset</th><th class="opt">Market</th><th class="opt">Type</th><th>Outlook</th><th class="num">Score</th><th class="opt">As of</th>
-        </tr></thead><tbody></tbody></table></div>
-        <p class="muted" id="empty" hidden>No full reports yet. Search for an asset above to create one.</p>
-      </div>
+      <div class="card span-6"><h2>Model top picks <span class="muted">chance to beat its market, 1 month</span></h2><div id="ov-model"></div></div>
+      <div class="card span-6"><h2>Prediction model: out-of-sample check</h2><div id="ov-valid"></div></div>
     </div>
   </section>
 
@@ -197,7 +191,6 @@
   <section class="view" id="view-screener" hidden>
     <div class="page-h">
       <div><h1>Screener</h1><p id="sc-sub"></p></div>
-      <button class="btn" id="sc-refresh" type="button">Refresh screener</button>
     </div>
     <div class="card">
       <div class="chips scrollx" id="sc-presets" style="margin-bottom:10px"></div>
@@ -223,18 +216,18 @@
         <th data-k="dividend_yield_pct" class="num opt">Div %</th>
         <th data-k="roe_pct" class="num opt">ROE %</th>
         <th data-k="analyst_upside_pct" class="num opt">Upside</th>
+        <th data-k="model_beat_pct" class="num">Model</th>
         <th data-k="score" class="num">Score</th>
         <th data-k="signal">Outlook</th>
       </tr></thead><tbody></tbody></table></div>
     </div>
-    <p class="disclaimer">Screener rows use the same trend, Elliott, SMC and Monte Carlo logic as full reports, with fundamentals from Yahoo's latest figures. Tap a row for the asset view. For education only, not investment advice.</p>
+    <p class="disclaimer">Refreshed every weekday after the SET close. Rows use the same trend, Elliott, SMC, Monte Carlo and prediction-model logic as the asset view, with fundamentals from Yahoo's latest figures. Tap a row to analyse it. For education only, not investment advice.</p>
   </section>
 
   <!-- ================= ASSET ================= -->
   <section class="view" id="view-asset" hidden>
     <div class="page-h">
       <div><h1 id="d-title"></h1><p id="d-sub"></p></div>
-      <button class="btn primary" id="d-run" type="button">Run full analysis</button>
     </div>
     <div class="tiles" id="d-tiles"></div>
     <div id="quick" class="card" style="margin-top:16px" hidden></div>
@@ -263,34 +256,20 @@
           <span style="--c: var(--bear)">Supply OB / bearish FVG</span>
         </div>
       </div>
+      <div class="card span-6"><h2>Prediction model</h2><div id="d-model"></div></div>
       <div class="card span-6"><h2 id="d-ew-h">Elliott Wave</h2><table id="d-ew"></table><ul class="flags" id="d-ew-alt"></ul></div>
       <div class="card span-6"><h2 id="d-smc-h">Smart Money Concepts</h2><table id="d-smc"></table></div>
+      <div class="card span-6"><h2>Price pattern</h2><table id="d-tech"></table><ul class="flags" id="d-patterns"></ul></div>
       <div class="card span-12 scroll"><h2 id="d-ctx-h">Why: each parameter vs its own history</h2>
         <table id="d-ctx"></table><p class="muted" id="d-ctx-note"></p></div>
-      <div class="card span-6"><h2>Price pattern</h2><table id="d-tech"></table><ul class="flags" id="d-patterns"></ul></div>
       <div class="card span-6"><h2 id="d-fund-h"></h2><table id="d-fund"></table><ul class="flags" id="d-flags"></ul>
         <div class="scroll"><table id="d-years"></table></div><ul class="flags" id="d-years-why"></ul></div>
-      <div class="card span-12 scroll"><h2>Projection table</h2><table id="d-fc"></table><p class="muted" id="d-bt"></p></div>
+      <div class="card span-6 scroll"><h2>Price projection</h2><table id="d-fc"></table><p class="muted" id="d-bt"></p></div>
     </div>
     <p class="disclaimer" id="d-disc"></p>
   </section>
 </main>
 
-<dialog id="settings">
-  <form method="dialog">
-    <h2 style="margin-top:0">Run analyses on GitHub</h2>
-    <p class="muted">With a token, the page starts GitHub Actions directly and shows the result when it is ready.
-      Without one, <strong>Analyze</strong> opens a pre-filled GitHub issue: press “Submit new issue” and the analysis starts
-      (only issues from the repository owner are accepted).</p>
-    <label>Fine-grained token (this repository only, permission “Actions: Read and write”)
-      <input id="run-token" type="password" placeholder="github_pat_…" autocomplete="off"></label>
-    <p class="muted" style="font-size:12px">The token is kept only in this browser's local storage.</p>
-    <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button class="btn" value="clear" id="token-clear">Forget token</button>
-      <button class="btn primary" value="save" id="token-save">Save</button>
-    </div>
-  </form>
-</dialog>
 
 <script>
 const $ = id => document.getElementById(id);
@@ -299,7 +278,7 @@ const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "
 const css = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 const pct = (v, d = 1) => v == null ? "–" : `<span class="${v > 0 ? "up" : v < 0 ? "down" : ""}">${v > 0 ? "+" : ""}${fmt(v, d)}%</span>`;
 const sig = s => `<span class="signal ${esc(s)}">${esc(s)}</span>`;
-let index = [], screen = { rows: [] }, chart, current = null;
+let index = [], screen = { rows: [] }, chart, current = null, MODEL = null;
 
 function rows(el, data) {
   el.innerHTML = data.map(([k, v]) => `<tr><td>${esc(k)}</td><td class="num">${esc(v)}</td></tr>`).join("");
@@ -312,9 +291,9 @@ const toast = (html, sticky) => {
 
 async function loadData() {
   const get = p => fetch(`${p}?t=${Date.now()}`).then(r => r.ok ? r.json() : null).catch(() => null);
-  const [i, s] = await Promise.all([get("reports/index.json"), get("reports/screener.json")]);
-  index = i || []; screen = s || { rows: [] };
-  $("q-list").innerHTML = [...new Map([...index.map(e => [e.symbol, e.name]), ...screen.rows.map(r => [r.symbol, r.name])]).entries()]
+  const [i, s, m] = await Promise.all([get("reports/index.json"), get("reports/screener.json"), get("model/model.json")]);
+  index = i || []; screen = s || { rows: [] }; MODEL = m;
+  $("q-list").innerHTML = [...new Map(screen.rows.map(r => [r.symbol, r.name])).entries()]
     .map(([sym, name]) => `<option value="${esc(sym.replace(/\.BK$/, ""))}">${esc(name)}</option>`).join("");
 }
 
@@ -363,17 +342,26 @@ function renderOverview() {
   $("ov-presets").innerHTML = Object.entries(PRESETS).filter(([k]) => k !== "all").map(([k, p]) =>
     `<button type="button" data-preset="${k}">${esc(p.label)} <span class="muted">${R.filter(p.f).length}</span></button>`).join("");
 
-  $("ov-rep-n").textContent = index.length ? `${index.length}` : "";
-  $("empty").hidden = index.length > 0;
-  document.querySelector("#list tbody").innerHTML = index.map(e => `
-    <tr class="pick" data-sym="${esc(e.symbol)}"><td><strong>${esc(e.symbol)}</strong> <span class="muted">${esc(e.name)}</span></td>
-      <td class="opt">${esc(e.market)}</td><td class="opt">${esc(e.asset_type)}</td><td>${sig(e.signal)}</td>
-      <td class="num">${fmt(e.score, 1)}</td><td class="opt">${esc(e.as_of)}</td></tr>`).join("");
+  const picks = R.filter(r => r.model_beat_pct != null).sort((a, b) => b.model_beat_pct - a.model_beat_pct).slice(0, 6);
+  $("ov-model").innerHTML = picks.map(r => `<div class="list-row" data-sym="${esc(r.symbol)}"><div class="nm"><strong>${esc(r.symbol.replace(/\.BK$/, ""))}</strong>
+    <span class="muted">${esc(r.name)}</span></div><div style="white-space:nowrap"><strong>${fmt(r.model_beat_pct, 1)}%</strong>
+    <span class="muted">${r.model_rel_return_pct > 0 ? "+" : ""}${fmt(r.model_rel_return_pct, 2)}%</span></div></div>`).join("") ||
+    '<p class="muted">Model scores appear after the next screener refresh.</p>';
+  const v = MODEL && MODEL.validation;
+  $("ov-valid").innerHTML = !v ? '<p class="muted">No model published yet.</p>' : `
+    <p style="margin-top:0">Trained on ${v.assets} assets, then tested on a year it never saw (${esc(v.test_from)} → ${esc(v.test_to)}).</p>
+    <div class="scroll"><table><tr><th>Model said (chance to beat market)</th><th class="num">Actually beat</th><th class="num">Avg vs market</th></tr>
+    ${v.calibration.filter((_, i) => i % 3 === 0 || i === v.calibration.length - 1).map(c => `<tr><td>${fmt(c.pred_up_pct, 1)}%</td>
+      <td class="num">${fmt(c.actual_up_pct, 1)}%</td><td class="num">${pct(c.avg_return_pct, 2)}</td></tr>`).join("")}</table></div>
+    <p class="muted" style="font-size:12px;margin-bottom:0">AUC ${fmt(v.auc, 3)} (0.5 = coin flip) · top tenth ${pct(v.top_decile_avg_return_pct, 1)} vs bottom tenth ${pct(v.bottom_decile_avg_return_pct, 1)} a month relative to its market.
+      A small edge for ranking assets, not a way to time the market.</p>`;
 }
 
 // ---------- screener ----------
 const PRESETS = {
   all: { label: "All", desc: "Every asset, ranked by outlook score.", f: () => true, sort: ["score", -1] },
+  model: { label: "Model top picks", desc: "Model gives at least a 53% chance to beat its own market over the next month (the band where it showed an edge out of sample).",
+    f: r => r.model_beat_pct >= 53, sort: ["model_beat_pct", -1] },
   momentum: { label: "Momentum leaders", desc: "Strong uptrend and positive 3-month return, strongest first.",
     f: r => r.trend_score >= 40 && r.ret_3m_pct > 0, sort: ["ret_3m_pct", -1] },
   oversold: { label: "Oversold (RSI ≤ 35)", desc: "Stretched to the downside; check the asset view for whether that has historically been a tailwind.",
@@ -424,68 +412,72 @@ function renderScreener() {
       <td class="opt" title="${esc(r.smc_event || "")} · ${esc(r.smc_zone || "")}">${esc(r.smc_trend === "undefined" ? "–" : r.smc_trend)} <span class="muted">${esc(r.smc_zone || "")}</span></td>
       <td class="num opt">${r.pe == null ? "–" : fmt(r.pe, 1)}</td><td class="num opt">${r.dividend_yield_pct == null ? "–" : fmt(r.dividend_yield_pct, 1)}</td>
       <td class="num opt">${r.roe_pct == null ? "–" : fmt(r.roe_pct, 0)}</td><td class="num opt">${pct(r.analyst_upside_pct, 0)}</td>
+      <td class="num">${r.model_beat_pct == null ? "–" : fmt(r.model_beat_pct, 1) + "%"}</td>
       <td class="num"><strong>${fmt(r.score, 0)}</strong></td><td>${sig(r.signal)}</td></tr>`).join("");
 }
 
-// ---------- asset view ----------
-const findReport = q => { q = q.toUpperCase(); return index.find(e => e.symbol.toUpperCase() === q || e.symbol.toUpperCase() === `${q}.BK` || (e.query || "").toUpperCase() === q); };
+// ---------- asset view (analysed in the browser by engine.js) ----------
+const findReport = q => { q = q.toUpperCase(); return index.find(e => e.symbol.toUpperCase() === q || e.symbol.toUpperCase() === `${q}.BK`); };
 const findRow = q => { q = q.toUpperCase(); return screen.rows.find(r => r.symbol.toUpperCase() === q || r.symbol.toUpperCase() === `${q}.BK`); };
+const priceFile = sym => `data/prices/${sym.replace(/\./g, "_")}.json`;
+
+// Local search over the universe: exact ticker, then name / ticker contains every typed word.
+function searchUniverse(q) {
+  const t = q.trim().toLowerCase(); if (!t) return [];
+  const exact = findRow(q); if (exact) return [exact];
+  const words = t.split(/\s+/);
+  const hay = r => `${r.symbol.replace(/\.BK$/, "")} ${r.symbol} ${r.name} ${r.sector || ""}`.toLowerCase();
+  return screen.rows.filter(r => words.every(w => hay(r).includes(w)))
+    .sort((a, b) => (a.name.toLowerCase().startsWith(t) ? 0 : 1) - (b.name.toLowerCase().startsWith(t) ? 0 : 1) || (b.market_cap || 0) - (a.market_cap || 0));
+}
 
 function assetTiles(t) {
   $("d-tiles").innerHTML = t.map(([k, v, s]) => `<div class="tile"><div class="k">${k}</div><div class="v">${v}</div><div class="s">${s || ""}</div></div>`).join("");
 }
 
 async function showAsset(sym) {
-  const rep = findReport(sym), row = findRow(sym);
-  current = rep ? rep.symbol : row ? row.symbol : sym;
-  $("tab-asset").hidden = false; $("tab-asset").href = `#asset/${encodeURIComponent(current)}`;
-  $("d-run").textContent = rep ? "Refresh full analysis" : "Run full analysis";
-  if (rep) return showDetail(rep.file, row);
-  $("detail").hidden = true; $("d-disc").textContent = "";
+  const row = findRow(sym);
+  $("tab-asset").hidden = false;
   if (!row) {
-    $("d-title").textContent = sym; $("d-sub").textContent = "Not analysed yet.";
-    $("d-tiles").innerHTML = ""; $("quick").hidden = false;
-    $("quick").innerHTML = `<p style="margin:0">No report for <strong>${esc(sym)}</strong> yet. Press <strong>Run full analysis</strong> to create one.</p>`;
+    current = sym; $("detail").hidden = true; $("d-tiles").innerHTML = ""; $("d-disc").textContent = "";
+    $("d-title").textContent = sym; $("d-sub").textContent = "";
+    $("quick").hidden = false;
+    $("quick").innerHTML = `<p style="margin:0"><strong>${esc(sym)}</strong> is not in the ${screen.rows.length}-asset universe, so there is no price data for it on this site.
+      Try its ticker or company name, or pick an asset from the Screener.</p>`;
     return;
   }
+  current = row.symbol;
+  $("tab-asset").href = `#asset/${encodeURIComponent(current)}`;
   $("d-title").textContent = `${row.name} (${row.symbol})`;
-  $("d-sub").textContent = `${row.market} · ${row.asset_type} · ${row.sector || ""} · screener data as of ${row.as_of}`;
-  assetTiles([
-    ["Outlook", sig(row.signal), `score ${fmt(row.score, 1)}`],
-    ["Price", fmt(row.price), `1D ${pct(row.chg_1d_pct)} · 3M ${pct(row.ret_3m_pct)}`],
-    ["Trend", esc(row.trend), `RSI ${fmt(row.rsi14, 0)} · ADX ${fmt(row.adx14, 0)}`],
-    ["Elliott", row.elliott_wave ? `${esc(row.elliott_wave)} ${row.elliott_trend === "up" ? "↑" : "↓"}` : "–", `fit ${fmt(row.elliott_fit_pct, 0)}%`],
-    ["SMC", esc(row.smc_trend), `${esc(row.smc_event || "")} · ${esc(row.smc_zone || "")}`],
-    ["3M projection", fmt(row.median_3m), `P(up) ${fmt(row.prob_up_3m_pct, 0)}%`],
+  $("d-sub").textContent = "Analysing in your browser…";
+  $("quick").hidden = true;
+  const [raw, rep] = await Promise.all([
+    fetch(priceFile(row.symbol)).then(r => r.ok ? r.json() : null).catch(() => null),
+    findReport(row.symbol) ? fetch(`reports/${findReport(row.symbol).file}`).then(r => r.ok ? r.json() : null).catch(() => null) : null,
   ]);
-  $("quick").hidden = false;
-  $("quick").innerHTML = `<h2>Quick view from the screener</h2><div class="scroll"><table>${[
-    ["P/E · P/BV", `${row.pe == null ? "–" : fmt(row.pe, 1)} · ${row.pbv == null ? "–" : fmt(row.pbv)}`],
-    ["Dividend yield", row.dividend_yield_pct == null ? "–" : `${fmt(row.dividend_yield_pct)}%`],
-    ["ROE · net margin", `${row.roe_pct == null ? "–" : fmt(row.roe_pct, 1) + "%"} · ${row.net_margin_pct == null ? "–" : fmt(row.net_margin_pct, 1) + "%"}`],
-    ["Analyst upside", row.analyst_upside_pct == null ? "–" : `${fmt(row.analyst_upside_pct, 1)}%`],
-    ["From 52-week high", `${fmt(row.from_52w_high_pct, 1)}%`],
-    ["Patterns", (row.patterns || []).join("; ") || "–"],
-  ].map(([k, v]) => `<tr><td>${k}</td><td class="num">${esc(v)}</td></tr>`).join("")}</table></div>
-  <p class="muted" style="margin-bottom:0">Run the full analysis for the chart with Elliott waves and SMC zones, the history comparison of every parameter, accounts year by year and the projection table.</p>`;
+  if (current !== row.symbol) return;  // user moved on while loading
+  if (!raw) { $("d-sub").textContent = "Price data for this asset is not published yet."; $("detail").hidden = true; return; }
+  const bars = Engine.decode(raw);
+  const r = Engine.analyze(bars, { symbol: row.symbol, name: row.name, market: row.market, asset_type: row.asset_type,
+    currency: row.currency, snapshot: row }, MODEL);
+  render(r, row, rep);
 }
 
-async function showDetail(file, row) {
-  const r = await (await fetch(`reports/${file}?t=${Date.now()}`)).json();
-  const t = r.technical, o = r.outlook, f3 = r.forecast["3m"];
-  $("quick").hidden = true; $("detail").hidden = false;
-  $("d-title").textContent = `${r.name} (${r.symbol})`;
-  $("d-sub").textContent = `${r.market} · ${r.asset_type} · ${r.currency || ""} · as of ${r.as_of}`;
-  const ew = r.elliott.primary;
+function render(r, row, rep) {
+  const t = r.technical, o = r.outlook, f3 = r.forecast["3m"], ew = r.elliott.primary, m = r.model;
+  $("detail").hidden = false;
+  $("d-sub").textContent = `${r.market} · ${r.asset_type} · ${row.sector || ""} · ${r.currency || ""} · prices to ${r.as_of} · analysed in your browser`;
+  const chg = (k) => { const c = r.chart.close, n = c.length; return n > k ? (c[n - 1] / c[n - 1 - k] - 1) * 100 : null; };
   assetTiles([
     ["Outlook", sig(o.signal), `score ${fmt(o.score, 1)} · components agree ${fmt(o.agreement_pct, 0)}%`],
-    ["Price", fmt(t.price), row ? `1D ${pct(row.chg_1d_pct)} · 3M ${pct(row.ret_3m_pct)}` : `vol ${fmt(t.volatility_ann_pct, 0)}%/yr`],
+    ["Price", fmt(t.price), `1D ${pct(chg(1))} · 3M ${pct(chg(63))}`],
+    ["Model: beat market (1M)", m ? `${fmt(m.beat_prob_pct, 1)}%` : "–", m ? `expected vs market ${m.expected_rel_return_pct > 0 ? "+" : ""}${fmt(m.expected_rel_return_pct, 2)}%` : "not enough history"],
     ["Trend", esc(t.trend), `RSI ${fmt(t.rsi14, 0)} · ADX ${fmt(t.adx14, 0)}`],
     ["Elliott", ew ? `${esc(ew.current_wave)} ${ew.trend === "up" ? "↑" : "↓"}` : "–", ew ? `invalidation ${fmt(ew.invalidation)}` : ""],
     ["SMC", esc(r.smc.trend), r.smc.last_event ? `${esc(r.smc.last_event.direction)} ${esc(r.smc.last_event.type)} · ${esc((r.smc.premium_discount || {}).zone || "")}` : ""],
     ["3M projection", fmt(f3.median), `P(up) ${fmt(f3.prob_up_pct, 0)}% · ${fmt(f3.p5)}–${fmt(f3.p95)}`],
   ]);
-
+  renderModel(m);
   rows($("d-tech"), [
     ["SMA 20 / 50 / 200", `${fmt(t.sma20)} / ${fmt(t.sma50)} / ${fmt(t.sma200)}`],
     ["ADX 14", `${fmt(t.adx14, 0)} (${t.trend_strength})`],
@@ -496,10 +488,46 @@ async function showDetail(file, row) {
     ["Resistance", t.resistance.map(x => fmt(x)).join(", ")],
   ]);
   $("d-patterns").innerHTML = t.patterns.map(p => `<li>${esc(p)}</li>`).join("");
+  renderFundamentals(row, rep);
+  $("d-fc").innerHTML = "<tr><th>Horizon</th><th class='num'>p5</th><th class='num'>p25</th><th class='num'>Median</th>" +
+    "<th class='num'>p75</th><th class='num'>p95</th><th class='num'>P(up)</th></tr>" +
+    Object.entries(r.forecast).map(([h, v]) => `<tr><td>${h}</td><td class="num">${fmt(v.p5)}</td>
+      <td class="num">${fmt(v.p25)}</td><td class="num">${fmt(v.median)}</td><td class="num">${fmt(v.p75)}</td>
+      <td class="num">${fmt(v.p95)}</td><td class="num">${fmt(v.prob_up_pct, 0)}%</td></tr>`).join("");
+  const b = r.backtest;
+  $("d-bt").textContent = `Bootstrap Monte Carlo of this asset's own daily returns (drift halved). Walk-forward check: following the 6-month trend called the next month's direction ` +
+    `${fmt(b.trend_following_hit_rate_pct, 0)}% of the time over ${b.samples} samples (base rate up ${fmt(b.base_rate_up_pct, 0)}%).`;
+  $("d-disc").textContent = r.disclaimer;
+  renderContext(r.context);
+  renderElliott(r.elliott);
+  renderSmc(r.smc);
+  drawChart(r);
+}
 
-  if (r.fundamental) {
-    const a = r.fundamental;
-    $("d-fund-h").textContent = `Accounts · score ${fmt(a.score, 0)}/100`;
+function renderModel(m) {
+  const v = MODEL && MODEL.validation;
+  if (!m || !v) { $("d-model").innerHTML = `<p class="muted">The model needs at least one year of price history for this asset.</p>`; return; }
+  const maxE = Math.max(...m.drivers.map(d => Math.abs(d.effect)), 1e-9);
+  $("d-model").innerHTML = `
+    <div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr));margin-bottom:12px">
+      <div class="tile"><div class="k">Chance to beat its market</div><div class="v">${fmt(m.beat_prob_pct, 1)}%</div><div class="s">next ${m.horizon_days} trading days</div></div>
+      <div class="tile"><div class="k">Expected vs market</div><div class="v">${m.expected_rel_return_pct > 0 ? "+" : ""}${fmt(m.expected_rel_return_pct, 2)}%</div><div class="s">ridge regression</div></div>
+    </div>
+    <table><tr><th>What drives this prediction</th><th class="num">Value</th><th>Push</th></tr>${m.drivers.map(d => `
+      <tr><td>${esc(d.label)}</td><td class="num">${d.feature === "is_th" ? (d.value ? "yes" : "no") : fmt(d.value, 3)}</td>
+      <td><div class="bar" style="background:none;max-width:140px"><i style="width:${Math.abs(d.effect) / maxE * 100}%;background:${d.effect > 0 ? "var(--good)" : "var(--critical)"}"></i></div>
+      <span class="muted" style="font-size:12px">${d.effect > 0 ? "▲ raises" : "▼ lowers"}</span></td></tr>`).join("")}</table>
+    <p class="muted" style="font-size:12px;margin-bottom:0">Own logistic + ridge model on 18 price features, trained on ${v.assets} assets (${esc(v.train_from)} → ${esc(MODEL.trained.slice(0, 10))}).
+      Tested on the year it never saw (${esc(v.test_from)} → ${esc(v.test_to)}): AUC ${fmt(v.auc, 3)} (0.5 = coin flip);
+      the top-ranked tenth beat its market by ${fmt(v.top_decile_avg_return_pct, 1)}% a month vs ${fmt(v.bottom_decile_avg_return_pct, 1)}% for the bottom tenth.
+      It ranks assets; it cannot time the whole market.</p>`;
+}
+
+function renderFundamentals(row, rep) {
+  $("d-years").innerHTML = ""; $("d-years-why").innerHTML = "";
+  if (rep && rep.fundamental) {
+    const a = rep.fundamental;
+    $("d-fund-h").textContent = `Accounts · score ${fmt(a.score, 0)}/100 (report of ${rep.as_of})`;
     rows($("d-fund"), [
       ["Revenue CAGR", `${fmt(a.revenue_cagr_pct, 1)}% (${a.revenue_trend})`],
       ["Net income CAGR", `${fmt(a.net_income_cagr_pct, 1)}% (${a.profit_trend})`],
@@ -508,38 +536,29 @@ async function showDetail(file, row) {
       ["Debt / Equity", fmt(a.debt_to_equity)],
       ["P/E · P/BV", `${fmt(a.pe, 1)} · ${fmt(a.pbv)}`],
       ["Dividend yield", `${fmt(a.dividend_yield_pct)}%`],
-      ["Valuation anchor vs price", r.valuation_gap_pct == null ? "n/a" : `${fmt(r.valuation_gap_pct, 1)}%`],
     ]);
     $("d-flags").innerHTML = a.flags.map(x => `<li>${esc(x)}</li>`).join("");
-  } else {
-    const fd = r.fund, p = fd.performance, s = fd.factsheet;
-    $("d-fund-h").textContent = `Fact sheet · score ${fmt(fd.score, 0)}/100`;
-    rows($("d-fund"), [
-      ["Category", s.category || "n/a"],
-      ["Expense ratio", s.expense_ratio_pct == null ? "n/a" : `${s.expense_ratio_pct}%`],
-      ["Return 1y / 3y ann.", `${fmt(p.return_1y_pct, 1)}% / ${fmt(p.return_3y_pct, 1)}%`],
-      ["Volatility", `${fmt(p.volatility_ann_pct, 1)}%`],
-      ["Sharpe / Sortino", `${fmt(p.sharpe)} / ${fmt(p.sortino)}`],
-      ["Max drawdown", `${fmt(p.max_drawdown_pct, 1)}%`],
-      ...(s.top_holdings || []).slice(0, 5).map(h => [h.symbol, `${fmt(h.weight_pct)}%`]),
-    ]);
-    $("d-flags").innerHTML = fd.flags.map(x => `<li>${esc(x)}</li>`).join("");
+    renderYears(a);
+    return;
   }
-
-  $("d-fc").innerHTML = "<tr><th>Horizon</th><th class='num'>p5</th><th class='num'>p25</th><th class='num'>Median</th>" +
-    "<th class='num'>p75</th><th class='num'>p95</th><th class='num'>P(up)</th></tr>" +
-    Object.entries(r.forecast).map(([h, v]) => `<tr><td>${h}</td><td class="num">${fmt(v.p5)}</td>
-      <td class="num">${fmt(v.p25)}</td><td class="num">${fmt(v.median)}</td><td class="num">${fmt(v.p75)}</td>
-      <td class="num">${fmt(v.p95)}</td><td class="num">${fmt(v.prob_up_pct, 0)}%</td></tr>`).join("");
-  const b = r.backtest;
-  $("d-bt").textContent = `Walk-forward check: following the 6-month trend called the next month's direction ` +
-    `${fmt(b.trend_following_hit_rate_pct, 0)}% of the time over ${b.samples} samples (base rate up ${fmt(b.base_rate_up_pct, 0)}%).`;
-  $("d-disc").textContent = r.disclaimer;
-  renderContext(r.context);
-  renderYears(r.fundamental);
-  renderElliott(r.elliott);
-  renderSmc(r.smc);
-  drawChart(r);
+  const isFund = row.asset_type === "fund", dash = v => v == null ? "–" : v;
+  $("d-fund-h").textContent = isFund ? "Fund snapshot" : `Fundamentals snapshot${row.fundamental_score == null ? "" : ` · score ${fmt(row.fundamental_score, 0)}/100`}`;
+  rows($("d-fund"), isFund ? [
+    ["Category", dash(row.sector)],
+    ["Expense ratio", row.expense_ratio_pct == null ? "–" : `${fmt(row.expense_ratio_pct, 2)}%`],
+    ["Yield", row.dividend_yield_pct == null ? "–" : `${fmt(row.dividend_yield_pct, 2)}%`],
+    ["Return 1y", row.ret_1y_pct == null ? "–" : `${fmt(row.ret_1y_pct, 1)}%`],
+    ["Volatility", `${fmt(row.volatility_pct, 1)}%`],
+  ] : [
+    ["Sector", dash(row.sector)],
+    ["P/E · P/BV", `${row.pe == null ? "–" : fmt(row.pe, 1)} · ${row.pbv == null ? "–" : fmt(row.pbv)}`],
+    ["Dividend yield", row.dividend_yield_pct == null ? "–" : `${fmt(row.dividend_yield_pct)}%`],
+    ["ROE · net margin", `${row.roe_pct == null ? "–" : fmt(row.roe_pct, 1) + "%"} · ${row.net_margin_pct == null ? "–" : fmt(row.net_margin_pct, 1) + "%"}`],
+    ["Revenue · earnings growth", `${row.revenue_growth_pct == null ? "–" : fmt(row.revenue_growth_pct, 1) + "%"} · ${row.earnings_growth_pct == null ? "–" : fmt(row.earnings_growth_pct, 1) + "%"}`],
+    ["Debt / Equity", row.debt_to_equity == null ? "–" : fmt(row.debt_to_equity)],
+    ["Analyst upside", row.analyst_upside_pct == null ? "–" : `${fmt(row.analyst_upside_pct, 1)}%`],
+  ]);
+  $("d-flags").innerHTML = `<li class="muted">Latest figures from Yahoo, refreshed with the screener (${esc(row.as_of)}).</li>`;
 }
 
 function renderContext(c) {
@@ -753,125 +772,24 @@ function drawChart(r) {
   chart.update();
 }
 
-// ---------- run on GitHub ----------
-const REPO = (() => {
-  const m = location.hostname.match(/^([^.]+)\.github\.io$/);
-  const seg = location.pathname.split("/").filter(Boolean)[0];
-  return m ? { owner: m[1], repo: seg && !seg.endsWith(".html") ? seg : `${m[1]}.github.io` }
-           : { owner: "icyice1998", repo: "my_server" };
-})();
-const store = { get: k => { try { return localStorage.getItem(k) || ""; } catch { return ""; } },
-                set: (k, v) => { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch {} } };
-const token = () => store.get("gh_token");
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-
-async function gh(path, opts = {}) {
-  const res = await fetch(`https://api.github.com/repos/${REPO.owner}/${REPO.repo}${path}`, {
-    ...opts, headers: { Accept: "application/vnd.github+json", Authorization: `Bearer ${token()}`,
-                        "X-GitHub-Api-Version": "2022-11-28", ...(opts.headers || {}) } });
-  if (!res.ok && res.status !== 204) throw new Error(`${res.status} ${(await res.text()).slice(0, 160)}`);
-  return res.status === 204 ? null : res.json();
-}
-
-function openIssue(title) {
-  const url = `https://github.com/${REPO.owner}/${REPO.repo}/issues/new?title=${encodeURIComponent(title)}` +
-    `&body=${encodeURIComponent("Submitting this issue starts the analysis. It is closed automatically with a link to the result.")}`;
-  window.open(url, "_blank", "noopener");
-}
-
-async function dispatch(workflow, inputs, label) {
-  const started = new Date(Date.now() - 5000).toISOString();
-  const repo = await gh("");
-  await gh(`/actions/workflows/${workflow}/dispatches`, { method: "POST", body: JSON.stringify({ ref: repo.default_branch, inputs }) });
-  toast(`Started ${esc(label)}. Waiting for GitHub Actions…`, true);
-  let run;
-  for (let i = 0; i < 90; i++) {
-    await sleep(i ? 10000 : 4000);
-    const runs = await gh(`/actions/workflows/${workflow}/runs?event=workflow_dispatch&per_page=5&created=${encodeURIComponent(">=" + started)}`);
-    run = runs.workflow_runs[0];
-    if (!run) continue;
-    toast(`${esc(label)}: run <a href="${run.html_url}" target="_blank" rel="noopener">#${run.run_number}</a> ${esc(run.status)}…`, true);
-    if (run.status === "completed") break;
-  }
-  if (!run || run.conclusion !== "success") throw new Error(run ? `run #${run.run_number} ${run.conclusion}` : "timed out");
-  return started;
-}
-
-// Wait until GitHub Pages serves a report newer than `since` that matches the query.
-async function waitForReport(query, since) {
-  const q = query.trim().toUpperCase();
-  for (let i = 0; i < 60; i++) {
-    await loadData();
-    const hit = index.find(e => e.generated >= since.slice(0, 16) &&
-      ((e.query || "").toUpperCase() === q || e.symbol.toUpperCase() === q || e.symbol.toUpperCase() === `${q}.BK`));
-    if (hit) return hit;
-    await sleep(10000);
-  }
-  return null;
-}
-
-async function analyze(query) {
-  query = query.trim();
-  if (!query) return;
-  const since = new Date(Date.now() - 5000).toISOString();
-  try {
-    if (token()) {
-      await dispatch("market_analysis.yml", { symbols: query, market: "AUTO", asset_type: "auto", thai_fund_sec: "false" }, query);
-      toast(`Analysis of <strong>${esc(query)}</strong> finished; waiting for GitHub Pages to publish it…`, true);
-    } else {
-      openIssue(`market analyze: ${query}`);
-      toast(`A GitHub issue for <strong>${esc(query)}</strong> opened in a new tab — press <strong>Submit new issue</strong> there.
-        This page waits for the result (about 2–3 minutes). <a href="#" id="open-settings-2">Use a token instead</a>.`, true);
-    }
-    const hit = await waitForReport(query, since);
-    if (!hit) { toast("Still not published. Reload the page in a few minutes."); return; }
-    renderOverview();
-    toast(`Done: <strong>${esc(hit.symbol)}</strong> is ready.`);
-    go(`#asset/${encodeURIComponent(hit.symbol)}`);
-  } catch (err) {
-    toast(`Could not run the analysis: ${esc(err.message)}. Check the token in settings (Actions: read and write on ${REPO.owner}/${REPO.repo}).`);
-  }
-}
-
-async function refreshScreener() {
-  const since = new Date(Date.now() - 5000).toISOString();
-  try {
-    if (token()) await dispatch("market_screener.yml", { universes: "TH,US,ETF" }, "screener");
-    else {
-      openIssue("market screen: TH,US,ETF");
-      toast("A GitHub issue opened in a new tab — press <strong>Submit new issue</strong> to refresh the screener.", true);
-    }
-    for (let i = 0; i < 60; i++) {
-      await sleep(10000);
-      await loadData();
-      if (screen.generated && screen.generated >= since.slice(0, 16)) {
-        renderOverview(); renderScreener(); toast("Screener updated."); return;
-      }
-    }
-    toast("The screener is still running. Reload the page in a few minutes.");
-  } catch (err) { toast(`Could not refresh: ${esc(err.message)}`); }
-}
-
 // ---------- events ----------
 $("search").addEventListener("submit", e => {
   e.preventDefault();
   const q = $("q").value.trim(); if (!q) return;
   toast("");
-  const rep = findReport(q), row = findRow(q);
-  const byName = !rep && !row && [...index, ...screen.rows].find(x => (x.name || "").toLowerCase().includes(q.toLowerCase()));
-  const hit = rep || row || byName;
-  if (hit) { go(`#asset/${encodeURIComponent(hit.symbol)}`); if (!rep && !findReport(hit.symbol)) toast(`Showing screener data for <strong>${esc(hit.symbol)}</strong>. Press <strong>Run full analysis</strong> for the complete report.`); }
-  else analyze(q);
+  const hits = searchUniverse(q);
+  if (hits.length) {
+    go(`#asset/${encodeURIComponent(hits[0].symbol)}`);
+    if (hits.length > 1) toast(`Showing <strong>${esc(hits[0].symbol)}</strong>. Other matches: ` +
+      hits.slice(1, 8).map(h => `<a href="#asset/${encodeURIComponent(h.symbol)}">${esc(h.symbol.replace(/\.BK$/, ""))}</a>`).join(" · "));
+  } else toast(`No asset matching <strong>${esc(q)}</strong> in the ${screen.rows.length}-asset universe (SET, S&amp;P 500, ETFs).`);
   $("q").value = "";
 });
-$("d-run").addEventListener("click", () => current && analyze(current));
-$("sc-refresh").addEventListener("click", refreshScreener);
 document.addEventListener("click", e => {
   const p = e.target.closest("[data-preset]");
   if (p) { e.preventDefault(); preset = p.dataset.preset; [sortKey, sortDir] = PRESETS[preset].sort; go("#screener"); renderScreener(); return; }
   const s = e.target.closest("[data-sym]");
-  if (s) { go(`#asset/${encodeURIComponent(s.dataset.sym)}`); return; }
-  if (e.target.id === "open-settings-2") { e.preventDefault(); $("settings").showModal(); }
+  if (s) go(`#asset/${encodeURIComponent(s.dataset.sym)}`);
 });
 document.querySelector("#sc-table thead").addEventListener("click", e => {
   const th = e.target.closest("th[data-k]"); if (!th) return;
@@ -879,12 +797,6 @@ document.querySelector("#sc-table thead").addEventListener("click", e => {
   renderScreener();
 });
 ["sc-text", "sc-market", "sc-signal"].forEach(id => $(id).addEventListener("input", renderScreener));
-$("open-settings").addEventListener("click", () => { $("run-token").value = token(); $("settings").showModal(); });
-$("settings").addEventListener("close", () => {
-  const v = $("settings").returnValue;
-  if (v === "save") { store.set("gh_token", $("run-token").value.trim()); toast("Token saved in this browser."); }
-  if (v === "clear") { store.set("gh_token", ""); toast("Token removed."); }
-});
 window.addEventListener("hashchange", route);
 
 (async () => {

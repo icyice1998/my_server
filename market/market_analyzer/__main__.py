@@ -7,6 +7,8 @@
   python -m market_analyzer MYFUND --market TH --nav nav.csv --factsheet sheet.json
   python -m market_analyzer --query "CP All, Apple, S&P 500 ETF"         # names or tickers
   python -m market_analyzer --screen TH,US,ETF                             # screener -> reports/screener.json
+  python -m market_analyzer --export-data data --screen ALL                # + browser price files in data/prices/
+  python -m market_analyzer --train model/model.json                       # retrain the prediction model
 """
 
 import argparse
@@ -24,6 +26,9 @@ def main(argv=None):
     p.add_argument("symbols", nargs="*")
     p.add_argument("--query", help="comma-separated names or tickers, resolved via Yahoo search")
     p.add_argument("--screen", metavar="UNIVERSES", help="run the screener on TH, US, ETF (comma-separated) or ALL")
+    p.add_argument("--export-data", metavar="DIR", help="with --screen: also write browser price files to DIR/prices")
+    p.add_argument("--train", metavar="MODEL_JSON", help="train the prediction model on 10 years of the universe")
+    p.add_argument("--model", default="model/model.json", help="model file used for predictions")
     p.add_argument("--market", choices=MARKETS + ("AUTO",), default="US",
                    help="with --query, AUTO picks the market from the search result")
     p.add_argument("--type", dest="asset_type", choices=ASSET_TYPES, default="auto")
@@ -36,10 +41,22 @@ def main(argv=None):
     args = p.parse_args(argv)
     os.makedirs(args.out, exist_ok=True)
 
+    if args.train:
+        from . import model, screener
+        from .universe import symbols
+        prices = screener._prices(symbols(), "10y")
+        m = model.train(prices)
+        model.save(m, args.train)
+        v = m["validation"]
+        print(f"trained on {v['assets']} assets; test year {v['test_from']}..{v['test_to']}: "
+              f"AUC {v['auc']:.3f}, top-decile {v['top_decile_avg_return_pct']:+.2f}% vs bottom "
+              f"{v['bottom_decile_avg_return_pct']:+.2f}% (1m, relative to market) -> {args.train}")
+        return 0
+
     if args.screen:
         from . import screener
-        result = screener.run(args.screen)
         path = os.path.join(args.out, "screener.json")
+        result = screener.run(args.screen, model_path=args.model, export_dir=args.export_data, previous=path)
         report.save_json(result, path)
         print(f"screened {len(result['rows'])} assets ({len(result['failed'])} failed) -> {path}")
         return 0 if result["rows"] else 1
