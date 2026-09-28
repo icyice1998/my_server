@@ -1,5 +1,29 @@
 [
   {
+    "file": "ADVANC_BK.json",
+    "symbol": "ADVANC.BK",
+    "name": "Advanced Info Service Public Company Limited",
+    "market": "TH",
+    "asset_type": "stock",
+    "as_of": "2026-09-25",
+    "generated": "2026-09-28T18:37:12+00:00",
+    "query": "ADVANC",
+    "signal": "Neutral",
+    "score": 0.4
+  },
+  {
+    "file": "AOT_BK.json",
+    "symbol": "AOT.BK",
+    "name": "Airports of Thailand Public Company Limited",
+    "market": "TH",
+    "asset_type": "stock",
+    "as_of": "2026-09-25",
+    "generated": "2026-09-28T18:37:14+00:00",
+    "query": "AOT",
+    "signal": "Neutral",
+    "score": 13.9
+  },
+  {
     "file": "BDMS_BK.json",
     "symbol": "BDMS.BK",
     "name": "Bangkok Dusit Medical Services Public Company Limited",
@@ -18,7 +42,8 @@
     "market": "TH",
     "asset_type": "stock",
     "as_of": "2026-09-25",
-    "generated": "2026-09-26T16:59:05+00:00",
+    "generated": "2026-09-28T18:37:11+00:00",
+    "query": "CPALL",
     "signal": "Neutral",
     "score": -5.6
   },
@@ -29,7 +54,8 @@
     "market": "TH",
     "asset_type": "stock",
     "as_of": "2026-09-25",
-    "generated": "2026-09-26T16:59:07+00:00",
+    "generated": "2026-09-28T18:37:10+00:00",
+    "query": "KBANK",
     "signal": "Bullish",
     "score": 60.8
   },
@@ -40,9 +66,22 @@
     "market": "TH",
     "asset_type": "stock",
     "as_of": "2026-09-25",
-    "generated": "2026-09-26T16:59:04+00:00",
+    "generated": "2026-09-28T18:37:09+00:00",
+    "query": "PTT",
     "signal": "Bullish",
-    "score": 40.2
+    "score": 40.3
+  },
+  {
+    "file": "QQQ.json",
+    "symbol": "QQQ",
+    "name": "Invesco QQQ Trust",
+    "market": "US",
+    "asset_type": "fund",
+    "as_of": "2026-09-28",
+    "generated": "2026-09-28T18:37:20+00:00",
+    "query": "QQQ",
+    "signal": "Bullish",
+    "score": 35.7
   },
   {
     "file": "VFIAX.json",
@@ -61,10 +100,11 @@
     "name": "Vanguard S&P 500 ETF",
     "market": "US",
     "asset_type": "fund",
-    "as_of": "2026-09-25",
-    "generated": "2026-09-26T16:49:06+00:00",
+    "as_of": "2026-09-28",
+    "generated": "2026-09-28T18:37:19+00:00",
+    "query": "VOO",
     "signal": "Bullish",
-    "score": 43.9
+    "score": 48.2
   },
   {
     "file": "AAPL.json",
@@ -72,10 +112,11 @@
     "name": "Apple Inc.",
     "market": "US",
     "asset_type": "stock",
-    "as_of": "2026-09-25",
-    "generated": "2026-09-26T16:49:03+00:00",
+    "as_of": "2026-09-28",
+    "generated": "2026-09-28T18:37:16+00:00",
+    "query": "AAPL",
     "signal": "Bullish",
-    "score": 30.0
+    "score": 29.5
   },
   {
     "file": "ABNB.json",
@@ -90,14 +131,27 @@
     "score": 2.9
   },
   {
+    "file": "MSFT.json",
+    "symbol": "MSFT",
+    "name": "Microsoft Corporation",
+    "market": "US",
+    "asset_type": "stock",
+    "as_of": "2026-09-28",
+    "generated": "2026-09-28T18:37:17+00:00",
+    "query": "MSFT",
+    "signal": "Bullish",
+    "score": 45.1
+  },
+  {
     "file": "NVDA.json",
     "symbol": "NVDA",
     "name": "NVIDIA Corporation",
     "market": "US",
     "asset_type": "stock",
-    "as_of": "2026-09-25",
-    "generated": "2026-09-26T16:49:05+00:00",
+    "as_of": "2026-09-28",
+    "generated": "2026-09-28T18:37:18+00:00",
+    "query": "NVDA",
     "signal": "Bullish",
-    "score": 56.7
+    "score": 54.2
   }
 ]

@@ -5,7 +5,7 @@
   "name": "PTT Public Company Limited",
   "currency": "THB",
   "as_of": "2026-09-25",
-  "generated": "2026-09-26T16:59:04+00:00",
+  "generated": "2026-09-28T18:37:09+00:00",
   "technical": {
     "price": 43.0,
     "sma20": 41.9875,
@@ -95,8 +95,8 @@
           "W3 = 2.64 x W1"
         ],
         "targets": {
-          "W3 1.618": 36.5854557615625,
-          "W3 2.618": 43.606220795955764
+          "W3 1.618": 36.585458869854676,
+          "W3 2.618": 43.606225825318504
         },
         "targets_reached": [
           "W3 1.618"
@@ -110,7 +110,7 @@
           },
           {
             "date": "2024-09-06",
-            "price": 31.32888601838256,
+            "price": 31.328887939453125,
             "label": "1"
           },
           {
@@ -169,33 +169,37 @@
     ],
     "bias_score": 57.6,
     "backtest": {
-      "samples": 182,
+      "samples": 179,
       "horizon_days": 21,
-      "direction_hit_rate_pct": 41.2,
+      "direction_hit_rate_pct": 43.6,
       "by_wave": {
         "A": {
-          "n": 2,
+          "n": 1,
           "hit_rate_pct": 100.0
         },
         "B": {
           "n": 3,
-          "hit_rate_pct": 66.7
+          "hit_rate_pct": 33.3
         },
         "C": {
-          "n": 2,
+          "n": 1,
           "hit_rate_pct": 0.0
         },
         "W2": {
-          "n": 98,
-          "hit_rate_pct": 45.9
+          "n": 103,
+          "hit_rate_pct": 48.5
         },
         "W3": {
-          "n": 64,
-          "hit_rate_pct": 26.6
+          "n": 57,
+          "hit_rate_pct": 31.6
+        },
+        "W4": {
+          "n": 1,
+          "hit_rate_pct": 0.0
         },
         "W5": {
           "n": 13,
-          "hit_rate_pct": 69.2
+          "hit_rate_pct": 61.5
         }
       }
     }
@@ -345,12 +349,12 @@
       "bearish BOS": {
         "1m": {
           "n": 16,
-          "median_pct": 1.525302552826202,
-          "up_pct": 56.25
+          "median_pct": 0.7188536914871979,
+          "up_pct": 50.0
         },
         "3m": {
           "n": 16,
-          "median_pct": 3.244973338119106,
+          "median_pct": 3.3418145799371857,
           "up_pct": 62.5
         }
       },
@@ -362,133 +366,133 @@
         },
         "3m": {
           "n": 14,
-          "median_pct": 0.8395036025545366,
+          "median_pct": 0.8395003597284845,
           "up_pct": 57.14285714285714
         }
       },
       "bullish BOS": {
         "1m": {
-          "n": 13,
-          "median_pct": -0.12028933098620076,
-          "up_pct": 30.76923076923077
+          "n": 12,
+          "median_pct": 0.0,
+          "up_pct": 41.66666666666667
         },
         "3m": {
-          "n": 12,
-          "median_pct": -2.3056560720294605,
-          "up_pct": 41.66666666666667
+          "n": 11,
+          "median_pct": 0.2786193601729936,
+          "up_pct": 54.54545454545454
         }
       },
       "bearish CHoCH": {
         "1m": {
           "n": 14,
-          "median_pct": -0.02194654210597724,
-          "up_pct": 50.0
+          "median_pct": 1.9917586073181393,
+          "up_pct": 57.14285714285714
         },
         "3m": {
           "n": 14,
-          "median_pct": 3.422612904458766,
+          "median_pct": 3.4226268177470764,
           "up_pct": 71.42857142857143
         }
       }
     },
-    "reason": "After the 13 past bullish BOS events on this chart, the next month's median move was -0.1% and price was higher 31% of the time.",
+    "reason": "After the 12 past bullish BOS events on this chart, the next month's median move was +0.0% and price was higher 42% of the time.",
     "bias_score": 50.0
   },
   "context": {
     "lookback_years": 4.8,
     "base": {
       "1m": {
-        "median_pct": 0.0989111180543567,
-        "up_pct": 50.1669449081803,
-        "n": 1198
+        "median_pct": 0.09891112444748718,
+        "up_pct": 50.20885547201337,
+        "n": 1197
       },
       "3m": {
-        "median_pct": 1.872053331147705,
-        "up_pct": 56.141868512110726,
-        "n": 1156
+        "median_pct": 1.872067223897389,
+        "up_pct": 56.19047619047619,
+        "n": 1155
       }
     },
     "parameters": {
       "rsi14": {
         "label": "RSI 14",
         "value": 67.8707612852077,
-        "percentile": 90.89417555373257,
-        "p10": 36.54185485557957,
-        "p90": 67.07986150203172,
-        "median": 51.30377177172784,
+        "percentile": 91.13300492610837,
+        "p10": 36.54176177986516,
+        "p90": 67.07984877148506,
+        "median": 51.24326259337607,
         "forward": {
           "1m": {
-            "n": 215,
-            "median_pct": -0.7407406939730854,
-            "up_pct": 40.0
+            "n": 212,
+            "median_pct": -0.6970695583186914,
+            "up_pct": 41.509433962264154
           },
           "3m": {
-            "n": 189,
-            "median_pct": -1.7481689026223934,
-            "up_pct": 38.62433862433862
+            "n": 186,
+            "median_pct": -1.4927806470544591,
+            "up_pct": 40.32258064516129
           }
         },
-        "edge_up_pct": -10.166944908180298,
+        "edge_up_pct": -8.699421509749214,
         "read": "historically a headwind",
-        "reason": "RSI 14 67.87 is unusually high (higher than 91% of the last 4.8y; usual range 36.54 to 67.08). On 215 similar past days the next month's median move was -0.7%, up 40% of the time vs 50% on all days: historically a headwind."
+        "reason": "RSI 14 67.87 is unusually high (higher than 91% of the last 4.8y; usual range 36.54 to 67.08). On 212 similar past days the next month's median move was -0.7%, up 42% of the time vs 50% on all days: historically a headwind."
       },
       "dist_sma50_pct": {
         "label": "Price vs SMA 50 (%)",
         "value": 6.1990614966658475,
-        "percentile": 90.0,
-        "p10": -3.7781836981340775,
-        "p90": 6.1673583858971215,
-        "median": 0.7034822876287872,
+        "percentile": 89.99144568006844,
+        "p10": -3.778883580395702,
+        "p90": 6.170880953760311,
+        "median": 0.7036339189618657,
         "forward": {
           "1m": {
-            "n": 214,
-            "median_pct": -0.6803025608482616,
-            "up_pct": 41.58878504672897
+            "n": 212,
+            "median_pct": -0.6803058536935969,
+            "up_pct": 41.509433962264154
           },
           "3m": {
-            "n": 182,
-            "median_pct": -1.7481689026223934,
-            "up_pct": 34.065934065934066
+            "n": 180,
+            "median_pct": -1.7481498379977034,
+            "up_pct": 33.88888888888889
           }
         },
-        "edge_up_pct": -8.578159861451326,
+        "edge_up_pct": -8.699421509749214,
         "read": "historically a headwind",
-        "reason": "Price vs SMA 50 (%) 6.20 is unusually high (higher than 90% of the last 4.8y; usual range -3.78 to 6.17). On 214 similar past days the next month's median move was -0.7%, up 42% of the time vs 50% on all days: historically a headwind."
+        "reason": "Price vs SMA 50 (%) 6.20 is high (higher than 90% of the last 4.8y; usual range -3.78 to 6.17). On 212 similar past days the next month's median move was -0.7%, up 42% of the time vs 50% on all days: historically a headwind."
       },
       "dist_sma200_pct": {
         "label": "Price vs SMA 200 (%)",
         "value": 19.71254149210604,
-        "percentile": 99.50980392156863,
-        "p10": -5.062354436267455,
-        "p90": 12.645657743504096,
-        "median": 2.1345653633935258,
+        "percentile": 99.50932286555447,
+        "p10": -5.024266189322299,
+        "p90": 12.656373508974427,
+        "median": 2.1347485445846637,
         "forward": {
           "1m": {
-            "n": 87,
-            "median_pct": 1.8867924528301883,
-            "up_pct": 55.172413793103445
+            "n": 86,
+            "median_pct": 1.6236683352586323,
+            "up_pct": 54.65116279069767
           },
           "3m": {
-            "n": 51,
-            "median_pct": 6.756756756756754,
-            "up_pct": 98.0392156862745
+            "n": 50,
+            "median_pct": 6.615788450320825,
+            "up_pct": 98.0
           }
         },
-        "edge_up_pct": 5.005468884923147,
+        "edge_up_pct": 4.4423073186843,
         "read": "mild tailwind",
-        "reason": "Price vs SMA 200 (%) 19.71 is unusually high (higher than 100% of the last 4.8y; usual range -5.06 to 12.65). On 87 similar past days the next month's median move was +1.9%, up 55% of the time vs 50% on all days: mild tailwind."
+        "reason": "Price vs SMA 200 (%) 19.71 is unusually high (higher than 100% of the last 4.8y; usual range -5.02 to 12.66). On 86 similar past days the next month's median move was +1.6%, up 55% of the time vs 50% on all days: mild tailwind."
       },
       "momentum_3m_pct": {
         "label": "3-month return (%)",
         "value": 21.126760563380277,
-        "percentile": 99.30795847750865,
-        "p10": -6.713906566303046,
-        "p90": 11.111101313305237,
-        "median": 1.872053331147705,
+        "percentile": 99.3073593073593,
+        "p10": -6.714421651382258,
+        "p90": 11.111108661659653,
+        "median": 1.872067223897389,
         "forward": {
           "1m": {
             "n": 102,
-            "median_pct": 0.7118253375663408,
+            "median_pct": 0.711828668115777,
             "up_pct": 51.9607843137255
           },
           "3m": {
@@ -497,186 +501,186 @@
             "up_pct": 64.04494382022472
           }
         },
-        "edge_up_pct": 1.7938394055451994,
+        "edge_up_pct": 1.7519288417121288,
         "read": "no clear edge",
         "reason": "3-month return (%) 21.13 is unusually high (higher than 99% of the last 4.8y; usual range -6.71 to 11.11). On 102 similar past days the next month's median move was +0.7%, up 52% of the time vs 50% on all days: no clear edge."
       },
       "macd_hist_pct": {
         "label": "MACD histogram (% of price)",
         "value": -0.01620745322252914,
-        "percentile": 48.31829368334701,
-        "p10": -0.4211828008807144,
-        "p90": 0.4747635740250884,
-        "median": -0.0005487540941773112,
+        "percentile": 48.35796387520526,
+        "p10": -0.4212488198212648,
+        "p90": 0.47486197728353674,
+        "median": -0.000731647805977353,
         "forward": {
           "1m": {
             "n": 234,
-            "median_pct": -0.11672391651881275,
-            "up_pct": 44.01709401709402
+            "median_pct": 0.0,
+            "up_pct": 44.44444444444444
           },
           "3m": {
             "n": 227,
-            "median_pct": 0.039689761003591784,
+            "median_pct": 0.039702943446817685,
             "up_pct": 50.22026431718062
           }
         },
-        "edge_up_pct": -6.149850891086281,
+        "edge_up_pct": -5.764411027568926,
         "read": "mild headwind",
-        "reason": "MACD histogram (% of price) -0.02 is typical (higher than 48% of the last 4.8y; usual range -0.42 to 0.47). On 234 similar past days the next month's median move was -0.1%, up 44% of the time vs 50% on all days: mild headwind."
+        "reason": "MACD histogram (% of price) -0.02 is typical (higher than 48% of the last 4.8y; usual range -0.42 to 0.47). On 234 similar past days the next month's median move was +0.0%, up 44% of the time vs 50% on all days: mild headwind."
       },
       "volatility_20d_pct": {
         "label": "20-day volatility (ann. %)",
-        "value": 17.477070778409566,
-        "percentile": 50.54211843202668,
-        "p10": 13.213054365191804,
-        "p90": 23.79487639062851,
-        "median": 17.411401228123253,
+        "value": 17.47707077840958,
+        "percentile": 50.5008347245409,
+        "p10": 13.21305436519182,
+        "p90": 23.79509554089617,
+        "median": 17.411614881053076,
         "forward": {
           "1m": {
             "n": 232,
-            "median_pct": -0.6993163716787931,
+            "median_pct": -0.6993066929851577,
             "up_pct": 41.810344827586206
           },
           "3m": {
             "n": 223,
-            "median_pct": 1.0635518626211038,
+            "median_pct": 1.0635450260691126,
             "up_pct": 52.01793721973094
           }
         },
-        "edge_up_pct": -8.356600080594092,
+        "edge_up_pct": -8.398510644427162,
         "read": "historically a headwind",
-        "reason": "20-day volatility (ann. %) 17.48 is typical (higher than 51% of the last 4.8y; usual range 13.21 to 23.79). On 232 similar past days the next month's median move was -0.7%, up 42% of the time vs 50% on all days: historically a headwind."
+        "reason": "20-day volatility (ann. %) 17.48 is typical (higher than 51% of the last 4.8y; usual range 13.21 to 23.80). On 232 similar past days the next month's median move was -0.7%, up 42% of the time vs 50% on all days: historically a headwind."
       },
       "drawdown_52w_pct": {
         "label": "Drop from 52-week high (%)",
         "value": -0.5780346820809301,
-        "percentile": 91.72413793103448,
-        "p10": -13.826690357191707,
+        "percentile": 91.71699741156169,
+        "p10": -13.826707060765086,
         "p90": -0.6711409395973145,
-        "median": -5.254000798566539,
+        "median": -5.254000127581615,
         "forward": {
           "1m": {
             "n": 191,
-            "median_pct": -1.3623811770604455,
+            "median_pct": -1.3623938285957538,
             "up_pct": 31.413612565445025
           },
           "3m": {
             "n": 165,
-            "median_pct": -1.778044221930919,
+            "median_pct": -1.7780312723824854,
             "up_pct": 36.36363636363637
           }
         },
-        "edge_up_pct": -18.753332342735273,
+        "edge_up_pct": -18.795242906568344,
         "read": "historically a headwind",
         "reason": "Drop from 52-week high (%) -0.58 is at/near the 52-week high (higher than 92% of the last 4.8y; usual range -13.83 to -0.67). On 191 similar past days the next month's median move was -1.4%, up 31% of the time vs 50% on all days: historically a headwind."
       },
       "range_pos_3m_pct": {
         "label": "Position in 3-month range (%)",
         "value": 91.17647058823529,
-        "percentile": 87.20829732065687,
-        "p10": 13.33325208880621,
-        "p90": 92.5664252717054,
-        "median": 59.40798968863158,
+        "percentile": 87.19723183391004,
+        "p10": 13.333310260425419,
+        "p90": 92.57077720850933,
+        "median": 59.40794777688547,
         "forward": {
           "1m": {
-            "n": 206,
-            "median_pct": -1.3623811770604455,
-            "up_pct": 33.00970873786408
+            "n": 209,
+            "median_pct": -1.3623938285957538,
+            "up_pct": 32.057416267942585
           },
           "3m": {
-            "n": 183,
-            "median_pct": -1.603494824624374,
-            "up_pct": 36.6120218579235
+            "n": 186,
+            "median_pct": -1.733427804332538,
+            "up_pct": 35.483870967741936
           }
         },
-        "edge_up_pct": -17.157236170316217,
+        "edge_up_pct": -18.151439204070783,
         "read": "historically a headwind",
-        "reason": "Position in 3-month range (%) 91.18 is high (higher than 87% of the last 4.8y; usual range 13.33 to 92.57). On 206 similar past days the next month's median move was -1.4%, up 33% of the time vs 50% on all days: historically a headwind."
+        "reason": "Position in 3-month range (%) 91.18 is high (higher than 87% of the last 4.8y; usual range 13.33 to 92.57). On 209 similar past days the next month's median move was -1.4%, up 32% of the time vs 50% on all days: historically a headwind."
       },
       "adx14": {
         "label": "ADX 14 (trend strength)",
         "value": 35.940687707348566,
-        "percentile": 90.64039408866995,
-        "p10": 14.245512172806686,
-        "p90": 35.11615899122332,
-        "median": 21.24777043261883,
+        "percentile": 89.4001643385374,
+        "p10": 14.445035752586247,
+        "p90": 36.39818959426118,
+        "median": 21.50619710895071,
         "forward": {
           "1m": {
-            "n": 229,
+            "n": 236,
             "median_pct": 0.0,
-            "up_pct": 46.288209606986904
+            "up_pct": 45.76271186440678
           },
           "3m": {
-            "n": 222,
-            "median_pct": 0.8715091673951791,
-            "up_pct": 53.153153153153156
+            "n": 229,
+            "median_pct": 1.9736961740488557,
+            "up_pct": 57.64192139737992
           }
         },
-        "edge_up_pct": -3.8787353011933945,
-        "read": "no clear edge",
-        "reason": "ADX 14 (trend strength) 35.94 is unusually high (higher than 91% of the last 4.8y; usual range 14.25 to 35.12). On 229 similar past days the next month's median move was +0.0%, up 46% of the time vs 50% on all days: no clear edge."
+        "edge_up_pct": -4.446143607606587,
+        "read": "mild headwind",
+        "reason": "ADX 14 (trend strength) 35.94 is high (higher than 89% of the last 4.8y; usual range 14.45 to 36.40). On 236 similar past days the next month's median move was +0.0%, up 46% of the time vs 50% on all days: mild headwind."
       },
       "volume_ratio": {
         "label": "Volume vs 50-day avg (x)",
         "value": 1.5341042536713405,
-        "percentile": 83.07692307692308,
-        "p10": 0.3327077436698653,
-        "p90": 1.8283694500145817,
-        "median": 0.9070978205509537,
+        "percentile": 83.06244653550043,
+        "p10": 0.3326780453621382,
+        "p90": 1.8285478341576087,
+        "median": 0.9086034417969043,
         "forward": {
           "1m": {
-            "n": 229,
-            "median_pct": 0.982727838938402,
-            "up_pct": 58.515283842794766
+            "n": 228,
+            "median_pct": 0.9080326559830154,
+            "up_pct": 58.333333333333336
           },
           "3m": {
             "n": 213,
-            "median_pct": 0.74554807300522,
+            "median_pct": 0.7455353293922107,
             "up_pct": 56.33802816901409
           }
         },
-        "edge_up_pct": 8.348338934614468,
+        "edge_up_pct": 8.124477861319967,
         "read": "historically a tailwind",
-        "reason": "Volume vs 50-day avg (x) 1.53 is high (higher than 83% of the last 4.8y; usual range 0.33 to 1.83). On 229 similar past days the next month's median move was +1.0%, up 59% of the time vs 50% on all days: historically a tailwind."
+        "reason": "Volume vs 50-day avg (x) 1.53 is high (higher than 83% of the last 4.8y; usual range 0.33 to 1.83). On 228 similar past days the next month's median move was +0.9%, up 58% of the time vs 50% on all days: historically a tailwind."
       }
     }
   },
   "forecast": {
     "1m": {
       "days": 21,
-      "p5": 39.41051109959496,
-      "p25": 41.589672403432004,
-      "median": 43.26635045118397,
-      "p75": 44.990778853531275,
-      "p95": 47.55225460678992,
+      "p5": 39.4105144762465,
+      "p25": 41.58966918396554,
+      "median": 43.26635494163256,
+      "p75": 44.99078176391039,
+      "p95": 47.552254508227065,
       "prob_up_pct": 54.36,
-      "expected_return_pct": 0.7772885257276263
+      "expected_return_pct": 0.7772883102847628
     },
     "3m": {
       "days": 63,
-      "p5": 37.44256393468025,
-      "p25": 41.06197464990575,
-      "median": 43.85396060341372,
-      "p75": 46.82528979089828,
-      "p95": 51.256207647292435,
+      "p5": 37.442585947993365,
+      "p25": 41.0619767016166,
+      "median": 43.853961007985674,
+      "p75": 46.82527435702816,
+      "p95": 51.25622228001117,
       "prob_up_pct": 58.36,
-      "expected_return_pct": 2.4276598402293015
+      "expected_return_pct": 2.427659151074435
     },
     "6m": {
       "days": 126,
-      "p5": 35.61529269027827,
-      "p25": 40.73356391915922,
-      "median": 44.755410886558906,
-      "p75": 49.13441774251025,
-      "p95": 56.76080677927499,
+      "p5": 35.61529978706531,
+      "p25": 40.73357832084055,
+      "median": 44.755424540671044,
+      "p75": 49.13443011670632,
+      "p95": 56.76082090880457,
       "prob_up_pct": 61.62,
-      "expected_return_pct": 5.242173909271131
+      "expected_return_pct": 5.242173274307471
     }
   },
   "backtest": {
-    "samples": 207,
-    "trend_following_hit_rate_pct": 50.72463768115942,
-    "base_rate_up_pct": 48.275862068965516
+    "samples": 206,
+    "trend_following_hit_rate_pct": 51.45631067961165,
+    "base_rate_up_pct": 45.614035087719294
   },
   "fundamental": {
     "fiscal_years": 4,
@@ -694,9 +698,9 @@
     "current_ratio": 1.599972776275794,
     "free_cash_flow": 127599798526.0,
     "cash_conversion": 3.3502841012187567,
-    "pe": 9.907834,
-    "forward_pe": 11.422014,
-    "pbv": 1.0199,
+    "pe": 9.792626,
+    "forward_pe": 11.289201,
+    "pbv": 1.0080407,
     "dividend_yield_pct": 4.88,
     "sector": "Energy",
     "currency": "THB",
@@ -762,20 +766,20 @@
     "fair_value": {
       "graham_number": 64.16402146062853,
       "peg1_value": 34.72,
-      "analyst_target_mean": 42.07368,
+      "analyst_target_mean": 42.29737,
       "analyst_count": 19
     }
   },
-  "valuation_gap_pct": -2.154232558139524,
+  "valuation_gap_pct": -1.6340232558139545,
   "outlook": {
-    "score": 40.2,
+    "score": 40.3,
     "signal": "Bullish",
     "agreement_pct": 83.0,
     "components": {
       "trend": 62.8,
       "momentum_prob": 16.7,
       "fundamentals": 30.0,
-      "valuation": -4.3,
+      "valuation": -3.3,
       "elliott": 57.6,
       "smc": 50.0
     }
@@ -2790,5 +2794,6 @@
       35.9194
     ]
   },
-  "disclaimer": "Statistical and rule-based analysis for education only. Not investment advice; past patterns do not guarantee future prices."
+  "disclaimer": "Statistical and rule-based analysis for education only. Not investment advice; past patterns do not guarantee future prices.",
+  "query": "PTT"
 }
