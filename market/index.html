@@ -261,8 +261,7 @@
       <div class="card span-6"><h2>Price pattern</h2><table id="d-tech"></table><ul class="flags" id="d-patterns"></ul></div>
       <div class="card span-12 scroll"><h2 id="d-ctx-h">Why: each parameter vs its own history</h2>
         <table id="d-ctx"></table><p class="muted" id="d-ctx-note"></p></div>
-      <div class="card span-6"><h2 id="d-fund-h"></h2><table id="d-fund"></table><ul class="flags" id="d-flags"></ul>
-        <div class="scroll"><table id="d-years"></table></div><ul class="flags" id="d-years-why"></ul></div>
+      <div class="card span-6"><h2 id="d-fund-h"></h2><table id="d-fund"></table><ul class="flags" id="d-flags"></ul></div>
       <div class="card span-6 scroll"><h2>Price projection</h2><table id="d-fc"></table><p class="muted" id="d-bt"></p></div>
     </div>
     <p class="disclaimer" id="d-disc"></p>
@@ -277,7 +276,7 @@ const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "
 const css = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 const pct = (v, d = 1) => v == null ? "–" : `<span class="${v > 0 ? "up" : v < 0 ? "down" : ""}">${v > 0 ? "+" : ""}${fmt(v, d)}%</span>`;
 const sig = s => `<span class="signal ${esc(s)}">${esc(s)}</span>`;
-let index = [], screen = { rows: [] }, chart, current = null, MODEL = null;
+let screen = { rows: [] }, chart, current = null, MODEL = null;
 
 function rows(el, data) {
   el.innerHTML = data.map(([k, v]) => `<tr><td>${esc(k)}</td><td class="num">${esc(v)}</td></tr>`).join("");
@@ -290,8 +289,8 @@ const toast = (html, sticky) => {
 
 async function loadData() {
   const get = p => fetch(`${p}?t=${Date.now()}`).then(r => r.ok ? r.json() : null).catch(() => null);
-  const [i, s, m] = await Promise.all([get("reports/index.json"), get("reports/screener.json"), get("model/model.json")]);
-  index = i || []; screen = s || { rows: [] }; MODEL = m;
+  const [s, m] = await Promise.all([get("reports/screener.json"), get("model/model.json")]);
+  screen = s || { rows: [] }; MODEL = m;
   $("q-list").innerHTML = [...new Map(screen.rows.map(r => [r.symbol, r.name])).entries()]
     .map(([sym, name]) => `<option value="${esc(sym.replace(/\.BK$/, ""))}">${esc(name)}</option>`).join("");
 }
@@ -416,7 +415,6 @@ function renderScreener() {
 }
 
 // ---------- asset view (analysed in the browser by engine.js) ----------
-const findReport = q => { q = q.toUpperCase(); return index.find(e => e.symbol.toUpperCase() === q || e.symbol.toUpperCase() === `${q}.BK`); };
 const findRow = q => { q = q.toUpperCase(); return screen.rows.find(r => r.symbol.toUpperCase() === q || r.symbol.toUpperCase() === `${q}.BK`); };
 const priceFile = sym => `data/prices/${sym.replace(/\./g, "_")}.json`;
 
@@ -450,19 +448,16 @@ async function showAsset(sym) {
   $("d-title").textContent = `${row.name} (${row.symbol})`;
   $("d-sub").textContent = "Analysing in your browser…";
   $("quick").hidden = true;
-  const [raw, rep] = await Promise.all([
-    fetch(priceFile(row.symbol)).then(r => r.ok ? r.json() : null).catch(() => null),
-    findReport(row.symbol) ? fetch(`reports/${findReport(row.symbol).file}`).then(r => r.ok ? r.json() : null).catch(() => null) : null,
-  ]);
+  const raw = await fetch(priceFile(row.symbol)).then(r => r.ok ? r.json() : null).catch(() => null);
   if (current !== row.symbol) return;  // user moved on while loading
   if (!raw) { $("d-sub").textContent = "Price data for this asset is not published yet."; $("detail").hidden = true; return; }
   const bars = Engine.decode(raw);
   const r = Engine.analyze(bars, { symbol: row.symbol, name: row.name, market: row.market, asset_type: row.asset_type,
     currency: row.currency, snapshot: row }, MODEL);
-  render(r, row, rep);
+  render(r, row);
 }
 
-function render(r, row, rep) {
+function render(r, row) {
   const t = r.technical, o = r.outlook, f3 = r.forecast["3m"], ew = r.elliott.primary, m = r.model;
   $("detail").hidden = false;
   $("d-sub").textContent = `${r.market} · ${r.asset_type} · ${row.sector || ""} · ${r.currency || ""} · prices to ${r.as_of} · analysed in your browser`;
@@ -487,7 +482,7 @@ function render(r, row, rep) {
     ["Resistance", t.resistance.map(x => fmt(x)).join(", ")],
   ]);
   $("d-patterns").innerHTML = t.patterns.map(p => `<li>${esc(p)}</li>`).join("");
-  renderFundamentals(row, rep);
+  renderFundamentals(row);
   $("d-fc").innerHTML = "<tr><th>Horizon</th><th class='num'>p5</th><th class='num'>p25</th><th class='num'>Median</th>" +
     "<th class='num'>p75</th><th class='num'>p95</th><th class='num'>P(up)</th></tr>" +
     Object.entries(r.forecast).map(([h, v]) => `<tr><td>${h}</td><td class="num">${fmt(v.p5)}</td>
@@ -522,24 +517,7 @@ function renderModel(m) {
       It ranks assets; it cannot time the whole market.</p>`;
 }
 
-function renderFundamentals(row, rep) {
-  $("d-years").innerHTML = ""; $("d-years-why").innerHTML = "";
-  if (rep && rep.fundamental) {
-    const a = rep.fundamental;
-    $("d-fund-h").textContent = `Accounts · score ${fmt(a.score, 0)}/100 (report of ${rep.as_of})`;
-    rows($("d-fund"), [
-      ["Revenue CAGR", `${fmt(a.revenue_cagr_pct, 1)}% (${a.revenue_trend})`],
-      ["Net income CAGR", `${fmt(a.net_income_cagr_pct, 1)}% (${a.profit_trend})`],
-      ["Net margin", `${fmt(a.net_margin_pct, 1)}%`],
-      ["ROE / ROA", `${fmt(a.roe_pct, 1)}% / ${fmt(a.roa_pct, 1)}%`],
-      ["Debt / Equity", fmt(a.debt_to_equity)],
-      ["P/E · P/BV", `${fmt(a.pe, 1)} · ${fmt(a.pbv)}`],
-      ["Dividend yield", `${fmt(a.dividend_yield_pct)}%`],
-    ]);
-    $("d-flags").innerHTML = a.flags.map(x => `<li>${esc(x)}</li>`).join("");
-    renderYears(a);
-    return;
-  }
+function renderFundamentals(row) {
   const isFund = row.asset_type === "fund", dash = v => v == null ? "–" : v;
   $("d-fund-h").textContent = isFund ? "Fund snapshot" : `Fundamentals snapshot${row.fundamental_score == null ? "" : ` · score ${fmt(row.fundamental_score, 0)}/100`}`;
   rows($("d-fund"), isFund ? [
@@ -578,17 +556,6 @@ function renderContext(c) {
   $("d-ctx-note").textContent = `Baseline, all days: next-month median ${fmt(base.median_pct, 1)}%, up ${fmt(base.up_pct, 0)}% of the time. ` +
     "Similar days = past days ranked within ±10 percentile points of today (grey band = usual 10th–90th range). " +
     "They overlap in time, so the sample is smaller than it looks.";
-}
-
-function renderYears(a) {
-  if (!a || !a.history || !a.history.length) { $("d-years").innerHTML = ""; $("d-years-why").innerHTML = ""; return; }
-  const big = v => v == null ? "n/a" : Math.abs(v) >= 1e9 ? fmt(v / 1e9, 1) + "B" : Math.abs(v) >= 1e6 ? fmt(v / 1e6, 1) + "M" : fmt(v, 0);
-  $("d-years").innerHTML = "<tr><th>Year</th><th class='num'>Revenue</th><th class='num'>Net income</th>" +
-    "<th class='num'>Net margin</th><th class='num'>ROE</th><th class='num'>D/E</th></tr>" +
-    a.history.map(h => `<tr><td>${h.year}</td><td class="num">${big(h.revenue)}</td><td class="num">${big(h.net_income)}</td>
-      <td class="num">${fmt(h.net_margin_pct, 1)}%</td><td class="num">${fmt(h.roe_pct, 1)}%</td>
-      <td class="num">${fmt(h.debt_to_equity)}</td></tr>`).join("");
-  $("d-years-why").innerHTML = a.reasons.map(x => `<li>${esc(x)}</li>`).join("");
 }
 
 function renderElliott(e) {

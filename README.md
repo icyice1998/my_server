@@ -6,7 +6,7 @@ path, and owns its own workflows, so they do not step on each other.
 
 | Project | Folder | Page | Workflows |
 |---|---|---|---|
-| Market Analyzer: Thai / US stocks and funds, Elliott Wave, SMC, screener, prediction model | [`market/`](market/README.md) | `/my_server/market/` | `market_screener.yml`, `market_model.yml`, `market_analysis.yml` |
+| Market Analyzer: Thai / US stocks and funds, Elliott Wave, SMC, screener, prediction model | [`market/`](market/README.md) | `/my_server/market/` | `market_screener.yml`, `market_model.yml` |
 
 The root `index.html` is only a hub that links to each project's page (and forwards old Market Analyzer links).
 

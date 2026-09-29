@@ -41,7 +41,11 @@ Walk-forward check on the last year, never seen in training: AUC 0.522, well cal
 beat its market by about +2.6% a month vs -0.1% for the bottom tenth. The numbers are republished with every
 retrain in `model/model.json` and shown on the dashboard. It ranks assets; it cannot time the market.
 
-All commands run from this folder (`cd market`).
+### Command line (local only)
+
+The deep per-asset report (4 years of financial statements, fund fact sheets, Thai mutual funds via the SEC API)
+is kept as a local command-line tool. It is no longer run on GitHub, so it uses no Actions minutes.
+All commands run from this folder (`cd market`); reports are written to `reports/` on your machine.
 
 ```bash
 pip install -r requirements.txt
@@ -59,8 +63,8 @@ python -m pytest -q tests
 Every parameter also gets a **reason compared with its own past**: its percentile rank over the last ~5 years
 and what price did over the next 1 and 3 months on past days with a similar reading ("tailwind", "headwind"
 or "no clear edge" vs the all-days base rate). Elliott counts are re-run weekly on past data to report their
-own hit rate, SMC structure events report what followed past BOS/CHoCH on the same chart, and accounts are
-compared year by year.
+own hit rate, and SMC structure events report what followed past BOS/CHoCH on the same chart. The local
+command-line report also compares the accounts year by year.
 
 ### How the site stays current (GitHub Actions, no user action)
 
@@ -68,9 +72,9 @@ compared year by year.
 |---|---|---|
 | `market_screener.yml` | weekdays 18:40 Bangkok | `reports/screener.json` (with model scores) and `data/prices/*.json` for the browser |
 | `market_model.yml` | Sundays | retrained `model/model.json` with fresh validation numbers |
-| `market_analysis.yml` | weekdays + manual | optional full Python reports (4-year accounts shown on the asset page when present) |
 
-GitHub Pages must deploy from branch `main`, folder `/ (root)`. Optional secret `SEC_API_KEY` for Thai mutual funds (CLI).
+Only these two jobs run on GitHub: about one short run per weekday and one per week. Nothing is started per
+asset or per visitor. GitHub Pages must deploy from branch `main`, folder `/ (root)`.
 
 ## Project structure
 
@@ -98,14 +102,13 @@ market/
 │   ├── export.py                 # Compact daily price files for the browser
 │   ├── names.json                # Asset names and types for search
 │   └── universe.py               # 769 assets: SET, S&P 500, ETFs
-├── reports/                      # Generated reports + index.json (read by the web app)
+├── reports/screener.json         # Screener rows + model scores (read by the web app)
 ├── tests/                        # Offline unit tests (pytest)
 └── README.md
 
 .github/workflows/                # at the repository root
 ├── market_screener.yml           # Weekday screener + browser price data
-├── market_model.yml              # Weekly model retraining
-└── market_analysis.yml           # Optional full Python reports
+└── market_model.yml              # Weekly model retraining
 ```
 
 Data: Yahoo Finance via `yfinance`. Thai mutual funds are not on Yahoo; use the SEC Thailand open API
