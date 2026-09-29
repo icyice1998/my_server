@@ -38,3 +38,7 @@ Thumbs.db
 
 .env
 .env.local
+
+# Market Analyzer: per-asset reports are made locally with the CLI; only the screener is published
+market/reports/*
+!market/reports/screener.json
