@@ -5,6 +5,16 @@ Live page: https://icyice1998.github.io/my_server/market/
 A static dashboard for **S&P 500** and **SET** stocks. Everything (signals, price plans, sizing, backtests) runs in
 the visitor's browser from published data; nothing is computed per request on a server or on GitHub.
 
+## Pages (menu grouped by function)
+
+| Group | Page | What it is for |
+|---|---|---|
+| Trade | **Signals** | today's macro gate, bull-run checks, BUY / HOLD / EXIT list, chart and price plan per stock |
+| Trade | **Strategy** | account, slots, sizing, sector cap, entry and exit rules, fees (saved per market) |
+| Trade | **Backtest** | the strategy over 1–4 years, plus the 108-combination auto backtest with in-sample vs out-of-sample |
+| Research | **Algo Lab** | build your own rule algorithm, ROC AUC decision test and portfolio backtest |
+| Research | **ML Model** | one-click machine learning: verdict, today's top picks with reasons, unseen-period backtest |
+
 ## Views
 
 - **Live signals**: macro gate, positions / slots, unit size, signal counts, breadth, model-portfolio value,
@@ -34,9 +44,21 @@ Build your own algorithm from rules and test how good its decisions are.
 - **Portfolio backtest** of the same algorithm with the account, slots, sector cap, sizing and fees from the Strategy
   tab. Algorithms are saved in the browser; four presets are included (none of them shows a real edge: AUC ≈ 0.49–0.50).
 
-## Machine learning · improve the AUC (`ml.js`)
+## ML Model page (`ml.js`, `ml-page.js`)
 
-Below the Algo Lab, **Train ML model** learns a better score than "share of entry rules met", entirely in the browser.
+Three steps: **1** what to predict (beat the market over 2 weeks / 1 month / 3 months, or price up over 1 month),
+**2** a starting idea (current Algo Lab algorithm, a preset or a saved one; its rules become one input), **3** Train model
+(~10 s in the browser). Results, simplest first:
+
+- **Verdict**: ✓ useful / ~ small edge, not proven / ✗ no reliable edge, with three plain numbers: how often it ranks the
+  right stock of a pair higher (= AUC), how often its top picks hit the target vs the average stock, and the unseen-period return.
+- **Today's top picks**: every stock ranked at the latest close by the model refitted on all labelled data, the estimated
+  chance, and the 4 strongest reasons (logistic contributions; ▲ raises, ▼ lowers the chance). Tap a row for the chart.
+- **What the model looks at** and **Did it make money?** (unseen-period backtest vs the idea's rules and the index).
+- **Details for experts** (folded): test AUCs with CIs, ROC, model comparison, deciles, bootstrap of the AUC gain.
+  Options (folded): history length, top 10/20/30%, ML only or ML + rules.
+
+How the model works:
 
 - **Features** (known at day *t*'s close): 18 price features of each stock ranked across all stocks that day (returns 5d–12m,
   12-1 momentum, volatility, RSI 5/14, % vs SMA 20/50/200, SMA50 vs SMA200, distance to 20-day / 52-week high and 52-week low,

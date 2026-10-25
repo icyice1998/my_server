@@ -285,7 +285,7 @@ function readStrategyForm() {
 // ---------- routing & events ----------
 function route() {
   const v = (location.hash.slice(1) || "signals");
-  const view = ["signals", "backtest", "strategy", "lab"].includes(v) ? v : "signals";
+  const view = ["signals", "backtest", "strategy", "lab", "ml"].includes(v) ? v : "signals";
   document.querySelectorAll(".view").forEach(s => { s.hidden = s.id !== `view-${view}`; });
   document.querySelectorAll(".tabs a").forEach(a => a.dataset.view === view ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
   if (view === "signals" && state.charts.price) setTimeout(() => window.dispatchEvent(new Event("resize")), 0);

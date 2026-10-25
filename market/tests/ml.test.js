@@ -43,6 +43,11 @@ test("ML finds a real signal the rules miss, judged on unseen dates", async () =
   assert.ok(res.dates.fit[1] < res.dates.val[0] && res.dates.val[1] < res.dates.test[0], "train < validation < test in time");
   const bt = ML.backtestML(P, algo, res, { capital: 100000 }, {});
   assert.strictEqual(bt.ml.dates[0], P.dates[ev.splitT], "backtest starts at the unseen period");
+  const td = ML.today(P, res);
+  assert.strictEqual(td.date, P.dates.at(-1));
+  assert.strictEqual(td.list.length, P.stocks.length);
+  assert.ok(td.list.every((x, k) => k === 0 || td.list[k - 1].z >= x.z), "sorted by score");
+  assert.ok(td.list.every(x => x.prob > 0 && x.prob < 1 && x.reasons.length > 0 && x.reasons.length <= 4));
 });
 
 test("pure noise gives no out-of-sample edge", async () => {

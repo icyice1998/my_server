@@ -49,7 +49,9 @@
   .seg { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
   .seg button { border: 0; background: var(--surface-1); padding: 6px 12px; cursor: pointer; }
   .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); font-weight: 600; }
-  .tabs { display: flex; gap: 2px; }
+  .tabs { display: flex; gap: 2px; align-items: center; flex-wrap: wrap; }
+  .tabs .grp { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin: 0 2px 0 10px; }
+  .tabs .grp:first-child { margin-left: 0; }
   .tabs a { text-decoration: none; color: var(--text-secondary); padding: 6px 12px; border-radius: 6px; font-weight: 600; }
   .tabs a[aria-current="page"] { background: var(--surface-2); color: var(--text-primary); box-shadow: inset 0 -2px 0 var(--accent); }
   .spacer { flex: 1; }
@@ -135,21 +137,45 @@
   #roc svg { width: 100%; height: auto; max-width: 420px; display: block; margin: 0 auto; }
   .cm td, .cm th { text-align: center; } .cm .hl { font-weight: 700; }
   #ml-table tr.hl td { background: var(--surface-2); }
+  #ml-roc svg { width: 100%; height: auto; max-width: 420px; display: block; margin: 0 auto; }
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px 18px; align-items: end; }
+  .steps label { display: flex; flex-direction: column; gap: 6px; font-weight: 600; }
+  .steps select { padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-2); color: var(--text-primary); font-weight: 400; }
+  .steps .n { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font-size: 12px; margin-right: 4px; }
+  .btn.big { padding: 9px 22px; font-size: 15px; }
+  details.adv summary { cursor: pointer; color: var(--text-secondary); margin-top: 10px; }
+  details.card.adv > summary { margin-top: 0; }
+  .verdict { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; align-items: center; border-left: 4px solid var(--c, var(--neutral)); }
+  .verdict .icon { font-size: 28px; color: var(--c); grid-row: span 2; }
+  .verdict .head { font-size: 17px; font-weight: 750; }
+  .verdict .nums { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin-top: 6px; }
+  .verdict .nums div { background: var(--surface-2); border-radius: 8px; padding: 8px 10px; }
+  .verdict .nums .k { font-size: 11px; color: var(--text-muted); } .verdict .nums .v { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .why { display: flex; gap: 4px; flex-wrap: wrap; }
+  .why span { font-size: 11px; padding: 1px 6px; border-radius: 5px; border: 1px solid currentColor; }
+  .why .p { color: var(--good); } .why .m { color: var(--critical); }
+  .why.mob { display: none; }
+  @media (max-width: 640px) { .why.mob { display: flex; margin-top: 4px; white-space: normal; max-width: 230px; } .probbar { display: none; } }
+  .probbar { display: inline-block; width: 60px; height: 6px; background: var(--grid); border-radius: 3px; vertical-align: middle; margin-left: 6px; overflow: hidden; }
+  .probbar i { display: block; height: 100%; background: var(--series-3); }
   h3 { font-size: 14px; margin: 14px 0 8px; }
 </style>
 </head>
 <body>
 <header class="appbar"><div class="appbar-in">
-  <div class="brand">V3 Bull <small>Live signals · Backtest · Strategy</small></div>
+  <div class="brand">V3 Bull <small>Trade · Research</small></div>
   <div class="seg" id="mkt">
     <button data-m="US" aria-pressed="true">S&amp;P 500</button>
     <button data-m="TH" aria-pressed="false">SET</button>
   </div>
-  <nav class="tabs">
-    <a href="#signals" data-view="signals">Live signals</a>
-    <a href="#backtest" data-view="backtest">Backtest</a>
+  <nav class="tabs" aria-label="Pages">
+    <span class="grp">Trade</span>
+    <a href="#signals" data-view="signals">Signals</a>
     <a href="#strategy" data-view="strategy">Strategy</a>
-    <a href="#lab" data-view="lab">Mode 2 · Algo Lab</a>
+    <a href="#backtest" data-view="backtest">Backtest</a>
+    <span class="grp">Research</span>
+    <a href="#lab" data-view="lab">Algo Lab</a>
+    <a href="#ml" data-view="ml">ML Model</a>
   </nav>
   <span class="spacer"></span>
   <span class="asof" id="asof">Loading…</span>
@@ -319,43 +345,73 @@
         <div class="tablewrap" style="max-height:380px"><table id="lab-trades"></table></div></div>
       <div class="note" id="lab-note"></div>
     </div>
-    <div class="card" style="margin-top:12px" id="ml-card">
-      <h2>Machine learning · improve the AUC</h2>
-      <p class="muted" style="font-size:13px;margin:0 0 8px">Learns a better score than "share of rules met" from 18 price features ranked across
-        stocks each day (returns, momentum, volatility, RSI, distance to averages and highs/lows, MACD), index-regime features
-        (only when the outcome is "rose") and your entry rules. Two models: logistic regression and gradient-boosted trees, trained in your
-        browser on the first 70% of dates (purged by the horizon) and judged on the same unseen last 30% as the rules.</p>
-      <div class="inline">
-        <label>ML decision: buy the top <select id="ml-top"><option>10</option><option selected>20</option><option>30</option></select>% by ML score each day</label>
-        <label><select id="ml-mode"><option value="ml">ML score only</option><option value="filter">and only when the entry rules pass</option></select></label>
+    <div class="card" style="margin-top:12px">
+      <h2>Next step</h2>
+      <p style="margin:0">Want a better score than "share of rules met"? Open <a href="#ml">ML Model</a>: it can learn from this algorithm in one click.</p>
+    </div>
+  </section>
+
+  <!-- ============ ML MODEL ============ -->
+  <section class="view" id="view-ml" hidden>
+    <div class="card">
+      <h2>ML Model · rank stocks with machine learning <span class="muted" id="ml-uni"></span></h2>
+      <div class="steps">
+        <label><span class="n">1</span> What should it predict?
+          <select id="ml-target">
+            <option value="beat|21" selected>Beat the market over the next month</option>
+            <option value="beat|10">Beat the market over the next 2 weeks</option>
+            <option value="beat|63">Beat the market over the next 3 months</option>
+            <option value="up|21">Price goes up over the next month</option>
+          </select></label>
+        <label><span class="n">2</span> Starting idea (its rules become one input)
+          <select id="ml-algo"></select></label>
+        <div><span class="n">3</span> <button class="btn primary big" id="ml-run">Train model</button>
+          <div class="progress" id="ml-prog" hidden><i></i></div> <span class="muted" id="ml-status"></span></div>
       </div>
-      <div class="actions">
-        <button class="btn primary" id="ml-run">Train ML model</button>
-        <span class="muted" id="ml-status"></span>
-      </div>
+      <details class="adv"><summary>Options</summary>
+        <div class="inline" style="margin-top:8px">
+          <label>History <select id="ml-years"><option value="2">2 years</option><option value="3" selected>3 years</option><option value="4">4 years</option></select></label>
+          <label>Buy the top <select id="ml-top"><option>10</option><option selected>20</option><option>30</option></select>% each day</label>
+          <label><select id="ml-mode"><option value="ml">ML score only</option><option value="filter">only when the idea's rules also pass</option></select></label>
+        </div>
+      </details>
+      <p class="muted" style="font-size:12px;margin:10px 0 0">Runs in your browser in about 10 seconds. It learns on older data and is graded on the most
+        recent ~30% of dates, which it never sees while learning.</p>
     </div>
 
     <div id="ml-out" hidden>
-      <div class="row kpis" id="ml-kpis" style="margin-top:12px"></div>
-      <div class="lab-grid">
-        <div class="card"><h2>Out-of-sample ROC <span class="muted">unseen dates</span></h2><div id="ml-roc"></div>
-          <div class="legend" style="justify-content:center"><span style="--c:var(--text-secondary)">Rules score</span><span style="--c:var(--series-1)">Logistic</span><span style="--c:var(--series-3)">Boosted trees</span><span style="--c:var(--text-muted)">Coin flip</span></div></div>
-        <div class="card"><h2>Model comparison</h2><div class="tablewrap"><table id="ml-table"></table></div>
-          <p class="muted" style="font-size:12px" id="ml-split"></p></div>
+      <div class="card verdict" id="ml-verdict" style="margin-top:12px"></div>
+
+      <div class="card listcard" style="margin-top:12px">
+        <div class="listhead"><b>Today's top picks</b> <span class="muted" id="ml-today-h"></span>
+          <span class="spacer"></span><input id="ml-filter" placeholder="Filter symbol or sector" aria-label="Filter picks" style="max-width:220px"></div>
+        <div class="tablewrap" style="max-height:520px"><table id="ml-today"></table></div>
       </div>
+
       <div class="lab-grid">
-        <div class="card"><h2>What the model uses <span class="muted" id="ml-imp-h"></span></h2><div class="imp" id="ml-imp"></div></div>
-        <div class="card"><h2>ML score deciles <span class="muted">out of sample</span></h2><table id="ml-dec"></table></div>
+        <div class="card"><h2>What the model looks at <span class="muted" id="ml-imp-h"></span></h2><div class="imp" id="ml-imp"></div></div>
+        <div class="card"><h2>Did it make money? <span class="muted" id="ml-bt-h"></span></h2>
+          <div class="row kpis" id="ml-bt-kpis" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))"></div>
+          <div class="legend" style="margin-top:8px"><span style="--c:var(--series-3)">ML picks</span><span style="--c:var(--series-1)">Idea's rules only</span><span style="--c:var(--text-muted)">Index</span></div>
+          <div id="ml-eq" style="height:240px"></div></div>
       </div>
-      <div class="card" style="margin-top:12px"><h2>Out-of-sample portfolio backtest <span class="muted" id="ml-bt-h"></span></h2>
-        <div class="row kpis" id="ml-bt-kpis" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))"></div>
-        <div class="legend" style="margin-top:8px"><span style="--c:var(--series-3)">ML</span><span style="--c:var(--series-1)">Rules only</span><span style="--c:var(--text-muted)">Index</span></div>
-        <div id="ml-eq" style="height:260px"></div></div>
-      <div class="note" id="ml-note"></div>
+
+      <details class="card adv" style="margin-top:12px"><summary><b>Details for experts</b> <span class="muted">AUC, ROC, model comparison, deciles</span></summary>
+        <div class="row kpis" id="ml-kpis" style="margin-top:12px"></div>
+        <div class="lab-grid">
+          <div class="card"><h2>Out-of-sample ROC <span class="muted">unseen dates</span></h2><div id="ml-roc"></div>
+            <div class="legend" style="justify-content:center"><span style="--c:var(--text-secondary)">Rules score</span><span style="--c:var(--series-1)">Logistic</span><span style="--c:var(--series-3)">Boosted trees</span><span style="--c:var(--text-muted)">Coin flip</span></div></div>
+          <div class="card"><h2>Model comparison</h2><div class="tablewrap"><table id="ml-table"></table></div>
+            <p class="muted" style="font-size:12px" id="ml-split"></p></div>
+        </div>
+        <div class="card" style="margin-top:12px"><h2>ML score deciles <span class="muted">out of sample</span></h2><table id="ml-dec"></table></div>
+        <div class="note" id="ml-note"></div>
+      </details>
     </div>
   </section>
 </main>
 <script src="app.js"></script>
 <script src="lab.js"></script>
+<script src="ml-page.js"></script>
 </body>
 </html>
