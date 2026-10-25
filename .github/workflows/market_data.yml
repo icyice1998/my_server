@@ -1,0 +1,54 @@
+name: Market Data
+
+# Rebuilds the static data the V3 Bull dashboard reads (market/data): 5-year daily closes for every
+# S&P 500 and SET stock, the S&P 500 and SET equal-weight indexes, and candle data for the charts.
+# All analysis, signals and backtests run in the visitor's browser; this is the only job.
+on:
+  workflow_dispatch:
+  schedule:
+    # Weekdays 22:30 UTC (05:30 Bangkok), after the US close; includes that day's SET session
+    - cron: '30 22 * * 1-5'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: market-data
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: market
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: market/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Tests
+        run: |
+          python -m pytest -q tests
+          node --test tests/strategy.test.js
+
+      - name: Build data
+        run: python -m pipeline.build --out data
+
+      - name: Commit data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898733+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --cached --quiet && exit 0
+          git commit -m "Update market data"
+          for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push && exit 0; sleep 5; done
+          exit 1
