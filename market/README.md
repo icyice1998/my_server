@@ -18,6 +18,22 @@ the visitor's browser from published data; nothing is computed per request on a 
 - **Strategy**: the plan and position sizing (account size, equal slots or risk-based sizing, sector cap, risk %,
   volatility stop, max position, macro gate, entry and exit rules, fees). Saved per market in the browser.
 
+## Mode 2 · Algo Lab (`algo.js`, `lab.js`)
+
+Build your own algorithm from rules and test how good its decisions are.
+
+- **Entry rules** `indicator · operator · indicator or number`, joined with ALL or ANY. Indicators: close, SMA(n), EMA(n),
+  RSI(n), return % over n days, volatility %, % from n-day high / low, MACD histogram %, index close, index SMA(n).
+  Operators: above, below, at or above, at or below, crosses above, crosses below.
+- **Exit rules** (any of them), stop loss %, take profit %, max holding days; **ranking** indicator for full slots.
+- **Decision test**: every sampled stock-day gets a buy / no-buy decision and a score (share of entry rules met + a
+  small tie-break from the ranking indicator), compared with whether the stock beat the index (or rose) over the next
+  5–63 days. Reported: **ROC AUC** with a 95% interval (Hanley–McNeil) and the ROC curve, in-sample vs out-of-sample
+  AUC (last 30% of dates), decision AUC (balanced accuracy), confusion matrix, precision vs base rate, lift, recall,
+  specificity, F1, MCC, information coefficient, average forward return with vs without a signal, and score deciles.
+- **Portfolio backtest** of the same algorithm with the account, slots, sector cap, sizing and fees from the Strategy
+  tab. Algorithms are saved in the browser; four presets are included (none of them shows a real edge: AUC ≈ 0.49–0.50).
+
 ## Strategy (`strategy.js`)
 
 1. **Macro gate**: new buys only while the index is above its 200-day average (option: also SMA50 > SMA200).
@@ -49,7 +65,7 @@ cd market
 pip install -r requirements.txt
 python -m pipeline.build --out data      # rebuild the data locally
 python -m pytest -q tests                # pipeline tests
-node --test tests/strategy.test.js       # strategy engine tests (no look-ahead, caps, lots, sizing)
+node --test tests/strategy.test.js tests/algo.test.js   # engine + Algo Lab tests (no look-ahead, AUC, caps)
 ```
 
 The stock list is `pipeline/stocks.json` (S&P 500 with GICS sectors, plus SET stocks with Yahoo sectors).

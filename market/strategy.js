@@ -149,15 +149,17 @@
     for (const [i, pos] of state.positions) {
       const s = P.stocks[i];
       if (isNum(s.c[t])) pos.peak = Math.max(pos.peak, s.c[t]);
-      const why = (!gate && p.gateExitAll) ? "macro gate off" : exitReason(s, t, pos, p);
+      const why = (!gate && p.gateExitAll) ? "macro gate off"
+        : p.exitFn ? p.exitFn(i, t, pos) : exitReason(s, t, pos, p);  // exitFn: custom algorithm (algo.js)
       if (why) sells.push({ i, reason: why });
     }
     const ranked = [];
     const rebalance = forceRebalance || (t - state.start) % p.rebalanceEvery === 0;
     if (rebalance) {
       for (let i = 0; i < P.stocks.length; i++) {
-        const s = P.stocks[i], ok = checks(s, t, p);
-        if (ok.every(Boolean)) { const m = momentum(s, t, p); if (isNum(m)) ranked.push({ i, m }); }
+        const s = P.stocks[i];
+        const pass = p.entryFn ? p.entryFn(i, t) : checks(s, t, p).every(Boolean);
+        if (pass) { const m = p.rankFn ? p.rankFn(i, t) : momentum(s, t, p); if (isNum(m)) ranked.push({ i, m }); }
       }
       ranked.sort((a, b) => b.m - a.m);
       const selling = new Set(sells.map(x => x.i));
