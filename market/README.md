@@ -34,6 +34,24 @@ Build your own algorithm from rules and test how good its decisions are.
 - **Portfolio backtest** of the same algorithm with the account, slots, sector cap, sizing and fees from the Strategy
   tab. Algorithms are saved in the browser; four presets are included (none of them shows a real edge: AUC ≈ 0.49–0.50).
 
+## Machine learning · improve the AUC (`ml.js`)
+
+Below the Algo Lab, **Train ML model** learns a better score than "share of entry rules met", entirely in the browser.
+
+- **Features** (known at day *t*'s close): 18 price features of each stock ranked across all stocks that day (returns 5d–12m,
+  12-1 momentum, volatility, RSI 5/14, % vs SMA 20/50/200, SMA50 vs SMA200, distance to 20-day / 52-week high and 52-week low,
+  MACD histogram), the share of your entry rules met, and 4 index-regime features (only for the "rose" outcome; for "beat the
+  index" they only let a model memorise periods).
+- **Models**: L2 logistic regression (IRLS, penalty chosen on validation) and gradient-boosted trees (depth 3, 32-bin histograms,
+  rate 0.1, row subsampling, early stopping on validation AUC). The model with the higher validation AUC is chosen.
+- **Validation**: test = the same last 30% of dates as the rules test, never seen in training; train = dates whose outcome window
+  ends before the test starts; validation = last 20% of the training dates (purged by the horizon again).
+- **Reported**: train / validation / test AUC for rules, logistic and trees, the test ROC curves, the AUC gain with a 95%
+  day-block bootstrap interval, precision / lift / MCC of buying the top 10–30% by ML score each day, feature importance, score
+  deciles, and a portfolio backtest of the unseen period (ML only, or ML + rules) against rules only and the index.
+- On S&P 500 data the presets go from test AUC ≈ 0.48–0.51 (rules) to ≈ 0.52–0.53 (ML). SET results are noisier
+  (validation AUC < 0.5). A better AUC does not guarantee a better portfolio.
+
 ## Strategy (`strategy.js`)
 
 1. **Macro gate**: new buys only while the index is above its 200-day average (option: also SMA50 > SMA200).
@@ -65,7 +83,7 @@ cd market
 pip install -r requirements.txt
 python -m pipeline.build --out data      # rebuild the data locally
 python -m pytest -q tests                # pipeline tests
-node --test tests/strategy.test.js tests/algo.test.js   # engine + Algo Lab tests (no look-ahead, AUC, caps)
+node --test tests/strategy.test.js tests/algo.test.js tests/ml.test.js   # engine + Algo Lab tests (no look-ahead, AUC, caps)
 ```
 
 The stock list is `pipeline/stocks.json` (S&P 500 with GICS sectors, plus SET stocks with Yahoo sectors).

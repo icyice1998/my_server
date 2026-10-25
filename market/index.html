@@ -7,6 +7,7 @@
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 <script src="strategy.js"></script>
 <script src="algo.js"></script>
+<script src="ml.js"></script>
 <style>
   :root {
     color-scheme: light;
@@ -127,9 +128,13 @@
   .inline { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
   .inline label { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--text-secondary); }
   .inline input[type=number] { width: 80px; }
+  .imp { display: grid; grid-template-columns: minmax(120px, 170px) 1fr 44px; gap: 4px 8px; align-items: center; font-size: 12px; }
+  .imp i { display: block; height: 10px; border-radius: 2px; background: var(--series-1); }
+  .imp .neg { background: var(--series-2); }
   .lab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; margin-top: 12px; }
   #roc svg { width: 100%; height: auto; max-width: 420px; display: block; margin: 0 auto; }
   .cm td, .cm th { text-align: center; } .cm .hl { font-weight: 700; }
+  #ml-table tr.hl td { background: var(--surface-2); }
   h3 { font-size: 14px; margin: 14px 0 8px; }
 </style>
 </head>
@@ -313,6 +318,40 @@
       <div class="card listcard" style="margin-top:12px"><div class="listhead"><b>Trades</b> <span class="muted" id="lab-ntrades"></span></div>
         <div class="tablewrap" style="max-height:380px"><table id="lab-trades"></table></div></div>
       <div class="note" id="lab-note"></div>
+    </div>
+    <div class="card" style="margin-top:12px" id="ml-card">
+      <h2>Machine learning · improve the AUC</h2>
+      <p class="muted" style="font-size:13px;margin:0 0 8px">Learns a better score than "share of rules met" from 18 price features ranked across
+        stocks each day (returns, momentum, volatility, RSI, distance to averages and highs/lows, MACD), index-regime features
+        (only when the outcome is "rose") and your entry rules. Two models: logistic regression and gradient-boosted trees, trained in your
+        browser on the first 70% of dates (purged by the horizon) and judged on the same unseen last 30% as the rules.</p>
+      <div class="inline">
+        <label>ML decision: buy the top <select id="ml-top"><option>10</option><option selected>20</option><option>30</option></select>% by ML score each day</label>
+        <label><select id="ml-mode"><option value="ml">ML score only</option><option value="filter">and only when the entry rules pass</option></select></label>
+      </div>
+      <div class="actions">
+        <button class="btn primary" id="ml-run">Train ML model</button>
+        <span class="muted" id="ml-status"></span>
+      </div>
+    </div>
+
+    <div id="ml-out" hidden>
+      <div class="row kpis" id="ml-kpis" style="margin-top:12px"></div>
+      <div class="lab-grid">
+        <div class="card"><h2>Out-of-sample ROC <span class="muted">unseen dates</span></h2><div id="ml-roc"></div>
+          <div class="legend" style="justify-content:center"><span style="--c:var(--text-secondary)">Rules score</span><span style="--c:var(--series-1)">Logistic</span><span style="--c:var(--series-3)">Boosted trees</span><span style="--c:var(--text-muted)">Coin flip</span></div></div>
+        <div class="card"><h2>Model comparison</h2><div class="tablewrap"><table id="ml-table"></table></div>
+          <p class="muted" style="font-size:12px" id="ml-split"></p></div>
+      </div>
+      <div class="lab-grid">
+        <div class="card"><h2>What the model uses <span class="muted" id="ml-imp-h"></span></h2><div class="imp" id="ml-imp"></div></div>
+        <div class="card"><h2>ML score deciles <span class="muted">out of sample</span></h2><table id="ml-dec"></table></div>
+      </div>
+      <div class="card" style="margin-top:12px"><h2>Out-of-sample portfolio backtest <span class="muted" id="ml-bt-h"></span></h2>
+        <div class="row kpis" id="ml-bt-kpis" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))"></div>
+        <div class="legend" style="margin-top:8px"><span style="--c:var(--series-3)">ML</span><span style="--c:var(--series-1)">Rules only</span><span style="--c:var(--text-muted)">Index</span></div>
+        <div id="ml-eq" style="height:260px"></div></div>
+      <div class="note" id="ml-note"></div>
     </div>
   </section>
 </main>

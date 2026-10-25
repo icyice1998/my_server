@@ -207,6 +207,7 @@
       }
     }
     return { eval: ev, from: P.dates[from], to: P.dates[to], split: P.dates[split], rows: rows.length,
+      fromT: from, toT: to, splitT: split, ...(opt.keepRows ? { sample: rows } : {}),
       all: statsFor(rows), inSample: statsFor(rows.filter(r => r.t < split)), outSample: statsFor(rows.filter(r => r.t >= split)),
       rules: algo.entry.rules.map(describe) };
   }
@@ -217,6 +218,6 @@
     return S.backtest(P, { ...settings, entryFn: C.entryFn, exitFn: C.exitFn, rankFn: C.rankFn }, opt);
   }
 
-  const api = { INDICATORS, OPS, PRESETS, compile, evaluate, backtestAlgo, roc, confusion, deciles, spearman, describe, ruleHolds };
+  const api = { INDICATORS, OPS, PRESETS, series, compile, evaluate, backtestAlgo, roc, confusion, deciles, spearman, describe, ruleHolds };
   if (typeof module !== "undefined" && module.exports) module.exports = api; else root.Algo = api;
 })(typeof self !== "undefined" ? self : this);
