@@ -13,11 +13,25 @@ const store = {
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* private mode: keep in memory */ } },
 };
 const MARKET_DEFAULTS = { US: { capital: 100000, lot: 1 }, TH: { capital: 1000000, lot: 100 } };
-const state = { meta: null, market: store.get("v3.market", "US"), panels: {}, live: null, selected: null,
+const state = { meta: null, market: store.get("v3.market", "US"), panels: {}, live: null, rank: null, selected: null,
   statusFilter: "ALL", sortKey: "status", sortDir: 1, charts: {} };
 
 const settings = m => ({ ...Strategy.DEFAULTS, ...MARKET_DEFAULTS[m], ...store.get(`v3.settings.${m}`, {}) });
 const saveSettings = (m, s) => store.set(`v3.settings.${m}`, s);
+
+/** Strategy settings plus the ML ranking function when "Rank by: ML model" is chosen (trained once per data update). */
+async function ranking(m, say = () => {}) {
+  if (settings(m).rankBy !== "ml") return null;
+  const P = await panel(m), key = `v3.rank.${m}`, saved = store.get(key, null);
+  const fresh = saved && saved.generated === state.meta.generated;
+  const R = await ML.prepareRanking(P, { stored: fresh ? saved.serial : null, onProgress: say });
+  if (!fresh) store.set(key, { generated: state.meta.generated, serial: R.serial });
+  return R;
+}
+async function runParams(m, say) {
+  const s = settings(m), R = await ranking(m, say);
+  return R ? { ...s, rankFn: R.rankFn } : s;
+}
 const currency = () => state.meta.markets[state.market].currency;
 
 // ---------- data ----------
@@ -34,7 +48,10 @@ async function panel(m) {
 async function refresh() {
   $("asof").textContent = "Loading…";
   const P = await panel(state.market);
-  state.live = Strategy.live(P, settings(state.market));
+  const prm = await runParams(state.market, t => { $("asof").textContent = `${t} (first load after a data update)`; });
+  state.rank = prm.rankFn ? P._rank : null;
+  state.live = Strategy.live(P, prm);
+  if (state.rank) { const pc = state.rank.percentileAt(P.dates.length - 1); state.live.rows.forEach(r => { r.ml = pc ? pc[r.i] : NaN; }); }
   $("asof").textContent = `Prices to ${state.live.date} · data built ${new Date(state.meta.generated).toLocaleString()}`;
   renderSignals();
   renderStrategyForm();
@@ -79,11 +96,14 @@ function renderSignals() {
 
 function renderList() {
   const L = state.live, f = $("filter").value.trim().toLowerCase();
+  const mh = document.querySelector('#list th[data-k="momentum"], #list th[data-k="ml"]');
+  mh.dataset.k = state.rank ? "ml" : "momentum"; mh.textContent = state.rank ? "ML rank" : "Mom 6M";
+  mh.title = state.rank ? "ML model score among all stocks today (top 1% = best); qualifying stocks are bought in this order" : "6-month return; qualifying stocks are bought in this order";
   let rows = L.rows.filter(r => (state.statusFilter === "ALL" || r.status === state.statusFilter) &&
     (!f || `${r.sym} ${r.name} ${r.sector}`.toLowerCase().includes(f)));
   const k = state.sortKey, dir = state.sortDir;
   rows.sort((a, b) => {
-    if (k === "status") return (ORDER[a.status] - ORDER[b.status]) * dir || (b.momentum || -9) - (a.momentum || -9);
+    if (k === "status") return (ORDER[a.status] - ORDER[b.status]) * dir || (state.rank ? (b.ml || -9) - (a.ml || -9) : (b.momentum || -9) - (a.momentum || -9));
     const x = a[k], y = b[k];
     if (x == null || Number.isNaN(x)) return 1; if (y == null || Number.isNaN(y)) return -1;
     return (x > y ? 1 : x < y ? -1 : 0) * dir;
@@ -97,7 +117,7 @@ function renderList() {
         <span class="muted mono">${r.pass}/5</span></td>
       <td class="opt mono">${fired(r.fired)}</td>
       <td class="num mono">${num(r.price)}</td>
-      <td class="num mono">${pct(r.momentum, 0)}</td>
+      <td class="num mono">${state.rank ? (Number.isFinite(r.ml) ? `top ${Math.max(1, Math.round((1 - r.ml) * 100))}%` : "–") : pct(r.momentum, 0)}</td>
       <td><span class="st ${r.status}" title="${esc(r.reason || "")}">${r.status}</span></td></tr>`).join("") ||
     `<tr><td colspan="7" class="muted">No stocks match.</td></tr>`;
 }
@@ -182,7 +202,7 @@ function renderPlan(r) {
       "Not a buy signal: the plan shows what an entry today would look like."}</p>`;
   }
   html += `<ul class="checks">${Strategy.CHECKS.map((c, i) => `<li class="${r.checks[i] ? "y" : ""}">${c}</li>`).join("")}</ul>
-    <p class="muted" style="font-size:12px;margin:6px 0 0">RSI ${num(r.rsi, 0)} · 6-month return ${pctTxt(r.momentum)} ·
+    <p class="muted" style="font-size:12px;margin:6px 0 0">RSI ${num(r.rsi, 0)} · 6-month return ${pctTxt(r.momentum)} ·${state.rank && Number.isFinite(r.ml) ? ` ML rank top ${Math.max(1, Math.round((1 - r.ml) * 100))}% ·` : ""}
       sizing ${p.sizing === "risk" ? `risk ${p.riskPct}% of ${num(p.capital, 0)} ${cur}` : `${p.slots} slots of ${num(p.capital, 0)} ${cur}`}</p>`;
   $("d-plan").innerHTML = html;
 }
@@ -193,13 +213,17 @@ async function runBacktest() {
   const T = P.dates.length - 1, from = Math.max(252, T - Math.round(252 * years));
   $("bt-status").textContent = "Running…";
   await new Promise(r => setTimeout(r, 20));
-  const t0 = performance.now(), bt = Strategy.backtest(P, s, { from, to: T });
-  $("bt-status").textContent = `${bt.dates[0]} → ${bt.dates.at(-1)} · ${Math.round(performance.now() - t0)} ms`;
-  renderBacktest(bt);
+  const prm = await runParams(state.market, t => { $("bt-status").textContent = t; });
+  const t0 = performance.now(), bt = Strategy.backtest(P, prm, { from, to: T });
+  // with ML ranking, also run the same plan ranked by momentum so the effect of the model is visible
+  const cmp = prm.rankFn ? Strategy.backtest(P, { ...s, rankBy: "momentum" }, { from, to: T }) : null;
+  $("bt-status").textContent = `${bt.dates[0]} → ${bt.dates.at(-1)} · ${Math.round(performance.now() - t0)} ms` +
+    (cmp ? ` · ranked by the ML model (walk-forward, active from ${P._rank.activeFrom}; momentum before)` : "");
+  renderBacktest(bt, cmp);
 }
 
-function renderBacktest(bt) {
-  const m = bt.metrics, b = bt.benchMetrics, cur = currency();
+function renderBacktest(bt, cmp) {
+  const m = bt.metrics, b = bt.benchMetrics, cur = currency(), c0 = cmp && cmp.metrics;
   $("bt-result").hidden = false;
   $("bt-kpis").innerHTML = [
     ["CAGR", pct(m.cagr), `index ${pctTxt(b.cagr)}`], ["Total return", pct(m.total), `index ${pctTxt(b.total)}`],
@@ -208,12 +232,16 @@ function renderBacktest(bt) {
     ["Trades", num(m.trades, 0), `profit factor ${num(m.profitFactor)} · avg hold ${num(m.avgDays, 0)} days`],
     ["Exposure", `${((m.exposure || 0) * 100).toFixed(0)}%`, "average share of equity invested"],
     ["Final equity", `${num(bt.equity.at(-1), 0)} <small class="muted">${cur}</small>`, `from ${num(bt.params.capital, 0)}`],
+    ...(c0 ? [["Ranking: ML vs momentum", `${pctTxt(m.cagr - c0.cagr)} <small class="muted">CAGR</small>`,
+      `momentum ranking: CAGR ${pctTxt(c0.cagr)} · max DD ${pctTxt(c0.maxDD)} · Sharpe ${num(c0.sharpe)}`]] : []),
   ].map(([k, v, s]) => `<div class="card kpi"><div class="k">${k}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join("");
   if (state.charts.eq) state.charts.eq.remove();
   $("eq-chart").innerHTML = "";
   const c = makeChart($("eq-chart"), 320); state.charts.eq = c;
   line(c, css("--series-1"), 2, { lastValueVisible: true }).setData(bt.dates.map((d, i) => ({ time: d, value: bt.equity[i] })));
   line(c, css("--text-muted"), 1.5, { lastValueVisible: true }).setData(bt.dates.map((d, i) => ({ time: d, value: bt.bench[i] })));
+  if (cmp) line(c, css("--series-4"), 1.5, { lastValueVisible: true }).setData(cmp.dates.map((d, i) => ({ time: d, value: cmp.equity[i] })));
+  $("eq-legend-cmp").hidden = !cmp;
   c.timeScale().fitContent();
   $("bt-years-t").innerHTML = `<tr><th>Year</th><th class="num">Strategy</th><th class="num">Index</th><th class="num">Difference</th></tr>` +
     Object.keys(m.yearly).map(y => `<tr><td>${y}</td><td class="num">${pct(m.yearly[y])}</td><td class="num">${pct(b.yearly[y])}</td>
@@ -231,7 +259,8 @@ async function runAuto() {
   const P = await panel(state.market), s = settings(state.market), years = Number($("bt-years").value);
   const T = P.dates.length - 1, from = Math.max(252, T - Math.round(252 * Math.max(years, 2)));
   $("bt-auto").disabled = $("bt-run").disabled = true; $("bt-prog").hidden = false;
-  const r = await Strategy.autoBacktest(P, s, null, { from, inSample: 0.7, onProgress: f => {
+  const prm = await runParams(state.market, t => { $("bt-status").textContent = t; });
+  const r = await Strategy.autoBacktest(P, prm, null, { from, inSample: 0.7, onProgress: f => {
     $("bt-prog").firstElementChild.style.width = `${f * 100}%`; $("bt-status").textContent = `Testing combinations… ${Math.round(f * 100)}%`; } });
   $("bt-auto").disabled = $("bt-run").disabled = false; $("bt-prog").hidden = true;
   $("bt-status").textContent = `${r.combos} combinations tested`;
@@ -262,6 +291,7 @@ const FIELDS = [
   ["gateExitAll", "When the gate turns off", "select", { options: [["false", "Stop new buys only"], ["true", "Sell all positions"]] }],
   ["rsiMin", "RSI min", "number", { min: 0, max: 100 }], ["rsiMax", "RSI max", "number", { min: 0, max: 100 }],
   ["highWithinPct", "Within % of 52-week high", "number", { min: 1, max: 100 }], ["momLookback", "Momentum ranking days", "number", { min: 20, max: 250 }],
+  ["rankBy", "Rank qualifying stocks by", "select", { options: [["momentum", "6-month return (momentum)"], ["ml", "ML model score (walk-forward)"]] }],
   ["rebalanceEvery", "Look for entries every N days", "number", { min: 1, max: 60 }],
   ["trailPct", "Trailing stop %", "number", { min: 1, max: 60 }],
   ["exitBelowSma50", "Exit on close below SMA50", "select", { options: [["true", "Yes"], ["false", "No"]] }],
@@ -269,6 +299,16 @@ const FIELDS = [
 ];
 function renderStrategyForm() {
   const s = settings(state.market);
+  const R = state.rank;
+  $("st-ml").hidden = s.rankBy !== "ml";
+  if (R) $("st-ml").innerHTML = `<b>ML ranking is on.</b> The 5 checks, macro gate, slots, sector cap and exits still decide <i>whether</i> to buy;
+    the model only decides <i>which</i> qualifying stocks come first. Model: logistic regression on ${ML.FEATURES.filter(f => f.kind === "stock").length} price features
+    ranked across stocks, predicting "beats the index over the next ${R.settings.horizon} trading days". It is retrained every ${R.settings.every} trading days
+    on the previous ${Math.round(R.settings.window / 252)} years, using only outcomes already known on that day (walk-forward), so backtests never use a model
+    that saw the future. Latest model: data to ${R.latest.date}, ${R.latest.samples.toLocaleString()} samples; ${R.retrains} models since ${R.activeFrom}
+    (before that the ranking falls back to momentum). Retrained automatically after each data update and kept in this browser.
+    <br><b>Tested result:</b> on both markets ML ranking gave smaller drawdowns but usually lower returns than momentum
+    (e.g. S&amp;P 500 over 2 years: CAGR +6.6% vs +27.0%). Run the <a href="#backtest">Backtest</a>: it shows both rankings side by side.`;
   $("st-mkt").textContent = `${state.meta.markets[state.market].name} · amounts in ${currency()}${s.lot > 1 ? ` · ${s.lot}-share lots` : ""}`;
   $("st-form").innerHTML = FIELDS.map(([k, label, type, o]) => `<label>${label}${type === "select"
     ? `<select data-k="${k}">${o.options.map(([v, t]) => `<option value="${v}" ${String(s[k]) === v ? "selected" : ""}>${t}</option>`).join("")}</select>`
@@ -321,7 +361,11 @@ $("auto-table").addEventListener("click", async e => {
   $("bt-status").textContent = "Settings applied to the strategy and re-tested.";
 });
 $("st-save").addEventListener("click", async () => {
-  saveSettings(state.market, readStrategyForm()); await refresh(); $("st-msg").textContent = "Saved. Live signals and backtests now use these settings.";
+  const v = readStrategyForm();
+  $("st-msg").textContent = v.rankBy === "ml" ? "Saving… preparing the ML ranking model (about 10 s the first time)…" : "Saving…";
+  $("st-save").disabled = true;
+  saveSettings(state.market, v); await refresh(); $("st-save").disabled = false;
+  $("st-msg").textContent = "Saved. Live signals and backtests now use these settings.";
 });
 $("st-reset").addEventListener("click", async () => {
   saveSettings(state.market, {}); await refresh(); $("st-msg").textContent = "Back to the default strategy.";

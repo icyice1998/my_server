@@ -119,12 +119,16 @@
       let mx = 0; for (let a = 0; a < p; a++) { w[a] -= d[a]; mx = Math.max(mx, Math.abs(d[a])); }
       if (mx < 1e-6) break;
     }
-    const predict = (row, o = 0) => { let z = w[0]; for (let f = 0; f < NF; f++) z += w[f + 1] * (row[o + f] - mean[f]) / sd[f]; return z; };
+    const params = { mean: Array.from(mean), sd: Array.from(sd), w: Array.from(w) }, predict = predictor(params);
     const total = w.slice(1).reduce((a, v) => a + Math.abs(v), 0) || 1;
     // contribution of each feature to the log-odds, relative to an average sample
     const explain = (row, o = 0) => Array.from({ length: NF }, (_, f) => w[f + 1] * (row[o + f] - mean[f]) / sd[f]);
-    return { kind: "logistic", lambda, predict, explain, coef: Array.from(w.slice(1)),
+    return { kind: "logistic", lambda, predict, explain, params, coef: Array.from(w.slice(1)),
       importance: Array.from(w.slice(1), v => Math.abs(v) / total) };
+  }
+  /** Log-odds from stored logistic parameters { mean, sd, w } (w[0] = intercept). */
+  function predictor({ mean, sd, w }) {
+    return (row, o = 0) => { let z = w[0]; for (let f = 0; f < NF; f++) z += w[f + 1] * (row[o + f] - mean[f]) / sd[f]; return z; };
   }
   function solve(H, g, p) {   // Gaussian elimination with partial pivoting
     const M = Array.from({ length: p }, (_, a) => [...H.slice(a * p, a * p + p), g[a]]);
@@ -377,6 +381,79 @@
     return { ml, rules };
   }
 
+  // ---------- ranking model for the Strategy (walk-forward logistic regression) ----------
+  // Target: beat the index over the next `horizon` days. Retrained every `every` trading days on the last `window` days
+  // of samples whose outcome was already known on the retrain day, so a backtest never uses a model that saw its future.
+  const RANK = { v: 1, horizon: 21, step: 5, every: 63, minDays: 252, window: 756, lambda: 100 };
+  const RANK_ALGO = { name: "ranking", entry: { join: "all", rules: [] }, exit: {}, eval: { label: "beat" } };
+
+  function retrainDays(P) {
+    const T = P.dates.length - 1, out = [];
+    for (let r = 252 + RANK.minDays + RANK.horizon; r < T; r += RANK.every) out.push(r);
+    out.push(T);
+    return out;
+  }
+
+  /**
+   * Train (or restore) the walk-forward ranking models of a panel. `stored` is a previous `serial` for the same data.
+   * Returns { rankFn(i, t), scoresAt(t), percentileAt(t), activeFrom, serial, latest }.
+   */
+  async function prepareRanking(P, opt = {}) {
+    if (P._rank) return P._rank;
+    const say = opt.onProgress || (() => {}), H = RANK.horizon, T = P.dates.length - 1, days = retrainDays(P);
+    const ctx = context(P, RANK_ALGO);
+    let models = opt.stored && opt.stored.v === RANK.v && JSON.stringify(opt.stored.models.map(m => m.r)) === JSON.stringify(days)
+      ? opt.stored.models : null;
+    if (!models) {
+      models = [];
+      const cache = new Map(), sample = d => {
+        if (cache.has(d)) return cache.get(d);
+        const F = featuresAt(ctx, d), rows = [], y = [], ir = P.idx[d + H] / P.idx[d];
+        for (let i = 0; i < P.stocks.length; i++) {
+          const c = P.stocks[i].c;
+          if (Number.isNaN(F[i * NF]) || !isNum(c[d + H])) continue;
+          rows.push(i); y.push(c[d + H] / c[d] > ir ? 1 : 0);
+        }
+        const X = new Float32Array(rows.length * NF);
+        rows.forEach((i, k) => X.set(F.subarray(i * NF, i * NF + NF), k * NF));
+        const out = { X, y }; cache.set(d, out); return out;
+      };
+      for (let k = 0; k < days.length; k++) {
+        const r = days[k], use = [];
+        for (let d = 252; d + H <= r; d += RANK.step) if (d >= r - RANK.window) use.push(sample(d));
+        const n = use.reduce((a, u) => a + u.y.length, 0), X = new Float32Array(n * NF), y = new Uint8Array(n);
+        let o = 0;
+        for (const u of use) { X.set(u.X, o * NF); y.set(u.y, o); o += u.y.length; }
+        const m = fitLogistic(X, y, Array.from({ length: n }, (_, q) => q), RANK.lambda);
+        models.push({ r, n, ...m.params });
+        say(`Training the ranking model ${k + 1}/${days.length} (as of ${P.dates[r]})…`); await tick();
+      }
+    }
+    const preds = models.map(m => predictor(m)), scores = new Map();
+    const modelAt = t => { let k = -1; for (let q = 0; q < models.length; q++) if (models[q].r <= t) k = q; return k; };
+    const scoresAt = t => {
+      if (scores.has(t)) return scores.get(t);
+      const k = modelAt(t); let s = null;
+      if (k >= 0) {
+        const F = featuresAt(ctx, t); s = new Float64Array(P.stocks.length).fill(NaN);
+        for (let i = 0; i < P.stocks.length; i++) if (!Number.isNaN(F[i * NF])) s[i] = preds[k](F, i * NF);
+      }
+      scores.set(t, s); return s;
+    };
+    // before the first model exists, fall back to the 6-month return
+    const rankFn = (i, t) => { const s = scoresAt(t); return s ? s[i] : A.series(P, i, { ind: "ret", n: 126 })[t]; };
+    const percentileAt = t => {
+      const s = scoresAt(t); if (!s) return null;
+      const live = [...s].filter(isNum).sort((a, b) => a - b), out = new Float64Array(s.length).fill(NaN);
+      s.forEach((v, i) => { if (isNum(v)) { let lo = 0, hi = live.length; while (lo < hi) { const m = (lo + hi) >> 1; if (live[m] < v) lo = m + 1; else hi = m; } out[i] = lo / Math.max(1, live.length - 1); } });
+      return out;
+    };
+    const last = models.at(-1);
+    P._rank = { rankFn, scoresAt, percentileAt, activeFrom: P.dates[models[0].r], retrains: models.length,
+      latest: { date: P.dates[last.r], samples: last.n, coef: last.w.slice(1) }, settings: RANK, serial: { v: RANK.v, models } };
+    return P._rank;
+  }
+
   /** Rank every stock on the latest close with the production model; reasons come from the logistic contributions. */
   function today(P, res, opt = {}) {
     const t = opt.t ?? P.dates.length - 1, F = featuresAt(res.ctx, t), out = [];
@@ -393,6 +470,6 @@
     return { date: P.dates[t], list: out };
   }
 
-  const api = { FEATURES, GBM, fitGbm, today, binner, binize, train, backtestML, auc, featuresAt, context, fitLogistic, topDecisions };
+  const api = { FEATURES, GBM, RANK, prepareRanking, retrainDays, fitGbm, today, binner, binize, train, backtestML, auc, featuresAt, context, fitLogistic, topDecisions };
   if (typeof module !== "undefined" && module.exports) module.exports = api; else root.ML = api;
 })(typeof self !== "undefined" ? self : this);

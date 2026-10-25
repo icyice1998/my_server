@@ -81,6 +81,12 @@ How the model works:
 2. **Bull-run checks**: close above SMA50 and SMA200, SMA50 > SMA200, EMA12 > EMA26, RSI 14 inside the band,
    close within X% of the 52-week high.
 3. **Ranking**: qualifying stocks by 6-month return; the strongest fill free slots, at most N per sector.
+   Option **Rank by: ML model score**: a logistic regression on the 18 ranked price features (`ml.js`, `prepareRanking`)
+   predicting "beats the index over the next 21 days", retrained every 63 trading days on the previous 3 years using only
+   outcomes known on that day (walk-forward), so Signals, Backtest and Auto backtest never use a model that saw the future.
+   The models are trained once per data update (~8 s) and stored in the browser. The Backtest page then also shows the same
+   plan ranked by momentum. Tested: smaller drawdowns, usually lower returns (S&P 500 2y CAGR +6.6% vs +27.0%; 3y +36.9% vs
+   +38.2%; SET 3y +7.0% vs +10.1%), so momentum stays the default.
 4. **Exits**: trailing stop from the highest close since entry, or a close below SMA50.
 5. **Sizing**: equal slots (equity ÷ slots) or risk-based (risk % of equity with the stop at k × 20-day volatility,
    capped per position). SET orders round down to 100-share lots.
