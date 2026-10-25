@@ -38,7 +38,7 @@ jobs:
       - name: Tests
         run: |
           python -m pytest -q tests
-          node --test tests/strategy.test.js
+          node --test tests/strategy.test.js tests/algo.test.js
 
       - name: Build data
         run: python -m pipeline.build --out data

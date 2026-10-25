@@ -6,6 +6,7 @@
 <title>V3 Bull</title>
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 <script src="strategy.js"></script>
+<script src="algo.js"></script>
 <style>
   :root {
     color-scheme: light;
@@ -118,6 +119,17 @@
   #eq-chart { height: 320px; }
   .note { font-size: 12px; color: var(--text-secondary); background: var(--surface-2); border-left: 3px solid var(--warning); padding: 8px 10px; border-radius: 4px; margin-top: 12px; }
   .view[hidden] { display: none; }
+  .rules { display: flex; flex-direction: column; gap: 6px; margin: 6px 0; }
+  .rule { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; background: var(--surface-2); border-radius: 8px; padding: 6px 8px; }
+  .rule select, .rule input, .inline select, .inline input { padding: 5px 7px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface-1); color: var(--text-primary); }
+  .rule input[type=number] { width: 78px; }
+  .rule .x { margin-left: auto; border: 0; background: none; color: var(--critical); cursor: pointer; font-size: 16px; }
+  .inline { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .inline label { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--text-secondary); }
+  .inline input[type=number] { width: 80px; }
+  .lab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; margin-top: 12px; }
+  #roc svg { width: 100%; height: auto; max-width: 420px; display: block; margin: 0 auto; }
+  .cm td, .cm th { text-align: center; } .cm .hl { font-weight: 700; }
   h3 { font-size: 14px; margin: 14px 0 8px; }
 </style>
 </head>
@@ -132,6 +144,7 @@
     <a href="#signals" data-view="signals">Live signals</a>
     <a href="#backtest" data-view="backtest">Backtest</a>
     <a href="#strategy" data-view="strategy">Strategy</a>
+    <a href="#lab" data-view="lab">Mode 2 · Algo Lab</a>
   </nav>
   <span class="spacer"></span>
   <span class="asof" id="asof">Loading…</span>
@@ -236,7 +249,74 @@
         <b>WATCH</b> = 3–4 checks · <b>AVOID</b> = 2 or fewer. Education only, not investment advice.</p>
     </div>
   </section>
+
+  <!-- ============ MODE 2 · ALGO LAB ============ -->
+  <section class="view" id="view-lab" hidden>
+    <div class="card">
+      <h2>Mode 2 · Build your own algorithm <span class="muted" id="lab-uni"></span></h2>
+      <div class="inline">
+        <label>Start from <select id="lab-preset"></select></label>
+        <label>Saved <select id="lab-saved"></select></label>
+        <label>Name <input id="lab-name" style="width:240px"></label>
+        <button class="btn" id="lab-save">Save</button>
+        <button class="btn" id="lab-delete">Delete</button>
+      </div>
+
+      <h3>Entry: buy when <select id="lab-join"><option value="all">ALL rules hold</option><option value="any">ANY rule holds</option></select></h3>
+      <div class="rules" id="lab-entry"></div>
+      <button class="btn" data-add="entry">+ Entry rule</button>
+
+      <h3>Exit: sell when ANY of these happens</h3>
+      <div class="rules" id="lab-exit"></div>
+      <button class="btn" data-add="exit">+ Exit rule</button>
+      <div class="inline" style="margin-top:8px">
+        <label>Stop loss % <input type="number" id="lab-sl" min="0" step="1"></label>
+        <label>Take profit % <input type="number" id="lab-tp" min="0" step="1"></label>
+        <label>Max holding days <input type="number" id="lab-hold" min="0" step="1"></label>
+        <span class="muted" style="font-size:12px">0 = off</span>
+      </div>
+
+      <h3>Ranking: when there are more signals than free slots, prefer</h3>
+      <div class="inline" id="lab-rank"></div>
+
+      <h3>Decision test</h3>
+      <div class="inline">
+        <label>A decision is right when, after <select id="lab-h"><option value="5">5</option><option value="10">10</option><option value="21" selected>21</option><option value="63">63</option></select> trading days, the stock</label>
+        <select id="lab-label"><option value="beat">beat the index</option><option value="up">rose</option></select>
+        <label>· sample every <input type="number" id="lab-step" min="1" max="21" value="5"> days</label>
+        <label>· period <select id="lab-years"><option value="2">2 years</option><option value="3" selected>3 years</option><option value="4">4 years</option></select></label>
+      </div>
+      <div class="actions">
+        <button class="btn primary" id="lab-run">Run algorithm</button>
+        <span class="muted" id="lab-status"></span>
+      </div>
+      <p class="muted" style="font-size:12px;margin:8px 0 0">The portfolio backtest uses the account, slots, sector cap, sizing and fees from the
+        <a href="#strategy">Strategy</a> tab and fills every decision at the next close.</p>
+    </div>
+
+    <div id="lab-out" hidden>
+      <div class="row kpis" id="lab-kpis" style="margin-top:12px"></div>
+      <div class="lab-grid">
+        <div class="card"><h2>ROC curve <span class="muted">score vs outcome</span></h2><div id="roc"></div>
+          <div class="legend" style="justify-content:center"><span style="--c:var(--series-1)">In-sample</span><span style="--c:var(--series-2)">Out-of-sample</span><span style="--c:var(--text-muted)">Coin flip</span></div></div>
+        <div class="card"><h2>Confusion matrix <span class="muted">all samples</span></h2><table class="cm" id="lab-cm"></table>
+          <h3>In-sample vs out-of-sample</h3><table id="lab-split"></table></div>
+      </div>
+      <div class="lab-grid">
+        <div class="card"><h2>Score deciles</h2><table id="lab-dec"></table>
+          <p class="muted" style="font-size:12px;margin-bottom:0">Score = share of entry rules met, plus a small tie-break from the ranking indicator.
+            A useful algorithm shows the hit rate and forward return rising from decile 1 to 10.</p></div>
+        <div class="card"><h2>Portfolio backtest</h2><div class="row kpis" id="lab-bt-kpis" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))"></div>
+          <div class="legend" style="margin-top:8px"><span style="--c:var(--series-1)">Algorithm</span><span style="--c:var(--text-muted)">Index</span></div>
+          <div id="lab-eq" style="height:260px"></div></div>
+      </div>
+      <div class="card listcard" style="margin-top:12px"><div class="listhead"><b>Trades</b> <span class="muted" id="lab-ntrades"></span></div>
+        <div class="tablewrap" style="max-height:380px"><table id="lab-trades"></table></div></div>
+      <div class="note" id="lab-note"></div>
+    </div>
+  </section>
 </main>
 <script src="app.js"></script>
+<script src="lab.js"></script>
 </body>
 </html>
