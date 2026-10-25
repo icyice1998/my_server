@@ -15,6 +15,7 @@
     // bull-run entry checks
     rsiMin: 50, rsiMax: 80,
     highWithinPct: 15,         // close within this % of its 52-week high
+    rankBy: "momentum",        // ranking of qualifying stocks: "momentum" | "ml" (walk-forward model from ml.js, passed as rankFn)
     momLookback: 126,          // ranking: return over this many days
     rebalanceEvery: 5,         // look for new entries every N trading days
     // exits

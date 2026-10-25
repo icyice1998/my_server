@@ -60,3 +60,16 @@ test("pure noise gives no out-of-sample edge", async () => {
   const res = await ML.train(P, algo, A.evaluate(P, algo, { keepRows: true }), {});
   for (const m of res.models) assert.ok(Math.abs(m.roc.auc - 0.5) < 0.04, `${m.kind} test AUC ${m.roc.auc} on noise`);
 });
+
+test("walk-forward ranking: no future data, and a stored model gives the same scores", async () => {
+  const P1 = panel(40, 760, 4), P2 = panel(40, 760, 4), cut = 650;
+  for (const s of P2.stocks) for (let t = cut + 1; t < 760; t++) s.c[t] *= 1.3 + 0.2 * Math.sin(t / 3);
+  for (let t = cut + 1; t < 760; t++) P2.idx[t] *= 0.9;
+  const R1 = await ML.prepareRanking(P1), R2 = await ML.prepareRanking(P2);
+  assert.ok(R1.retrains >= 3);
+  assert.deepStrictEqual(Array.from(R1.scoresAt(cut)), Array.from(R2.scoresAt(cut)), "scores at the cut ignore later prices");
+  const b1 = S.backtest(P1, { rankFn: R1.rankFn }, { from: 300, to: cut }), b2 = S.backtest(P2, { rankFn: R2.rankFn }, { from: 300, to: cut });
+  assert.deepStrictEqual(b1.trades, b2.trades, "decisions up to the cut are identical");
+  const P3 = panel(40, 760, 4), R3 = await ML.prepareRanking(P3, { stored: JSON.parse(JSON.stringify(R1.serial)) });
+  assert.deepStrictEqual(Array.from(R3.scoresAt(759)), Array.from(R1.scoresAt(759)));
+});

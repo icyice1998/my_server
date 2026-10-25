@@ -232,7 +232,7 @@
       <div class="row kpis" id="bt-kpis" style="margin-top:12px"></div>
       <div class="card" style="margin-top:12px">
         <h2>Equity vs index</h2>
-        <div class="legend"><span style="--c:var(--series-1)">Strategy</span><span style="--c:var(--text-muted)">Index (buy &amp; hold)</span></div>
+        <div class="legend"><span style="--c:var(--series-1)">Strategy</span><span style="--c:var(--series-4)" id="eq-legend-cmp" hidden>Same plan, momentum ranking</span><span style="--c:var(--text-muted)">Index (buy &amp; hold)</span></div>
         <div id="eq-chart"></div>
       </div>
       <div class="split">
@@ -261,6 +261,7 @@
         <button class="btn" id="st-reset">Reset to defaults</button>
         <span class="muted" id="st-msg"></span>
       </div>
+      <div class="note" id="st-ml" hidden></div>
     </div>
     <div class="card" style="margin-top:12px">
       <h2>How the strategy works</h2>
@@ -268,7 +269,7 @@
         <li><b>Macro gate.</b> New buys only while the market index is above its 200-day average (optionally also SMA50 above SMA200).</li>
         <li><b>Bull-run checks.</b> A stock qualifies when all five pass: close above SMA50 and SMA200, SMA50 above SMA200,
           EMA12 above EMA26, RSI 14 inside the band, and the close within the set % of its 52-week high.</li>
-        <li><b>Ranking.</b> Qualifying stocks are ranked by their 6-month return; the strongest fill the free slots, at most
+        <li><b>Ranking.</b> Qualifying stocks are ranked by their 6-month return (or by the ML model score, if chosen above); the strongest fill the free slots, at most
           <i>sector cap</i> per sector. New entries are considered every <i>rebalance</i> days.</li>
         <li><b>Exits.</b> Sell when the close falls the trailing-stop % below its highest close since entry, or closes below SMA50.</li>
         <li><b>Sizing.</b> <i>Equal slots</i>: each position gets equity ÷ slots. <i>Risk-based</i>: each position risks the set %
