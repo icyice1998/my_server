@@ -121,7 +121,9 @@
     }
     const predict = (row, o = 0) => { let z = w[0]; for (let f = 0; f < NF; f++) z += w[f + 1] * (row[o + f] - mean[f]) / sd[f]; return z; };
     const total = w.slice(1).reduce((a, v) => a + Math.abs(v), 0) || 1;
-    return { kind: "logistic", lambda, predict, coef: Array.from(w.slice(1)),
+    // contribution of each feature to the log-odds, relative to an average sample
+    const explain = (row, o = 0) => Array.from({ length: NF }, (_, f) => w[f + 1] * (row[o + f] - mean[f]) / sd[f]);
+    return { kind: "logistic", lambda, predict, explain, coef: Array.from(w.slice(1)),
       importance: Array.from(w.slice(1), v => Math.abs(v) / total) };
   }
   function solve(H, g, p) {   // Gaussian elimination with partial pivoting
@@ -292,11 +294,22 @@
     const best = stats[0].valAuc >= stats[1].valAuc ? 0 : 1;
     say("Bootstrapping the AUC gain…"); await tick();
     const boot = bootstrap(models[best].score, rulesScore, y, ts, test);
+
+    // production models for today's ranking: same settings, refit on every labelled row (test period included)
+    say("Refitting on all data for today's ranking…"); await tick();
+    const all = Array.from(rows.keys());
+    const finalLogit = fitLogistic(X, y, all, bestL.lambda);
+    let finalPredict = finalLogit.predict;
+    if (best === 1) {
+      const B2 = binner(X, all), fin = await fitGbm(X, binize(X, n, B2), y, all, null, { rounds: gbm.rounds });
+      finalPredict = gbmPredictor(fin, B2);
+    }
     return { features: FEATURES.map(f => ({ ...f, off: f.kind === "market" && !ctx.market })), models: stats, best, boot, topPct, rulesOOS, rulesAuc: auc(rulesScore, y, test),
       counts: { fit: fit.length, val: val.length, pool: pool.length, test: test.length }, dates: {
         fit: [P.dates[ts[fit[0]]], P.dates[ts[fit.at(-1)]]], val: [P.dates[ts[val[0]]], P.dates[ts[val.at(-1)]]],
         test: [P.dates[ts[test[0]]], P.dates[ts[test.at(-1)]]] },
-      ctx, predictors: models.map(m => m.predict), splitT: ev.splitT };
+      ctx, predictors: models.map(m => m.predict), splitT: ev.splitT, horizon: H, label: ev.eval.label,
+      final: { predict: finalPredict, explain: finalLogit.explain }, baseRate: y.reduce((a, b) => a + b, 0) / n };
   }
 
   /** Decision = top `topPct`% of ML scores on each date. */
@@ -364,6 +377,22 @@
     return { ml, rules };
   }
 
-  const api = { FEATURES, GBM, fitGbm, binner, binize, train, backtestML, auc, featuresAt, context, fitLogistic, topDecisions };
+  /** Rank every stock on the latest close with the production model; reasons come from the logistic contributions. */
+  function today(P, res, opt = {}) {
+    const t = opt.t ?? P.dates.length - 1, F = featuresAt(res.ctx, t), out = [];
+    const sig = z => 1 / (1 + Math.exp(-z));
+    for (let i = 0; i < P.stocks.length; i++) {
+      if (Number.isNaN(F[i * NF])) continue;
+      const z = res.final.predict(F, i * NF), c = res.final.explain(F, i * NF);
+      const reasons = c.map((v, f) => ({ f, v, x: F[i * NF + f] })).filter(r => !res.features[r.f].off && Math.abs(r.v) > 1e-9)
+        .sort((a, b) => Math.abs(b.v) - Math.abs(a.v)).slice(0, 4);
+      out.push({ i, sym: P.stocks[i].sym, name: P.stocks[i].name, sector: P.stocks[i].sector, price: P.stocks[i].c[t], z, prob: sig(z), reasons });
+    }
+    out.sort((a, b) => b.z - a.z);
+    out.forEach((r, k) => { r.rank = k + 1; r.pctl = 1 - k / Math.max(1, out.length - 1); });
+    return { date: P.dates[t], list: out };
+  }
+
+  const api = { FEATURES, GBM, fitGbm, today, binner, binize, train, backtestML, auc, featuresAt, context, fitLogistic, topDecisions };
   if (typeof module !== "undefined" && module.exports) module.exports = api; else root.ML = api;
 })(typeof self !== "undefined" ? self : this);
